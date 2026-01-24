@@ -2,17 +2,15 @@
 //  triviataxiApp.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 1/23/26.
-//
 
 import SwiftUI
 import FirebaseCore
 
-// 1. Create the "Switchboard" (AppDelegate)
+// 1. The "Switchboard" - This MUST be here to start Firebase
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // This is where we turn the key to start Firebase
+        // This is the specific line your error says is missing:
         FirebaseApp.configure()
         return true
     }
@@ -20,12 +18,21 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct triviataxiApp: App {
-    // 2. Tell SwiftUI to use our Switchboard
+    // 2. Connect the Switchboard to SwiftUI
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    
+    // 3. The State to switch screens
+    @State private var appUserIsLoggedIn = false
 
     var body: some Scene {
         WindowGroup {
-            LoginView()
+            if appUserIsLoggedIn {
+                // If logged in, go to the Game
+                ContentView(userIsLoggedIn: $appUserIsLoggedIn)
+            } else {
+                // If not, go to the Login (and pass the switch so it can turn it on)
+                LoginView(userIsLoggedIn: $appUserIsLoggedIn)
+            }
         }
     }
 }
