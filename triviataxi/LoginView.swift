@@ -12,6 +12,7 @@ struct LoginView: View {
     @State private var password = ""
     @State private var errorMessage = ""
     @State private var userIsLoggedIn = false
+    @State private var isPasswordVisible = false
 
     var body: some View {
         if userIsLoggedIn {
@@ -59,6 +60,7 @@ struct LoginView: View {
                                     .textInputAutocapitalization(.never)
                             }
                             .padding()
+                            .frame(height: 55)
                             .background(Color.white)
                             .cornerRadius(12)
                             
@@ -66,9 +68,21 @@ struct LoginView: View {
                             HStack {
                                 Image(systemName: "lock.fill")
                                     .foregroundColor(.gray)
-                                SecureField("Password", text: $password)
+                                if isPasswordVisible {
+                                    TextField("Password", text: $password).textInputAutocapitalization(.never)
+                                } else {
+                                    SecureField("Password", text: $password)
+                                }
+                                // The Eye Button
+                                Button(action: {
+                                    isPasswordVisible.toggle()
+                                }) {
+                                Image(systemName: isPasswordVisible ? "eye.slash.fill" : "eye.fill")
+                                        .foregroundColor(.gray)
+                                }
                             }
                             .padding()
+                            .frame(height: 55)
                             .background(Color.white)
                             .cornerRadius(12)
                             
@@ -99,9 +113,6 @@ struct LoginView: View {
                             }
                         }
                         .padding(25)
-                        // This makes the white card effect?
-                        // Actually, let's keep it transparent for a cleaner look,
-                        // relying on the white input fields to pop against the yellow.
                         
                         Spacer()
                     }
@@ -118,6 +129,7 @@ struct LoginView: View {
     // MARK: - Logic 
     
     func login() {
+        errorMessage = ""
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
                 errorMessage = error.localizedDescription
