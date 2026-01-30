@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		36CE74E52F2458D60027D5A1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36CE74E42F2458D60027D5A1 /* FirebaseAuth */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		C16F3C222F241A0600FDE39A /* triviataxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = triviataxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				36CE74E52F2458D60027D5A1 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = triviataxi;
 			packageProductDependencies = (
+				36CE74E42F2458D60027D5A1 /* FirebaseAuth */,
 			);
 			productName = triviataxi;
 			productReference = C16F3C222F241A0600FDE39A /* triviataxi.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = C16F3C192F241A0600FDE39A;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C16F3C232F241A0600FDE39A /* Products */;
 			projectDirPath = "";
@@ -328,6 +337,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.8.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		36CE74E42F2458D60027D5A1 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C16F3C1A2F241A0600FDE39A /* Project object */;
 }
