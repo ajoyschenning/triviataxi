@@ -9,7 +9,7 @@ import MapboxMaps
 internal import Combine
 
 // MARK: HomeView
-
+// TESTING
 struct HomeView: View {
     @State private var showMap = false
     @State private var showShop = false
