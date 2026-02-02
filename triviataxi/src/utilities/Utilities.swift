@@ -24,7 +24,3 @@ extension Color {
         )
     }
 }
-
-#Preview {
-    HomeView()
-}

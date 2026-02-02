@@ -19,6 +19,8 @@ struct HomeView: View {
         ZStack {
             if showMap {
                 NashvilleMapView(showMap: $showMap)
+//                NavigationViewControllerRepresentable()
+//                            .edgesIgnoringSafeArea(.all)
             } else if showShop {
                 ShopView(showShop: $showShop)
             } else if showLeaderboard {
@@ -64,3 +66,7 @@ struct HomeView: View {
     }
 }
 
+
+#Preview {
+    HomeView()
+}

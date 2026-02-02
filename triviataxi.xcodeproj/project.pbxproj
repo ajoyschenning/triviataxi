@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C1230C502F310E7E0018DE7E /* MapboxNavigationCore in Frameworks */ = {isa = PBXBuildFile; productRef = C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */; };
+		C1230C522F310E7E0018DE7E /* MapboxNavigationUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */; };
 		C16F3C372F280D2F00FDE39A /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = C16F3C362F280D2F00FDE39A /* MapboxMaps */; };
 /* End PBXBuildFile section */
 
@@ -40,6 +42,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1230C522F310E7E0018DE7E /* MapboxNavigationUIKit in Frameworks */,
+				C1230C502F310E7E0018DE7E /* MapboxNavigationCore in Frameworks */,
 				C16F3C372F280D2F00FDE39A /* MapboxMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -92,6 +96,8 @@
 			name = triviataxi;
 			packageProductDependencies = (
 				C16F3C362F280D2F00FDE39A /* MapboxMaps */,
+				C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */,
+				C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */,
 			);
 			productName = triviataxi;
 			productReference = C16F3C222F241A0600FDE39A /* triviataxi.app */;
@@ -123,6 +129,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
+				C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C16F3C232F241A0600FDE39A /* Products */;
@@ -362,6 +369,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/mapbox-navigation-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.18.1;
+			};
+		};
 		C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mapbox/mapbox-maps-ios.git";
@@ -373,6 +388,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */;
+			productName = MapboxNavigationCore;
+		};
+		C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */;
+			productName = MapboxNavigationUIKit;
+		};
 		C16F3C362F280D2F00FDE39A /* MapboxMaps */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;

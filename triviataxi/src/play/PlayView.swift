@@ -9,6 +9,7 @@ import SwiftUI
 import MapboxMaps
 internal import Combine
 
+
 // MARK: - Map (Start Ride)
 struct NashvilleMapView: View {
     @Binding var showMap: Bool
@@ -43,3 +44,4 @@ struct NashvilleMapView: View {
         }
     }
 }
+

@@ -80,6 +80,8 @@ struct FancyButton: View {
 
     @State private var pressed = false
     @State private var coins: [Coin] = []
+    
+    // TODO: fix padding on double outline
 
     var body: some View {
         ZStack {

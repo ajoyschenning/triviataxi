@@ -11,6 +11,7 @@ internal import Combine
 
 // MARK: Leaderboard
 
+// TODO: Make leaderboard based on MILES not coins
 struct LeaderboardView: View {
     @Binding var showLeaderboard: Bool
     @State private var selectedTab: LeaderboardTab = .week
@@ -18,7 +19,6 @@ struct LeaderboardView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // 🔒 Static Header
             LeaderboardHeader {
                 showLeaderboard = false
             }
@@ -163,17 +163,17 @@ extension LeaderboardView {
             return [
                 LeaderboardEntry(rank: 1, name: "Alex J.S.", earnings: 1240),
                 LeaderboardEntry(rank: 2, name: "Sophia P.", earnings: 980),
-                LeaderboardEntry(rank: 3, name: "Jordan K.", earnings: 860),
+                LeaderboardEntry(rank: 3, name: "Cami K.", earnings: 860),
                 LeaderboardEntry(rank: 4, name: "Sam T.", earnings: 740),
                 LeaderboardEntry(rank: 5, name: "Taylor P.", earnings: 610)
             ]
 
         case .allTime:
             return [
-                LeaderboardEntry(rank: 1, name: "Chris D.", earnings: 18420),
-                LeaderboardEntry(rank: 2, name: "Alex S.", earnings: 16210),
+                LeaderboardEntry(rank: 1, name: "Sophia P.", earnings: 18420),
+                LeaderboardEntry(rank: 2, name: "Alex J.S.", earnings: 16210),
                 LeaderboardEntry(rank: 3, name: "Mia R.", earnings: 14980),
-                LeaderboardEntry(rank: 4, name: "Jordan K.", earnings: 13240),
+                LeaderboardEntry(rank: 4, name: "Cami K.", earnings: 13240),
                 LeaderboardEntry(rank: 5, name: "Sam T.", earnings: 12110)
             ]
         }
