@@ -7,16 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		36CE74E52F2458D60027D5A1 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 36CE74E42F2458D60027D5A1 /* FirebaseAuth */; };
+		C1230C502F310E7E0018DE7E /* MapboxNavigationCore in Frameworks */ = {isa = PBXBuildFile; productRef = C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */; };
+		C1230C522F310E7E0018DE7E /* MapboxNavigationUIKit in Frameworks */ = {isa = PBXBuildFile; productRef = C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */; };
+		C16F3C372F280D2F00FDE39A /* MapboxMaps in Frameworks */ = {isa = PBXBuildFile; productRef = C16F3C362F280D2F00FDE39A /* MapboxMaps */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C16F3C222F241A0600FDE39A /* triviataxi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = triviataxi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		C16F3C342F280BCA00FDE39A /* Exceptions for "triviataxi" folder in "triviataxi" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = C16F3C212F241A0600FDE39A /* triviataxi */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		C16F3C242F241A0600FDE39A /* triviataxi */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				C16F3C342F280BCA00FDE39A /* Exceptions for "triviataxi" folder in "triviataxi" target */,
+			);
 			path = triviataxi;
 			sourceTree = "<group>";
 		};
@@ -27,7 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				36CE74E52F2458D60027D5A1 /* FirebaseAuth in Frameworks */,
+				C1230C522F310E7E0018DE7E /* MapboxNavigationUIKit in Frameworks */,
+				C1230C502F310E7E0018DE7E /* MapboxNavigationCore in Frameworks */,
+				C16F3C372F280D2F00FDE39A /* MapboxMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -38,6 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				C16F3C242F241A0600FDE39A /* triviataxi */,
+				C16F3C382F28136500FDE39A /* Frameworks */,
 				C16F3C232F241A0600FDE39A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -48,6 +66,13 @@
 				C16F3C222F241A0600FDE39A /* triviataxi.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C16F3C382F28136500FDE39A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -70,7 +95,9 @@
 			);
 			name = triviataxi;
 			packageProductDependencies = (
-				36CE74E42F2458D60027D5A1 /* FirebaseAuth */,
+				C16F3C362F280D2F00FDE39A /* MapboxMaps */,
+				C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */,
+				C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */,
 			);
 			productName = triviataxi;
 			productReference = C16F3C222F241A0600FDE39A /* triviataxi.app */;
@@ -101,7 +128,8 @@
 			mainGroup = C16F3C192F241A0600FDE39A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */,
+				C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C16F3C232F241A0600FDE39A /* Products */;
@@ -262,6 +290,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = triviataxi/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -293,6 +322,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = triviataxi/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -339,21 +369,39 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+		C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			repositoryURL = "https://github.com/mapbox/mapbox-navigation-ios.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.8.0;
+				minimumVersion = 3.18.1;
+			};
+		};
+		C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mapbox/mapbox-maps-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		36CE74E42F2458D60027D5A1 /* FirebaseAuth */ = {
+		C1230C4F2F310E7E0018DE7E /* MapboxNavigationCore */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 36CE74E32F2458D50027D5A1 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAuth;
+			package = C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */;
+			productName = MapboxNavigationCore;
+		};
+		C1230C512F310E7E0018DE7E /* MapboxNavigationUIKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C1230C4E2F310E7E0018DE7E /* XCRemoteSwiftPackageReference "mapbox-navigation-ios" */;
+			productName = MapboxNavigationUIKit;
+		};
+		C16F3C362F280D2F00FDE39A /* MapboxMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C16F3C352F280D2F00FDE39A /* XCRemoteSwiftPackageReference "mapbox-maps-ios" */;
+			productName = MapboxMaps;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

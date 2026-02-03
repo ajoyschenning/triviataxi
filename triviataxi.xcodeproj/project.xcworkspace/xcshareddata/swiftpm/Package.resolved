@@ -1,121 +1,103 @@
 {
-  "originHash" : "c63c63846d9c539229e96de38d6af51417e28c0ee9a0bc48bd0f0f19d923c329",
+  "originHash" : "f650782c01d18e75d8337f6815ac2a52294444239347885d73551e28b1baa4d1",
   "pins" : [
     {
-      "identity" : "abseil-cpp-binary",
+      "identity" : "mapbox-common-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/abseil-cpp-binary.git",
+      "location" : "https://github.com/mapbox/mapbox-common-ios.git",
       "state" : {
-        "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
-        "version" : "1.2024072200.0"
+        "revision" : "9b8283ac1414a0164c05275b3eb6bc46b98e2905",
+        "version" : "24.18.1"
       }
     },
     {
-      "identity" : "app-check",
+      "identity" : "mapbox-core-maps-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/app-check.git",
+      "location" : "https://github.com/mapbox/mapbox-core-maps-ios.git",
       "state" : {
-        "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
-        "version" : "11.2.0"
+        "revision" : "d733d65ddd584602e4f00ec591bd363db51f3e69",
+        "version" : "11.18.1"
       }
     },
     {
-      "identity" : "firebase-ios-sdk",
+      "identity" : "mapbox-maps-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/firebase-ios-sdk",
+      "location" : "https://github.com/mapbox/mapbox-maps-ios.git",
       "state" : {
-        "revision" : "674d9a7ee9858207181a3dd0b42c77298c6fb71b",
-        "version" : "12.8.0"
+        "revision" : "2f9c28163f765e994e5ce6e445ff7cf4958e8298",
+        "version" : "11.18.1"
       }
     },
     {
-      "identity" : "google-ads-on-device-conversion-ios-sdk",
+      "identity" : "mapbox-navigation-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk",
+      "location" : "https://github.com/mapbox/mapbox-navigation-ios.git",
       "state" : {
-        "revision" : "35b601a60fbbea2de3ea461f604deaaa4d8bbd0c",
-        "version" : "3.2.0"
+        "revision" : "945ee9ca49d195d0965aea433d12807fa74d649a",
+        "version" : "3.18.1"
       }
     },
     {
-      "identity" : "googleappmeasurement",
+      "identity" : "mapbox-navigation-native-ios",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/GoogleAppMeasurement.git",
+      "location" : "https://github.com/mapbox/mapbox-navigation-native-ios.git",
       "state" : {
-        "revision" : "2ffd220823f3716904733162e9ae685545c276d1",
-        "version" : "12.8.0"
+        "revision" : "7ed3dceea61271caa478174a484d70c200f866cb",
+        "version" : "324.18.1"
       }
     },
     {
-      "identity" : "googledatatransport",
+      "identity" : "swift-argument-parser",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/GoogleDataTransport.git",
+      "location" : "https://github.com/apple/swift-argument-parser",
       "state" : {
-        "revision" : "617af071af9aa1d6a091d59a202910ac482128f9",
-        "version" : "10.1.0"
+        "revision" : "c5d11a805e765f52ba34ec7284bd4fcd6ba68615",
+        "version" : "1.7.0"
       }
     },
     {
-      "identity" : "googleutilities",
+      "identity" : "swift-custom-dump",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/GoogleUtilities.git",
+      "location" : "https://github.com/pointfreeco/swift-custom-dump",
       "state" : {
-        "revision" : "60da361632d0de02786f709bdc0c4df340f7613e",
-        "version" : "8.1.0"
+        "revision" : "2a2a938798236b8fa0bc57c453ee9de9f9ec3ab0",
+        "version" : "1.4.1"
       }
     },
     {
-      "identity" : "grpc-binary",
+      "identity" : "swift-snapshot-testing",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/grpc-binary.git",
+      "location" : "https://github.com/pointfreeco/swift-snapshot-testing.git",
       "state" : {
-        "revision" : "75b31c842f664a0f46a2e590a570e370249fd8f6",
-        "version" : "1.69.1"
+        "revision" : "bf8d8c27f0f0c6d5e77bff0db76ab68f2050d15d",
+        "version" : "1.18.9"
       }
     },
     {
-      "identity" : "gtm-session-fetcher",
+      "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/gtm-session-fetcher.git",
+      "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "fb7f2740b1570d2f7599c6bb9531bf4fad6974b7",
-        "version" : "5.0.0"
+        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
+        "version" : "602.0.0"
       }
     },
     {
-      "identity" : "interop-ios-for-google-sdks",
+      "identity" : "turf-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
+      "location" : "https://github.com/mapbox/turf-swift.git",
       "state" : {
-        "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
-        "version" : "101.0.0"
+        "revision" : "bf840e6b9529d105687840fe2c9dcd74197d46d1",
+        "version" : "4.0.0"
       }
     },
     {
-      "identity" : "leveldb",
+      "identity" : "xctest-dynamic-overlay",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/leveldb.git",
+      "location" : "https://github.com/pointfreeco/xctest-dynamic-overlay",
       "state" : {
-        "revision" : "a0bc79961d7be727d258d33d5a6b2f1023270ba1",
-        "version" : "1.22.5"
-      }
-    },
-    {
-      "identity" : "nanopb",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/firebase/nanopb.git",
-      "state" : {
-        "revision" : "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
-        "version" : "2.30910.0"
-      }
-    },
-    {
-      "identity" : "promises",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/google/promises.git",
-      "state" : {
-        "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
-        "version" : "2.4.0"
+        "revision" : "34e463e98ab8541c604af706c99bed7160f5ec70",
+        "version" : "1.8.1"
       }
     }
   ],
