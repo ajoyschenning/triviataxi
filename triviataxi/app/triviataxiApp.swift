@@ -26,17 +26,13 @@ struct triviataxiApp: App {
 
     var body: some Scene {
         WindowGroup {
-<<<<<<< HEAD:triviataxi/triviataxiApp.swift
             if appUserIsLoggedIn {
                 // If logged in, go to the Game
-                ContentView(userIsLoggedIn: $appUserIsLoggedIn)
+                HomeView(userIsLoggedIn: $appUserIsLoggedIn)
             } else {
                 // If not, go to the Login (and pass the switch so it can turn it on)
                 LoginView(userIsLoggedIn: $appUserIsLoggedIn)
             }
-=======
-            HomeView()
->>>>>>> demo1-mapbox:triviataxi/app/triviataxiApp.swift
         }
     }
 }

@@ -6,18 +6,25 @@
 //
 import SwiftUI
 import MapboxMaps
+import FirebaseAuth
 internal import Combine
 
 // MARK: HomeView
 // TESTING
 struct HomeView: View {
+    @Binding var userIsLoggedIn: Bool
+    
     @State private var showMap = false
     @State private var showShop = false
     @State private var showLeaderboard = false
+    @State private var loggedIn = false
 
     var body: some View {
         ZStack {
-            if showMap {
+            if !(userIsLoggedIn) {
+                LoginView(userIsLoggedIn: .constant(false))
+            }
+            else if showMap {
                 NashvilleMapView(showMap: $showMap)
 //                NavigationViewControllerRepresentable()
 //                            .edgesIgnoringSafeArea(.all)
@@ -55,6 +62,11 @@ struct HomeView: View {
                                     showLeaderboard = true
                                 }
                             }
+                            FancyButton(title: "LOG OUT") {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                        logout()
+                                }
+                            }
                         }
                         // TODO: update font on buttons
                         
@@ -64,9 +76,15 @@ struct HomeView: View {
                 }}
         }
     }
+    func logout() {
+        try? Auth.auth().signOut()
+        userIsLoggedIn = false
+    }
 }
 
 
+
+
 #Preview {
-    HomeView()
+    HomeView(userIsLoggedIn: .constant(true))
 }

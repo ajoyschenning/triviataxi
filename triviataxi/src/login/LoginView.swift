@@ -7,6 +7,8 @@
 
 import SwiftUI
 import FirebaseAuth
+internal import Combine
+
 
 struct LoginView: View {
     @Binding var userIsLoggedIn: Bool // Connected to ContentView
@@ -18,32 +20,29 @@ struct LoginView: View {
 
     var body: some View {
         NavigationStack {
+        
             ZStack {
-                Color("TaxiYellow").ignoresSafeArea()
                 
-                ScrollView {
+                Color("BackgroundYellow").ignoresSafeArea()
+                GoldFadeOverlay()
+                ScrollView{
+                    
+                    
                     VStack(spacing: 30) {
                         
                         // Header
-                        VStack(spacing: 10) {
-                            Image(systemName: "car.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 80, height: 80)
-                                .foregroundColor(.black)
-                                .padding()
-                                .background(
-                                    Circle()
-                                        .fill(.white)
-                                        .shadow(color: .black.opacity(0.1), radius: 5, x: 0, y: 5)
-                                )
-                            
-                            Text("TRIVIA TAXI")
-                                .font(.system(size: 32, weight: .heavy, design: .rounded))
-                                .foregroundColor(.black)
-                                .tracking(2)
-                        }
-                        .padding(.top, 60)
+                        
+                        
+                        Image("taxi")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300)
+                            .shadow(color: .black.opacity(0.2), radius: 10, y: 6).padding(.top, 60)
+                        
+                        
+                        
+                        
+                        
                         
                         // Login Form
                         VStack(spacing: 20) {
@@ -89,15 +88,8 @@ struct LoginView: View {
                                     .multilineTextAlignment(.center)
                             }
                             
-                            Button(action: login) {
-                                Text("START RIDE")
-                                    .font(.headline)
-                                    .foregroundColor(.white)
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color.black)
-                                    .cornerRadius(12)
-                                    .shadow(radius: 5)
+                            FancyButton(title: "START RIDE") {
+                                login()
                             }
                             
                             NavigationLink(destination: SignUpView(userIsLoggedIn: $userIsLoggedIn)) {
@@ -111,21 +103,22 @@ struct LoginView: View {
                         
                         Spacer()
                     }
-                }
-            }
+                }}
         }
-    }
+        }
+    
     
     // Logic
-    func login() {
-        Auth.auth().signIn(withEmail: email, password: password) { result, error in
-            if let error = error {
-                errorMessage = error.localizedDescription
-            } else {
-                userIsLoggedIn = true
-            }
+func login() {
+    Auth.auth().signIn(withEmail: email, password: password) { result, error in
+        if let error = error {
+            errorMessage = error.localizedDescription
+        } else {
+            errorMessage = ""
+            userIsLoggedIn = true
         }
     }
+}
 }
 
 #Preview {
