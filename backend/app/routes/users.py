@@ -1,6 +1,7 @@
 """User-related API endpoints."""
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
+from firebase_admin import auth, firestore
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -30,10 +31,39 @@ class UserUpdate(BaseModel):
 
 
 @router.post("/me")
-async def create_user(user_data: UserCreate):
-    """Create a new user profile on first login."""
-    # TODO: Implement user creation with Firebase UID
-    return {"message": "User created successfully"}
+def create_user_profile(user: UserProfile, authorization: str = Header(None)):
+    """Creates a user document in Firestore after Firebase Auth signup."""
+    
+    # 1. Check for the ID Token
+    if not authorization:
+        raise HTTPException(status_code=401, detail="No token provided")
+    
+    token = authorization.replace("Bearer ", "")
+    
+    try:
+        # 2. Verify the token with Firebase to get the real UID
+        decoded_token = auth.verify_id_token(token)
+        uid = decoded_token['uid']
+        
+        # 3. Write to Firestore
+        db = firestore.client()
+        user_ref = db.collection('users').document(uid)
+        
+        # Set the initial data
+        user_ref.set({
+            'firebase_uid': uid,
+            'email': user.email,
+            'username': user.username,
+            'score': 0,
+            'fares_collected': 0,
+            'created_at': firestore.SERVER_TIMESTAMP
+        })
+        
+        return {"status": "success", "uid": uid}
+        
+    except Exception as e:
+        print(f"Auth Error: {e}")
+        raise HTTPException(status_code=401, detail="Invalid token")
 
 
 @router.get("/me", response_model=UserProfile)

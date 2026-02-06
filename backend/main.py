@@ -1,4 +1,8 @@
 """FastAPI application entry point."""
+# 1. ADD THESE IMPORTS
+import firebase_admin
+from firebase_admin import credentials
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -8,17 +12,24 @@ from app.routes import users, sessions, leaderboard
 
 settings = get_settings()
 
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Manage application lifecycle: startup and shutdown."""
     # Startup
     print("Starting Trivia Taxi Backend...")
-    # TODO: Initialize database, Redis, Firebase, etc.
+    
+    # 2. ADD THIS FIREBASE INIT CODE
+    # This checks if Firebase is already running to avoid "App already exists" crashes
+    if not firebase_admin._apps:
+        # On Cloud Run, this finds the credentials automatically.
+        # Locally, it looks for your environment variables.
+        firebase_admin.initialize_app()
+        print("✅ Firebase Admin Initialized")
+    
     yield
     # Shutdown
     print("Shutting down Trivia Taxi Backend...")
-    # TODO: Clean up resources
+
 
 
 # Create FastAPI app
