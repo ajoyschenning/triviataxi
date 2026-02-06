@@ -111,26 +111,89 @@ struct SignUpView: View {
         }
         
         // 2. Create User in Firebase
+        
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
+                if let error = error {
+                    errorMessage = error.localizedDescription
+                    return
+                }
+                
+                // 1. Save the Display Name (leaderboardName) to Firebase Auth
+                if let changeRequest = result?.user.createProfileChangeRequest() {
+                    changeRequest.displayName = leaderboardName
+                    changeRequest.commitChanges { error in
+                        if let error = error {
+                            print("Failed to save name: \(error.localizedDescription)")
+                        }
+                    }
+                }
+                
+                // 2. Get the token from the USER (not the name)
+                result?.user.getIDToken { token, error in
+                    guard let token = token else { return }
+                    
+                    // 3. Create Profile in Backend
+                    // FIX: Pass 'leaderboardName' (String), NOT 'result?.user'
+                    createUserInBackend(token: token, email: email, username: leaderboardName)
+                }
+            
+        }
+        }
+    func createUserInBackend(token: String, email: String, username: String) {
+        // Use your REAL Cloud Run URL here
+        guard let url = URL(string: "https://trivia-taxi-api-423193744278.us-central1.run.app/users/me") else { return }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        // Attach the security token!
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let body: [String: Any] = [
+            "email": email,
+            "username": username,
+            "firebase_uid": "", // Backend extracts this from token anyway, but Pydantic demands it
+            "avatar_url": "",
+            "total_earnings": 0,
+            "lifetime_games": 0,
+            "win_streak": 0,
+            "rank": 0
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            // 1. Check for Network Error
             if let error = error {
-                errorMessage = error.localizedDescription
+                print("❌ NETWORK ERROR: \(error.localizedDescription)")
                 return
             }
             
-            // 3. Save the Leaderboard Name (Display Name)
-            if let changeRequest = result?.user.createProfileChangeRequest() {
-                changeRequest.displayName = leaderboardName
-                changeRequest.commitChanges { error in
-                    if let error = error {
-                        print("Failed to save name: \(error.localizedDescription)")
+            // 2. Check the Status Code (Crucial!)
+            if let httpResponse = response as? HTTPURLResponse {
+                print("📡 Status Code: \(httpResponse.statusCode)") // Should be 200
+                
+                if httpResponse.statusCode != 200 {
+                    print("❌ SERVER ERROR: Code \(httpResponse.statusCode)")
+                    // Print what the server actually said (the error message)
+                    if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                        print("📩 Server Response: \(responseString)")
                     }
-                    // 4. Success! Log them in.
-                    userIsLoggedIn = true
+                    return
                 }
             }
-        }
+            
+            // 3. If we get here, it actually worked
+            print("✅ SUCCESS: User Profile created!")
+            DispatchQueue.main.async {
+                self.userIsLoggedIn = true
+            }
+        }.resume()
+        
     }
 }
+
+
+
 
 #Preview {
     SignUpView(userIsLoggedIn: .constant(false))
