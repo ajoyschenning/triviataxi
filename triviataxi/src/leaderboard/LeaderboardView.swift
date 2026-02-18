@@ -19,7 +19,7 @@ struct LeaderboardView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            LeaderboardHeader {
+            Header(title: "LEADERBOARD") {
                 showLeaderboard = false
             }
 
@@ -145,9 +145,10 @@ struct LeaderboardHeader: View {
             }
             .offset(x: -150)
 
-            Text("Leaderboard")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(Color(red: 0.11, green: 0.12, blue: 0.16))
+            Text("LEADERBOARD")
+                .font(.system(size: 32, weight: .semibold))
+                .italic()
+                .foregroundColor(.black)
         }
         .frame(height: 44)
         .padding(.top, 34)
@@ -178,4 +179,8 @@ extension LeaderboardView {
             ]
         }
     }
+}
+
+#Preview {
+    LeaderboardView(showLeaderboard: .constant(true))
 }

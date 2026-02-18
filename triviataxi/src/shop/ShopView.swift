@@ -17,19 +17,18 @@ struct ShopView: View {
     var body: some View {
         VStack(spacing: 0) {
 
-            // 🔒 Static Header
-            ShopHeader {
+            Header(title: "SHOP") {
                 showShop = false
             }
 
             // 📜 Scrollable Destinations
             ScrollView {
                 VStack(spacing: 28) {
-                    Text("DESTINATIONS")
-                        .font(.system(size: 32, weight: .semibold))
-                        .italic()
-                        .foregroundColor(.black)
-                        .padding(.top, 24)
+//                    Text("DESTINATIONS")
+//                        .font(.system(size: 32, weight: .semibold))
+//                        .italic()
+//                        .foregroundColor(.black)
+//                        .padding(.top, 24)
 
                     DestinationCard(city: "New York", miles: "25 Miles", price: 100)
                     DestinationCard(city: "Washington DC", miles: "20 Miles", price: 100)
@@ -155,4 +154,8 @@ struct DestinationCard: View {
         }
         .frame(height: 140)
     }
+}
+
+#Preview {
+    ShopView(showShop: .constant(true))
 }

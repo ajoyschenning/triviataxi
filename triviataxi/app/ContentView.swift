@@ -25,7 +25,8 @@ struct HomeView: View {
                 LoginView(userIsLoggedIn: .constant(false))
             }
             else if showMap {
-                NashvilleMapView(showMap: $showMap)
+                RouteSelectionView(showRoutes: .constant(false))
+//                NashvilleMapView(showMap: $showMap)
 //                NavigationViewControllerRepresentable()
 //                            .edgesIgnoringSafeArea(.all)
             } else if showShop {
