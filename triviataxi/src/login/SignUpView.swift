@@ -23,10 +23,6 @@ struct SignUpView: View {
             ZStack {
                 Color("BackgroundYellow").ignoresSafeArea()
                 ScrollView{
-                    
-                    
-                    
-                    
                     VStack(spacing: 20) {
                         Image("taxi")
                             .resizable()
@@ -130,10 +126,12 @@ struct SignUpView: View {
                 
                 // 2. Get the token from the USER (not the name)
                 result?.user.getIDToken { token, error in
-                    guard let token = token else { return }
+                    guard let token = token else {
+                        return }
                     
                     // 3. Create Profile in Backend
                     // FIX: Pass 'leaderboardName' (String), NOT 'result?.user'
+                    print(token)
                     createUserInBackend(token: token, email: email, username: leaderboardName)
                 }
             
@@ -151,13 +149,7 @@ struct SignUpView: View {
         
         let body: [String: Any] = [
             "email": email,
-            "username": username,
-            "firebase_uid": "", // Backend extracts this from token anyway, but Pydantic demands it
-            "avatar_url": "",
-            "total_earnings": 0,
-            "lifetime_games": 0,
-            "win_streak": 0,
-            "rank": 0
+            "username": username
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
@@ -191,8 +183,6 @@ struct SignUpView: View {
         
     }
 }
-
-
 
 
 #Preview {

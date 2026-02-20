@@ -10,6 +10,9 @@ from contextlib import asynccontextmanager
 from app.core.config import get_settings
 from app.routes import users, sessions, leaderboard
 
+cred = credentials.Certificate("serviceAccountKey.json")
+firebase_admin.initialize_app(cred)
+
 settings = get_settings()
 
 @asynccontextmanager
@@ -23,7 +26,9 @@ async def lifespan(app: FastAPI):
     if not firebase_admin._apps:
         # On Cloud Run, this finds the credentials automatically.
         # Locally, it looks for your environment variables.
-        firebase_admin.initialize_app()
+        firebase_admin.initialize_app(options={
+            'projectId': 'trivia-taxi'
+        })
         print("✅ Firebase Admin Initialized")
     
     yield
