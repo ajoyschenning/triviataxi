@@ -1,0 +1,5754 @@
+{
+  "destinations": {
+    "Auckland_New_Zealand": {
+      "city": "Auckland",
+      "country": "New Zealand",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -36.8485,
+            "lon": 174.7633,
+            "location": "Sky Tower"
+          },
+          "end": {
+            "lat": -36.8168,
+            "lon": 174.9024,
+            "location": "Rangitoto Island Ferry Terminal"
+          },
+          "length": 7.998278913
+        },
+        "medium": {
+          "start": {
+            "lat": -36.8485,
+            "lon": 174.7633,
+            "location": "Sky Tower"
+          },
+          "end": {
+            "lat": -36.9209,
+            "lon": 174.7633,
+            "location": "Mount Eden Volcano"
+          },
+          "length": 5.002412437
+        },
+        "short": {
+          "start": {
+            "lat": -36.8485,
+            "lon": 174.7633,
+            "location": "Sky Tower"
+          },
+          "end": {
+            "lat": -36.8773,
+            "lon": 174.7601,
+            "location": "Auckland War Memorial Museum"
+          },
+          "length": 1.997757258
+        }
+      }
+    },
+    "Abu_Dhabi_UAE": {
+      "city": "Abu Dhabi",
+      "country": "United Arab Emirates",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 24.4672,
+            "lon": 54.3667,
+            "location": "Sheikh Zayed Grand Mosque"
+          },
+          "end": {
+            "lat": 24.4841,
+            "lon": 54.4925,
+            "location": "Yas Marina Circuit"
+          },
+          "length": 7.996661674
+        },
+        "medium": {
+          "start": {
+            "lat": 24.4672,
+            "lon": 54.3667,
+            "location": "Sheikh Zayed Grand Mosque"
+          },
+          "end": {
+            "lat": 24.534,
+            "lon": 54.399,
+            "location": "Louvre Abu Dhabi"
+          },
+          "length": 5.042499368
+        },
+        "short": {
+          "start": {
+            "lat": 24.4672,
+            "lon": 54.3667,
+            "location": "Sheikh Zayed Grand Mosque"
+          },
+          "end": {
+            "lat": 24.4961,
+            "lon": 54.367,
+            "location": "Qasr Al Watan Palace"
+          },
+          "length": 1.996908437
+        }
+      }
+    },
+    "Los_Angeles_USA": {
+      "city": "Los Angeles",
+      "country": "United States",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 34.0522,
+            "lon": -118.2437,
+            "location": "Griffith Observatory"
+          },
+          "end": {
+            "lat": 34.034,
+            "lon": -118.3817,
+            "location": "Santa Monica Pier"
+          },
+          "length": 8.000295141
+        },
+        "medium": {
+          "start": {
+            "lat": 34.0522,
+            "lon": -118.2437,
+            "location": "Griffith Observatory"
+          },
+          "end": {
+            "lat": 34.0594,
+            "lon": -118.3306,
+            "location": "UCLA Campus"
+          },
+          "length": 4.999312024
+        },
+        "short": {
+          "start": {
+            "lat": 34.0522,
+            "lon": -118.2437,
+            "location": "Griffith Observatory"
+          },
+          "end": {
+            "lat": 34.0389,
+            "lon": -118.2747,
+            "location": "Los Angeles County Museum of Art (LACMA)"
+          },
+          "length": 1.998575635
+        }
+      }
+    },
+    "Savannah_USA": {
+      "city": "Savannah",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 32.0835,
+            "lon": -81.0998,
+            "location": "Forsyth Park"
+          },
+          "end": {
+            "lat": 32.0814,
+            "lon": -80.9632,
+            "location": "Tybee Island Lighthouse"
+          },
+          "length": 7.998202861
+        },
+        "medium": {
+          "start": {
+            "lat": 32.0835,
+            "lon": -81.0998,
+            "location": "Forsyth Park"
+          },
+          "end": {
+            "lat": 32.0442,
+            "lon": -81.0281,
+            "location": "Bonaventure Cemetery"
+          },
+          "length": 4.999945586
+        },
+        "short": {
+          "start": {
+            "lat": 32.0835,
+            "lon": -81.0998,
+            "location": "Forsyth Park"
+          },
+          "end": {
+            "lat": 32.0787,
+            "lon": -81.0661,
+            "location": "SCAD Campus / Savannah College of Art"
+          },
+          "length": 2.000588484
+        }
+      }
+    },
+    "Maui_USA": {
+      "city": "Maui",
+      "country": "United States",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 20.778897,
+            "lon": -156.523157,
+            "location": "McGregor Point and Lighthouse"
+          },
+          "end": {
+            "lat": 20.845,
+            "lon": -156.6248,
+            "location": "Mala Historic Wharf"
+          },
+          "length": 7.997230836
+        },
+        "medium": {
+          "start": {
+            "lat": 20.7144,
+            "lon": -156.253,
+            "location": "Haleakal National Park"
+          },
+          "end": {
+            "lat": 20.7749,
+            "lon": -156.2954,
+            "location": "Paia Town"
+          },
+          "length": 4.997973901
+        },
+        "short": {
+          "start": {
+            "lat": 20.7144,
+            "lon": -156.253,
+            "location": "Haleakal Crater Trail"
+          },
+          "end": {
+            "lat": 20.7431,
+            "lon": -156.2487,
+            "location": "Haleakal Summit"
+          },
+          "length": 2.002374557
+        }
+      }
+    },
+    "Cape_Town_South_Africa": {
+      "city": "Cape Town",
+      "country": "South Africa",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -33.9249,
+            "lon": 18.4241,
+            "location": "Table Mountain Cable Car Base"
+          },
+          "end": {
+            "lat": -33.8876,
+            "lon": 18.5562,
+            "location": "University of Cape Town"
+          },
+          "length": 8.001641515
+        },
+        "medium": {
+          "start": {
+            "lat": -33.9249,
+            "lon": 18.4241,
+            "location": "Table Mountain"
+          },
+          "end": {
+            "lat": -33.9706,
+            "lon": 18.4918,
+            "location": "Boulders Beach (Penguins)"
+          },
+          "length": 5.002752981
+        },
+        "short": {
+          "start": {
+            "lat": -33.9249,
+            "lon": 18.4241,
+            "location": "Table Mountain Cable Car Base"
+          },
+          "end": {
+            "lat": -33.8978,
+            "lon": 18.4119,
+            "location": "V&A Waterfront"
+          },
+          "length": 1.998864335
+        }
+      }
+    },
+    "Dallas_USA": {
+      "city": "Dallas",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 32.9413,
+            "lon": -96.8409,
+            "location": "Southern Methodist University"
+          },
+          "end": {
+            "lat": 32.8283,
+            "lon": -96.8107,
+            "location": "Deep Ellum Arts District"
+          },
+          "length": 8.001851866
+        },
+        "medium": {
+          "start": {
+            "lat": 32.7767,
+            "lon": -96.797,
+            "location": "Dealey Plaza / JFK Memorial"
+          },
+          "end": {
+            "lat": 32.8428,
+            "lon": -96.7845,
+            "location": "Klyde Warren Park"
+          },
+          "length": 4.624446907
+        },
+        "short": {
+          "start": {
+            "lat": 32.8428,
+            "lon": -96.7845,
+            "location": "Klyde Warren Park"
+          },
+          "end": {
+            "lat": 32.826,
+            "lon": -96.8125,
+            "location": "Dallas Museum of Art"
+          },
+          "length": 1.997462519
+        }
+      }
+    },
+    "Lima_Peru": {
+      "city": "Lima",
+      "country": "Peru",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -12.0464,
+            "lon": -77.0428,
+            "location": "Plaza Mayor de Lima"
+          },
+          "end": {
+            "lat": -12.1446,
+            "lon": -76.98,
+            "location": "Pontifical Catholic University of Peru"
+          },
+          "length": 8.002371047
+        },
+        "medium": {
+          "start": {
+            "lat": -12.0464,
+            "lon": -77.0428,
+            "location": "Plaza Mayor de Lima"
+          },
+          "end": {
+            "lat": -12.1219,
+            "lon": -77.0282,
+            "location": "Miraflores Cliff Park"
+          },
+          "length": 5.30904737
+        },
+        "short": {
+          "start": {
+            "lat": -12.0464,
+            "lon": -77.0428,
+            "location": "Plaza Mayor de Lima"
+          },
+          "end": {
+            "lat": -12.064,
+            "lon": -77.0193,
+            "location": "Lima Cathedral"
+          },
+          "length": 2.000057267
+        }
+      }
+    },
+    "San_Diego_USA": {
+      "city": "San Diego",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 32.7341,
+            "lon": -117.1446,
+            "location": "Balboa Park"
+          },
+          "end": {
+            "lat": 32.837,
+            "lon": -117.2077,
+            "location": "UC San Diego Campus"
+          },
+          "length": 7.998977074
+        },
+        "medium": {
+          "start": {
+            "lat": 32.7341,
+            "lon": -117.1446,
+            "location": "Balboa Park"
+          },
+          "end": {
+            "lat": 32.6657,
+            "lon": -117.162,
+            "location": "Old Town San Diego"
+          },
+          "length": 4.833109438
+        },
+        "short": {
+          "start": {
+            "lat": 32.7341,
+            "lon": -117.1446,
+            "location": "Balboa Park"
+          },
+          "end": {
+            "lat": 32.7415,
+            "lon": -117.1779,
+            "location": "San Diego Zoo"
+          },
+          "length": 2.001755514
+        }
+      }
+    },
+    "Mexico_City_Mexico": {
+      "city": "Mexico City",
+      "country": "Mexico",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 19.4326,
+            "lon": -99.1332,
+            "location": "Zócalo (Main Square)"
+          },
+          "end": {
+            "lat": 19.303,
+            "lon": -99.181,
+            "location": "UNAM (National University) Campus"
+          },
+          "length": 9.481188747
+        },
+        "medium": {
+          "start": {
+            "lat": 19.4326,
+            "lon": -99.1332,
+            "location": "Zócalo"
+          },
+          "end": {
+            "lat": 19.4086,
+            "lon": -99.2056,
+            "location": "Chapultepec Castle & Park"
+          },
+          "length": 5.000737145
+        },
+        "short": {
+          "start": {
+            "lat": 19.4326,
+            "lon": -99.1332,
+            "location": "Zócalo / Metropolitan Cathedral"
+          },
+          "end": {
+            "lat": 19.4326,
+            "lon": -99.1639,
+            "location": "Metropolitan Cathedral"
+          },
+          "length": 2.000352028
+        }
+      }
+    },
+    "Tokyo_Japan": {
+      "city": "Tokyo",
+      "country": "Japan",
+      "price": 500,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 35.6762,
+            "lon": 139.6503,
+            "location": "Shinjuku Gyoen National Garden"
+          },
+          "end": {
+            "lat": 35.71,
+            "lon": 139.8107,
+            "location": "Ueno Park / Tokyo National Museum"
+          },
+          "length": 9.298886811
+        },
+        "medium": {
+          "start": {
+            "lat": 35.6762,
+            "lon": 139.6503,
+            "location": "Shinjuku Gyoen"
+          },
+          "end": {
+            "lat": 35.6581,
+            "lon": 139.7454,
+            "location": "Shibuya Scramble / Yoyogi Park"
+          },
+          "length": 5.482808395
+        },
+        "short": {
+          "start": {
+            "lat": 35.6762,
+            "lon": 139.6503,
+            "location": "Shinjuku Gyoen"
+          },
+          "end": {
+            "lat": 35.6871,
+            "lon": 139.6833,
+            "location": "Meiji Jingu Shrine"
+          },
+          "length": 1.99933269
+        }
+      }
+    },
+    "Osaka_Japan": {
+      "city": "Osaka",
+      "country": "Japan",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 34.6937,
+            "lon": 135.5022,
+            "location": "Osaka Castle"
+          },
+          "end": {
+            "lat": 34.5811,
+            "lon": 135.4146,
+            "location": "Osaka Symbiotic Forest"
+          },
+          "length": 9.235908583
+        },
+        "medium": {
+          "start": {
+            "lat": 34.6937,
+            "lon": 135.5022,
+            "location": "Osaka Castle"
+          },
+          "end": {
+            "lat": 34.6214,
+            "lon": 135.5045,
+            "location": "Dotonbori"
+          },
+          "length": 4.997213022
+        },
+        "short": {
+          "start": {
+            "lat": 34.6937,
+            "lon": 135.5022,
+            "location": "Osaka Castle"
+          },
+          "end": {
+            "lat": 34.6848,
+            "lon": 135.5357,
+            "location": "Osaka Museum of History"
+          },
+          "length": 2.000103042
+        }
+      }
+    },
+    "Phoenix_USA": {
+      "city": "Phoenix",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 33.4595,
+            "lon": -112.0726,
+            "location": "Phoenix Art Museum"
+          },
+          "end": {
+            "lat": 33.5072,
+            "lon": -111.9261,
+            "location": "Camelback Mountain Trailhead"
+          },
+          "length": 9.062958211
+        },
+        "medium": {
+          "start": {
+            "lat": 33.4595,
+            "lon": -112.0726,
+            "location": "Phoenix Art Museum"
+          },
+          "end": {
+            "lat": 33.4344,
+            "lon": -111.9913,
+            "location": "Arizona State University"
+          },
+          "length": 4.997653553
+        },
+        "short": {
+          "start": {
+            "lat": 33.4595,
+            "lon": -112.0726,
+            "location": "Phoenix Art Museum"
+          },
+          "end": {
+            "lat": 33.4778,
+            "lon": -112.0458,
+            "location": "Heard Museum"
+          },
+          "length": 1.996198842
+        }
+      }
+    },
+    "Orlando_USA": {
+      "city": "Orlando",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 28.418537,
+            "lon": -81.581233,
+            "location": "Magic Kingdom / Disney Springs Area"
+          },
+          "end": {
+            "lat": 28.4561,
+            "lon": -81.7214,
+            "location": "Lake Louisa State Park"
+          },
+          "length": 8.902379954
+        },
+        "medium": {
+          "start": {
+            "lat": 28.3772,
+            "lon": -81.5707,
+            "location": "Disney Springs"
+          },
+          "end": {
+            "lat": 28.4302,
+            "lon": -81.5147,
+            "location": "SeaWorld Orlando"
+          },
+          "length": 4.999381161
+        },
+        "short": {
+          "start": {
+            "lat": 28.3772,
+            "lon": -81.5707,
+            "location": "Disney Springs / EPCOT Entrance"
+          },
+          "end": {
+            "lat": 28.3727,
+            "lon": -81.5382,
+            "location": "EPCOT Entrance"
+          },
+          "length": 2.000083839
+        }
+      }
+    },
+    "Mumbai_India": {
+      "city": "Mumbai",
+      "country": "India",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 18.922,
+            "lon": 72.8347,
+            "location": "Gateway of India"
+          },
+          "end": {
+            "lat": 19.0384,
+            "lon": 72.8908,
+            "location": "Chhatrapati Shivaji Maharaj Statue"
+          },
+          "length": 8.839013555
+        },
+        "medium": {
+          "start": {
+            "lat": 18.922,
+            "lon": 72.8347,
+            "location": "Gateway of India"
+          },
+          "end": {
+            "lat": 18.9944,
+            "lon": 72.8347,
+            "location": "Marine Drive (Queen's Necklace)"
+          },
+          "length": 5.002412437
+        },
+        "short": {
+          "start": {
+            "lat": 18.922,
+            "lon": 72.8347,
+            "location": "Gateway of India"
+          },
+          "end": {
+            "lat": 18.9509,
+            "lon": 72.8355,
+            "location": "Chhatrapati Shivaji Terminus"
+          },
+          "length": 1.997503697
+        }
+      }
+    },
+    "Houston_USA": {
+      "city": "Houston",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 29.549755,
+            "lon": -95.095835,
+            "location": "Space Center Houston"
+          },
+          "end": {
+            "lat": 29.6536,
+            "lon": -95.0109,
+            "location": "Sylvan Beach Park"
+          },
+          "length": 8.80503163
+        },
+        "medium": {
+          "start": {
+            "lat": 29.7248,
+            "lon": -95.4066,
+            "location": "Buffalo Bayou Park"
+          },
+          "end": {
+            "lat": 29.661,
+            "lon": -95.3672,
+            "location": "Rice University"
+          },
+          "length": 5.002475938
+        },
+        "short": {
+          "start": {
+            "lat": 29.7222,
+            "lon": -95.3906,
+            "location": "Hermann Park / Miller Outdoor Theatre"
+          },
+          "end": {
+            "lat": 29.7016,
+            "lon": -95.414,
+            "location": "Houston Museum of Natural Science"
+          },
+          "length": 1.999444433
+        }
+      }
+    },
+    "Beijing_China": {
+      "city": "Beijing",
+      "country": "China",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.9163,
+            "lon": 116.3972,
+            "location": "Tiananmen Square / Forbidden City"
+          },
+          "end": {
+            "lat": 39.9991,
+            "lon": 116.275,
+            "location": "Summer Palace"
+          },
+          "length": 8.638044023
+        },
+        "medium": {
+          "start": {
+            "lat": 39.9163,
+            "lon": 116.3972,
+            "location": "Forbidden City"
+          },
+          "end": {
+            "lat": 40.0003,
+            "lon": 116.3976,
+            "location": "Olympic Park / Bird's Nest Stadium"
+          },
+          "length": 5.803942594
+        },
+        "short": {
+          "start": {
+            "lat": 39.9163,
+            "lon": 116.3972,
+            "location": "Forbidden City / Tiananmen Square"
+          },
+          "end": {
+            "lat": 39.9418,
+            "lon": 116.3793,
+            "location": "Temple of Heaven"
+          },
+          "length": 2.000945112
+        }
+      }
+    },
+    "Nice_France": {
+      "city": "Nice",
+      "country": "France",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 43.7102,
+            "lon": 7.262,
+            "location": "Promenade des Anglais"
+          },
+          "end": {
+            "lat": 43.7467,
+            "lon": 7.4218,
+            "location": "Monaco Oceanographic Museum"
+          },
+          "length": 8.367746322
+        },
+        "medium": {
+          "start": {
+            "lat": 43.7102,
+            "lon": 7.262,
+            "location": "Promenade des Anglais"
+          },
+          "end": {
+            "lat": 43.7532,
+            "lon": 7.3426,
+            "location": "Castle Hill (Colline du Château)"
+          },
+          "length": 5.002019072
+        },
+        "short": {
+          "start": {
+            "lat": 43.7102,
+            "lon": 7.262,
+            "location": "Promenade des Anglais"
+          },
+          "end": {
+            "lat": 43.6887,
+            "lon": 7.2888,
+            "location": "Vieux-Nice (Old Town)"
+          },
+          "length": 1.999755014
+        }
+      }
+    },
+    "Hong_Kong_China": {
+      "city": "Hong Kong",
+      "country": "China",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 22.2855,
+            "lon": 114.1577,
+            "location": "Victoria Peak Tram Base"
+          },
+          "end": {
+            "lat": 22.3964,
+            "lon": 114.1095,
+            "location": "University of Hong Kong"
+          },
+          "length": 8.258512213
+        },
+        "medium": {
+          "start": {
+            "lat": 22.2855,
+            "lon": 114.1577,
+            "location": "Victoria Peak"
+          },
+          "end": {
+            "lat": 22.2554,
+            "lon": 114.2288,
+            "location": "Avenue of Stars / Tsim Sha Tsui Promenade"
+          },
+          "length": 4.999264544
+        },
+        "short": {
+          "start": {
+            "lat": 22.2855,
+            "lon": 114.1577,
+            "location": "Victoria Peak Tram Base"
+          },
+          "end": {
+            "lat": 22.2581,
+            "lon": 114.1678,
+            "location": "Peak Tower"
+          },
+          "length": 2.000291482
+        }
+      }
+    },
+    "Philadelphia_USA": {
+      "city": "Philadelphia",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.9566,
+            "lon": -75.181,
+            "location": "Philadelphia Museum of Art (Rocky Steps)"
+          },
+          "end": {
+            "lat": 40.072,
+            "lon": -75.2067,
+            "location": "Wissahickon Valley Park"
+          },
+          "length": 8.08861067
+        },
+        "medium": {
+          "start": {
+            "lat": 39.9566,
+            "lon": -75.181,
+            "location": "Philadelphia Museum of Art"
+          },
+          "end": {
+            "lat": 39.9258,
+            "lon": -75.2664,
+            "location": "University of Pennsylvania"
+          },
+          "length": 4.999572908
+        },
+        "short": {
+          "start": {
+            "lat": 39.9566,
+            "lon": -75.181,
+            "location": "Philadelphia Museum of Art (Rocky Steps)"
+          },
+          "end": {
+            "lat": 39.9808,
+            "lon": -75.1603,
+            "location": "Eastern State Penitentiary"
+          },
+          "length": 1.999338529
+        }
+      }
+    },
+    "Athens_Greece": {
+      "city": "Athens",
+      "country": "Greece",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 37.9715,
+            "lon": 23.7261,
+            "location": "Acropolis of Athens"
+          },
+          "end": {
+            "lat": 37.8569,
+            "lon": 23.7503,
+            "location": "Glyfada"
+          },
+          "length": 8.024275801
+        },
+        "medium": {
+          "start": {
+            "lat": 37.9715,
+            "lon": 23.7267,
+            "location": "Acropolis"
+          },
+          "end": {
+            "lat": 37.9329,
+            "lon": 23.6461,
+            "location": "Hellenic Maritime Museum"
+          },
+          "length": 5.138210065
+        },
+        "short": {
+          "start": {
+            "lat": 37.9715,
+            "lon": 23.7261,
+            "location": "Acropolis of Athens"
+          },
+          "end": {
+            "lat": 37.9715,
+            "lon": 23.6894,
+            "location": "Parthenon / Acropolis Museum"
+          },
+          "length": 1.998977135
+        }
+      }
+    },
+    "Valletta_Malta": {
+      "city": "Valletta",
+      "country": "Malta",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 35.8997,
+            "lon": 14.5148,
+            "location": "Valletta City Gate"
+          },
+          "end": {
+            "lat": 35.8574,
+            "lon": 14.3817,
+            "location": "Mdina Gate"
+          },
+          "length": 8.004184284
+        },
+        "medium": {
+          "start": {
+            "lat": 35.8997,
+            "lon": 14.5148,
+            "location": "Valletta City Gate"
+          },
+          "end": {
+            "lat": 35.8394,
+            "lon": 14.5642,
+            "location": "St. John's Co-Cathedral"
+          },
+          "length": 5.000907335
+        },
+        "short": {
+          "start": {
+            "lat": 35.8997,
+            "lon": 14.5148,
+            "location": "Valletta City Gate"
+          },
+          "end": {
+            "lat": 35.8732,
+            "lon": 14.5292,
+            "location": "Grand Master's Palace"
+          },
+          "length": 2.000580649
+        }
+      }
+    },
+    "Cleveland_USA": {
+      "city": "Cleveland",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.5085,
+            "lon": -81.6954,
+            "location": "Edgewater Park Beach"
+          },
+          "end": {
+            "lat": 41.4863,
+            "lon": -81.8463,
+            "location": "Rocky River Park"
+          },
+          "length": 7.958995854
+        },
+        "medium": {
+          "start": {
+            "lat": 41.5085,
+            "lon": -81.6954,
+            "location": "Edgewater Park"
+          },
+          "end": {
+            "lat": 41.4941,
+            "lon": -81.6007,
+            "location": "Rock & Roll Hall of Fame"
+          },
+          "length": 5.000460465
+        },
+        "short": {
+          "start": {
+            "lat": 41.5062,
+            "lon": -81.6802,
+            "location": "Rock & Roll Hall of Fame"
+          },
+          "end": {
+            "lat": 41.5071,
+            "lon": -81.6416,
+            "location": "University Circle / Cleveland Museum of Art"
+          },
+          "length": 1.998251579
+        }
+      }
+    },
+    "Jakarta_Indonesia": {
+      "city": "Jakarta",
+      "country": "Indonesia",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -6.1754,
+            "lon": 106.8272,
+            "location": "National Monument (Monas)"
+          },
+          "end": {
+            "lat": -6.148,
+            "lon": 106.716,
+            "location": "Kota Tua (Old Town)"
+          },
+          "length": 7.869978263
+        },
+        "medium": {
+          "start": {
+            "lat": -6.1754,
+            "lon": 106.8272,
+            "location": "National Monument (Monas)"
+          },
+          "end": {
+            "lat": -6.2478,
+            "lon": 106.8282,
+            "location": "University of Indonesia"
+          },
+          "length": 5.002883997
+        },
+        "short": {
+          "start": {
+            "lat": -6.1754,
+            "lon": 106.8272,
+            "location": "National Monument (Monas)"
+          },
+          "end": {
+            "lat": -6.2018,
+            "lon": 106.8392,
+            "location": "Merdeka Square"
+          },
+          "length": 2.001686501
+        }
+      }
+    },
+    "Stockholm_Sweden": {
+      "city": "Stockholm",
+      "country": "Sweden",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 59.3251,
+            "lon": 18.0711,
+            "location": "Gamla Stan (Old Town)"
+          },
+          "end": {
+            "lat": 59.4372,
+            "lon": 18.087,
+            "location": "Stockholm University Campus"
+          },
+          "length": 7.76563267
+        },
+        "medium": {
+          "start": {
+            "lat": 59.3251,
+            "lon": 18.0711,
+            "location": "Gamla Stan"
+          },
+          "end": {
+            "lat": 59.3282,
+            "lon": 18.2128,
+            "location": "Vasa Museum"
+          },
+          "length": 4.999211885
+        },
+        "short": {
+          "start": {
+            "lat": 59.3251,
+            "lon": 18.0711,
+            "location": "Gamla Stan"
+          },
+          "end": {
+            "lat": 59.3517,
+            "lon": 18.0485,
+            "location": "Stockholm City Hall"
+          },
+          "length": 2.003003373
+        }
+      }
+    },
+    "Memphis_USA": {
+      "city": "Memphis",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 35.1495,
+            "lon": -90.049,
+            "location": "Beale Street"
+          },
+          "end": {
+            "lat": 35.114,
+            "lon": -89.9195,
+            "location": "Shelby Farms Park"
+          },
+          "length": 7.717840314
+        },
+        "medium": {
+          "start": {
+            "lat": 35.1495,
+            "lon": -90.049,
+            "location": "Beale Street"
+          },
+          "end": {
+            "lat": 35.0784,
+            "lon": -90.0655,
+            "location": "Graceland"
+          },
+          "length": 5.000323559
+        },
+        "short": {
+          "start": {
+            "lat": 35.1495,
+            "lon": -90.049,
+            "location": "Beale Street"
+          },
+          "end": {
+            "lat": 35.1293,
+            "lon": -90.0743,
+            "location": "Memphis Rock 'n' Soul Museum"
+          },
+          "length": 1.997861589
+        }
+      }
+    },
+    "Cairo_Egypt": {
+      "city": "Cairo",
+      "country": "Egypt",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 29.9792,
+            "lon": 31.1342,
+            "location": "Great Pyramid of Giza"
+          },
+          "end": {
+            "lat": 30.0444,
+            "lon": 31.2357,
+            "location": "Cairo University Campus"
+          },
+          "length": 7.561270681
+        },
+        "medium": {
+          "start": {
+            "lat": 29.9792,
+            "lon": 31.1342,
+            "location": "Great Pyramid of Giza"
+          },
+          "end": {
+            "lat": 30.0243,
+            "lon": 31.1995,
+            "location": "Egyptian Museum"
+          },
+          "length": 4.99773604
+        },
+        "short": {
+          "start": {
+            "lat": 29.9792,
+            "lon": 31.1342,
+            "location": "Great Pyramid of Giza"
+          },
+          "end": {
+            "lat": 30.0081,
+            "lon": 31.1342,
+            "location": "Sphinx Viewpoint"
+          },
+          "length": 1.996819329
+        }
+      }
+    },
+    "Miami_USA": {
+      "city": "Miami",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 25.7617,
+            "lon": -80.1918,
+            "location": "South Beach (Ocean Drive)"
+          },
+          "end": {
+            "lat": 25.8583,
+            "lon": -80.139,
+            "location": "Oleta River State Park"
+          },
+          "length": 7.438751198
+        },
+        "medium": {
+          "start": {
+            "lat": 25.7617,
+            "lon": -80.1918,
+            "location": "South Beach"
+          },
+          "end": {
+            "lat": 25.7415,
+            "lon": -80.2689,
+            "location": "University of Miami Campus"
+          },
+          "length": 4.996967826
+        },
+        "short": {
+          "start": {
+            "lat": 25.7617,
+            "lon": -80.1918,
+            "location": "South Beach (Ocean Drive)"
+          },
+          "end": {
+            "lat": 25.7886,
+            "lon": -80.2038,
+            "location": "Wynwood Walls"
+          },
+          "length": 2.002991875
+        }
+      }
+    },
+    "Positano_Italy": {
+      "city": "Positano",
+      "country": "Italy",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.6283,
+            "lon": 14.485,
+            "location": "Nocelle Village (Path of the Gods)"
+          },
+          "end": {
+            "lat": 40.5883,
+            "lon": 14.6113,
+            "location": "Praiano Coastal Path"
+          },
+          "length": 7.178390906
+        },
+        "medium": {
+          "start": {
+            "lat": 40.6283,
+            "lon": 14.485,
+            "location": "Path of the Gods (Sentiero degli Dei) Trailhead"
+          },
+          "end": {
+            "lat": 40.6588,
+            "lon": 14.5715,
+            "location": "Montepertuso Village"
+          },
+          "length": 5.000662142
+        },
+        "short": {
+          "start": {
+            "lat": 40.6289,
+            "lon": 14.4867,
+            "location": "Chiesa di Santa Maria Assunta"
+          },
+          "end": {
+            "lat": 40.6115,
+            "lon": 14.4562,
+            "location": "Positano Beach (Spiaggia Grande)"
+          },
+          "length": 2.001008869
+        }
+      }
+    },
+    "Copenhagen_Denmark": {
+      "city": "Copenhagen",
+      "country": "Denmark",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 55.6761,
+            "lon": 12.5683,
+            "location": "Tivoli Gardens"
+          },
+          "end": {
+            "lat": 55.776,
+            "lon": 12.5183,
+            "location": "Dyrehaven Deer Park"
+          },
+          "length": 7.171439256
+        },
+        "medium": {
+          "start": {
+            "lat": 55.6761,
+            "lon": 12.5683,
+            "location": "Tivoli Gardens"
+          },
+          "end": {
+            "lat": 55.7399,
+            "lon": 12.6291,
+            "location": "Copenhagen University Campus"
+          },
+          "length": 5.003418889
+        },
+        "short": {
+          "start": {
+            "lat": 55.6761,
+            "lon": 12.5683,
+            "location": "Tivoli Gardens"
+          },
+          "end": {
+            "lat": 55.6832,
+            "lon": 12.6181,
+            "location": "Nyhavn Harbour"
+          },
+          "length": 2.001101059
+        }
+      }
+    },
+    "Manila_Philippines": {
+      "city": "Manila",
+      "country": "Philippines",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 14.5906,
+            "lon": 120.98,
+            "location": "Intramuros (Walled City)"
+          },
+          "end": {
+            "lat": 14.6517,
+            "lon": 121.0658,
+            "location": "University of the Philippines Diliman"
+          },
+          "length": 7.122314824
+        },
+        "medium": {
+          "start": {
+            "lat": 14.5906,
+            "lon": 120.98,
+            "location": "Intramuros"
+          },
+          "end": {
+            "lat": 14.5185,
+            "lon": 120.9742,
+            "location": "Rizal Park (Luneta)"
+          },
+          "length": 4.996762208
+        },
+        "short": {
+          "start": {
+            "lat": 14.5906,
+            "lon": 120.98,
+            "location": "Intramuros"
+          },
+          "end": {
+            "lat": 14.6029,
+            "lon": 120.9529,
+            "location": "Fort Santiago"
+          },
+          "length": 2.001412353
+        }
+      }
+    },
+    "Aspen_USA": {
+      "city": "Aspen",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.1839,
+            "lon": -106.8197,
+            "location": "Aspen Mountain Gondola Base"
+          },
+          "end": {
+            "lat": 39.2083,
+            "lon": -106.9431,
+            "location": "Snowmass Village"
+          },
+          "length": 6.819386398
+        },
+        "medium": {
+          "start": {
+            "lat": 39.1839,
+            "lon": -106.8197,
+            "location": "Aspen Mountain Gondola Base"
+          },
+          "end": {
+            "lat": 39.1839,
+            "lon": -106.9131,
+            "location": "Maroon Bells Overlook Trailhead"
+          },
+          "length": 5.002163486
+        },
+        "short": {
+          "start": {
+            "lat": 39.1839,
+            "lon": -106.8197,
+            "location": "Aspen Mountain Gondola Base"
+          },
+          "end": {
+            "lat": 39.2112,
+            "lon": -106.8321,
+            "location": "Aspen Art Museum"
+          },
+          "length": 1.999716437
+        }
+      }
+    },
+    "Denver_USA": {
+      "city": "Denver",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.768597,
+            "lon": -86.162682,
+            "location": "Colorado State Capitol"
+          },
+          "end": {
+            "lat": 39.7801,
+            "lon": -86.3126,
+            "location": "Red Rocks Amphitheater"
+          },
+          "length": 8.000766745
+        },
+        "medium": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "Colorado State Capitol"
+          },
+          "end": {
+            "lat": 39.7757,
+            "lon": -86.2564,
+            "location": "University of Denver"
+          },
+          "length": 5.001065861
+        },
+        "short": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "Colorado State Capitol"
+          },
+          "end": {
+            "lat": 39.7716,
+            "lon": -86.2001,
+            "location": "Denver Art Museum"
+          },
+          "length": 1.997958228
+        }
+      }
+    },
+    "New_Delhi_India": {
+      "city": "New Delhi",
+      "country": "India",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 28.6139,
+            "lon": 77.209,
+            "location": "India Gate"
+          },
+          "end": {
+            "lat": 28.5011,
+            "lon": 77.1794,
+            "location": "Qutb Minar"
+          },
+          "length": 7.998153171
+        },
+        "medium": {
+          "start": {
+            "lat": 28.6139,
+            "lon": 77.209,
+            "location": "India Gate"
+          },
+          "end": {
+            "lat": 28.6804,
+            "lon": 77.2416,
+            "location": "Red Fort"
+          },
+          "length": 5.001929139
+        },
+        "short": {
+          "start": {
+            "lat": 28.6139,
+            "lon": 77.209,
+            "location": "India Gate"
+          },
+          "end": {
+            "lat": 28.6157,
+            "lon": 77.1761,
+            "location": "Rashtrapati Bhavan (Presidential Palace)"
+          },
+          "length": 1.999417786
+        }
+      }
+    },
+    "Berlin_Germany": {
+      "city": "Berlin",
+      "country": "Germany",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 52.5163,
+            "lon": 13.3777,
+            "location": "Brandenburg Gate"
+          },
+          "end": {
+            "lat": 52.516,
+            "lon": 13.1874,
+            "location": "Charlottenburg Palace"
+          },
+          "length": 8.001448165
+        },
+        "medium": {
+          "start": {
+            "lat": 52.5163,
+            "lon": 13.3777,
+            "location": "Brandenburg Gate"
+          },
+          "end": {
+            "lat": 52.5358,
+            "lon": 13.4923,
+            "location": "Museum Island"
+          },
+          "length": 5.002291135
+        },
+        "short": {
+          "start": {
+            "lat": 52.5163,
+            "lon": 13.3777,
+            "location": "Brandenburg Gate"
+          },
+          "end": {
+            "lat": 52.5439,
+            "lon": 13.3919,
+            "location": "Berlin Holocaust Memorial"
+          },
+          "length": 1.998221696
+        }
+      }
+    },
+    "Hanoi_Vietnam": {
+      "city": "Hanoi",
+      "country": "Vietnam",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 21.0285,
+            "lon": 105.8542,
+            "location": "Hoan Kiem Lake / Ngoc Son Temple"
+          },
+          "end": {
+            "lat": 21.1431,
+            "lon": 105.8362,
+            "location": "West Lake (Ho Tay)"
+          },
+          "length": 8.002761896
+        },
+        "medium": {
+          "start": {
+            "lat": 21.0285,
+            "lon": 105.8542,
+            "location": "Hoan Kiem Lake"
+          },
+          "end": {
+            "lat": 21.1009,
+            "lon": 105.8542,
+            "location": "Temple of Literature (Van Mieu)"
+          },
+          "length": 5.002412437
+        },
+        "short": {
+          "start": {
+            "lat": 21.0285,
+            "lon": 105.8542,
+            "location": "Hoan Kiem Lake"
+          },
+          "end": {
+            "lat": 21.0521,
+            "lon": 105.8362,
+            "location": "Temple of Literature"
+          },
+          "length": 2.001579531
+        }
+      }
+    },
+    "Singapore_Singapore": {
+      "city": "Singapore",
+      "country": "Singapore",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 1.2816,
+            "lon": 103.8636,
+            "location": "Gardens by the Bay"
+          },
+          "end": {
+            "lat": 1.38,
+            "lon": 103.8025,
+            "location": "National University of Singapore"
+          },
+          "length": 8.002323812
+        },
+        "medium": {
+          "start": {
+            "lat": 1.2816,
+            "lon": 103.8636,
+            "location": "Gardens by the Bay"
+          },
+          "end": {
+            "lat": 1.2313,
+            "lon": 103.8116,
+            "location": "Sentosa Island Cable Car"
+          },
+          "length": 4.998130258
+        },
+        "short": {
+          "start": {
+            "lat": 1.2816,
+            "lon": 103.8636,
+            "location": "Gardens by the Bay"
+          },
+          "end": {
+            "lat": 1.298,
+            "lon": 103.8398,
+            "location": "Marina Bay Sands"
+          },
+          "length": 1.996703369
+        }
+      }
+    },
+    "Helsinki_Finland": {
+      "city": "Helsinki",
+      "country": "Finland",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 60.1699,
+            "lon": 24.9384,
+            "location": "Helsinki Cathedral / Senate Square"
+          },
+          "end": {
+            "lat": 60.252,
+            "lon": 24.774,
+            "location": "Espoo / Nuuksio Park Trailhead"
+          },
+          "length": 8.001574041
+        },
+        "medium": {
+          "start": {
+            "lat": 60.1699,
+            "lon": 24.9384,
+            "location": "Helsinki Cathedral"
+          },
+          "end": {
+            "lat": 60.2017,
+            "lon": 24.8076,
+            "location": "Temppeliaukio Church"
+          },
+          "length": 5.001782766
+        },
+        "short": {
+          "start": {
+            "lat": 60.1699,
+            "lon": 24.9384,
+            "location": "Helsinki Cathedral"
+          },
+          "end": {
+            "lat": 60.1512,
+            "lon": 24.9829,
+            "location": "Market Square (Kauppatori)"
+          },
+          "length": 2.002483156
+        }
+      }
+    },
+    "Kyoto_Japan": {
+      "city": "Kyoto",
+      "country": "Japan",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 35.0116,
+            "lon": 135.7681,
+            "location": "Fushimi Inari Shrine"
+          },
+          "end": {
+            "lat": 35.023,
+            "lon": 135.6274,
+            "location": "Arashiyama Bamboo Grove"
+          },
+          "length": 8.000602181
+        },
+        "medium": {
+          "start": {
+            "lat": 35.0116,
+            "lon": 135.7681,
+            "location": "Fushimi Inari Shrine"
+          },
+          "end": {
+            "lat": 35.0592,
+            "lon": 135.7015,
+            "location": "Kinkaku-ji (Golden Pavilion)"
+          },
+          "length": 5.001328715
+        },
+        "short": {
+          "start": {
+            "lat": 35.0116,
+            "lon": 135.7681,
+            "location": "Fushimi Inari Shrine"
+          },
+          "end": {
+            "lat": 34.9856,
+            "lon": 135.7836,
+            "location": "Tofuku-ji Temple"
+          },
+          "length": 1.999215479
+        }
+      }
+    },
+    "Tehran_Iran": {
+      "city": "Tehran",
+      "country": "Iran",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 35.7448,
+            "lon": 51.3753,
+            "location": "Milad Tower"
+          },
+          "end": {
+            "lat": 35.8368,
+            "lon": 51.462,
+            "location": "Tochal Telecabin Base"
+          },
+          "length": 8.001184657
+        },
+        "medium": {
+          "start": {
+            "lat": 35.7448,
+            "lon": 51.3753,
+            "location": "Milad Tower"
+          },
+          "end": {
+            "lat": 35.762,
+            "lon": 51.4619,
+            "location": "Sa'd Abad Palace"
+          },
+          "length": 4.999195375
+        },
+        "short": {
+          "start": {
+            "lat": 35.6892,
+            "lon": 51.389,
+            "location": "Golestan Palace"
+          },
+          "end": {
+            "lat": 35.6881,
+            "lon": 51.419,
+            "location": "Tehran Grand Bazaar"
+          },
+          "length": 1.685259561
+        }
+      }
+    },
+    "Anchorage_USA": {
+      "city": "Anchorage",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 61.2154,
+            "lon": -149.743,
+            "location": "Flattop Mountain Trailhead"
+          },
+          "end": {
+            "lat": 61.1985,
+            "lon": -149.9808,
+            "location": "Kincaid Park"
+          },
+          "length": 7.99942276
+        },
+        "medium": {
+          "start": {
+            "lat": 61.2181,
+            "lon": -149.9003,
+            "location": "University of Alaska Anchorage"
+          },
+          "end": {
+            "lat": 61.1917,
+            "lon": -149.7604,
+            "location": "Earthquake Park"
+          },
+          "length": 5.000591952
+        },
+        "short": {
+          "start": {
+            "lat": 61.2181,
+            "lon": -149.8827,
+            "location": "Anchorage Museum"
+          },
+          "end": {
+            "lat": 61.2073,
+            "lon": -149.9385,
+            "location": "Tony Knowles Coastal Trail"
+          },
+          "length": 2.000976693
+        }
+      }
+    },
+    "Edinburgh_United_Kingdom": {
+      "city": "Edinburgh",
+      "country": "United Kingdom",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 55.9486,
+            "lon": -3.1999,
+            "location": "Edinburgh Castle"
+          },
+          "end": {
+            "lat": 55.9537,
+            "lon": -2.9933,
+            "location": "Portobello Beach"
+          },
+          "length": 8.000237454
+        },
+        "medium": {
+          "start": {
+            "lat": 55.9486,
+            "lon": -3.1999,
+            "location": "Edinburgh Castle"
+          },
+          "end": {
+            "lat": 55.9262,
+            "lon": -3.077,
+            "location": "Holyrood Palace"
+          },
+          "length": 5.001651439
+        },
+        "short": {
+          "start": {
+            "lat": 55.9486,
+            "lon": -3.1999,
+            "location": "Edinburgh Castle"
+          },
+          "end": {
+            "lat": 55.9369,
+            "lon": -3.1526,
+            "location": "Royal Mile"
+          },
+          "length": 2.000815995
+        }
+      }
+    },
+    "Sydney_Australia": {
+      "city": "Sydney",
+      "country": "Australia",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -33.8568,
+            "lon": 151.2153,
+            "location": "Sydney Opera House"
+          },
+          "end": {
+            "lat": -33.9578,
+            "lon": 151.2835,
+            "location": "University of New South Wales"
+          },
+          "length": 7.999647089
+        },
+        "medium": {
+          "start": {
+            "lat": -33.8568,
+            "lon": 151.2153,
+            "location": "Sydney Opera House"
+          },
+          "end": {
+            "lat": -33.9236,
+            "lon": 151.1819,
+            "location": "Royal Botanic Garden"
+          },
+          "length": 4.997250847
+        },
+        "short": {
+          "start": {
+            "lat": -33.8568,
+            "lon": 151.2153,
+            "location": "Sydney Opera House"
+          },
+          "end": {
+            "lat": -33.8345,
+            "lon": 151.193,
+            "location": "Sydney Harbour Bridge"
+          },
+          "length": 2.002918262
+        }
+      }
+    },
+    "Santorini_Greece": {
+      "city": "Santorini",
+      "country": "Greece",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 36.4618,
+            "lon": 25.376,
+            "location": "Oia Village"
+          },
+          "end": {
+            "lat": 36.3729,
+            "lon": 25.4682,
+            "location": "Ancient Akrotiri Site"
+          },
+          "length": 8.000622008
+        },
+        "medium": {
+          "start": {
+            "lat": 36.4618,
+            "lon": 25.376,
+            "location": "Oia Village"
+          },
+          "end": {
+            "lat": 36.4107,
+            "lon": 25.4397,
+            "location": "Perissa Black Sand Beach"
+          },
+          "length": 5.000401885
+        },
+        "short": {
+          "start": {
+            "lat": 36.4618,
+            "lon": 25.376,
+            "location": "Oia Village"
+          },
+          "end": {
+            "lat": 36.4522,
+            "lon": 25.4099,
+            "location": "Fira Town / Cable Car"
+          },
+          "length": 1.997270933
+        }
+      }
+    },
+    "Palm_Springs_USA": {
+      "city": "Palm Springs",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 33.8303,
+            "lon": -116.5453,
+            "location": "Palm Springs Art Museum"
+          },
+          "end": {
+            "lat": 33.7447,
+            "lon": -116.4515,
+            "location": "Indian Canyons Trailhead"
+          },
+          "length": 7.999641291
+        },
+        "medium": {
+          "start": {
+            "lat": 33.8303,
+            "lon": -116.5453,
+            "location": "Palm Springs Art Museum"
+          },
+          "end": {
+            "lat": 33.778,
+            "lon": -116.488,
+            "location": "Moorten Botanical Garden"
+          },
+          "length": 4.886812373
+        },
+        "short": {
+          "start": {
+            "lat": 33.8303,
+            "lon": -116.5453,
+            "location": "Palm Springs Art Museum"
+          },
+          "end": {
+            "lat": 33.8195,
+            "lon": -116.513,
+            "location": "Palm Canyon Drive"
+          },
+          "length": 1.998538985
+        }
+      }
+    },
+    "Bangkok_Thailand": {
+      "city": "Bangkok",
+      "country": "Thailand",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 13.7563,
+            "lon": 100.5018,
+            "location": "Grand Palace / Wat Phra Kaew"
+          },
+          "end": {
+            "lat": 13.8683,
+            "lon": 100.532,
+            "location": "Chatuchak Weekend Market"
+          },
+          "length": 7.999429912
+        },
+        "medium": {
+          "start": {
+            "lat": 13.7563,
+            "lon": 100.5018,
+            "location": "Grand Palace"
+          },
+          "end": {
+            "lat": 13.7341,
+            "lon": 100.5727,
+            "location": "Wat Arun (Temple of Dawn)"
+          },
+          "length": 4.999594809
+        },
+        "short": {
+          "start": {
+            "lat": 13.7563,
+            "lon": 100.5018,
+            "location": "Grand Palace / Wat Phra Kaew"
+          },
+          "end": {
+            "lat": 13.7472,
+            "lon": 100.4735,
+            "location": "Wat Pho (Reclining Buddha)"
+          },
+          "length": 2.00068003
+        }
+      }
+    },
+    "Panama_City_Panama": {
+      "city": "Panama City",
+      "country": "Panama",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 8.9936,
+            "lon": -79.5197,
+            "location": "Casco Viejo"
+          },
+          "end": {
+            "lat": 9.1057,
+            "lon": -79.5489,
+            "location": "Miraflores Locks / Canal"
+          },
+          "length": 7.997609405
+        },
+        "medium": {
+          "start": {
+            "lat": 8.9936,
+            "lon": -79.5197,
+            "location": "Casco Viejo"
+          },
+          "end": {
+            "lat": 8.9289,
+            "lon": -79.5417,
+            "location": "Panama Viejo Ruins"
+          },
+          "length": 4.715815732
+        },
+        "short": {
+          "start": {
+            "lat": 8.9936,
+            "lon": -79.5197,
+            "location": "Casco Viejo"
+          },
+          "end": {
+            "lat": 8.9813,
+            "lon": -79.5462,
+            "location": "Biomuseo"
+          },
+          "length": 1.998243997
+        }
+      }
+    },
+    "Melbourne_Australia": {
+      "city": "Melbourne",
+      "country": "Australia",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -37.8136,
+            "lon": 144.9631,
+            "location": "Federation Square"
+          },
+          "end": {
+            "lat": -37.9106,
+            "lon": 145.0432,
+            "location": "St Kilda Beach"
+          },
+          "length": 8.000625673
+        },
+        "medium": {
+          "start": {
+            "lat": -37.8136,
+            "lon": 144.9631,
+            "location": "Federation Square"
+          },
+          "end": {
+            "lat": -37.7415,
+            "lon": 144.9557,
+            "location": "University of Melbourne"
+          },
+          "length": 4.998049158
+        },
+        "short": {
+          "start": {
+            "lat": -37.8136,
+            "lon": 144.9631,
+            "location": "Federation Square"
+          },
+          "end": {
+            "lat": -37.8154,
+            "lon": 144.9997,
+            "location": "Flinders Street Station"
+          },
+          "length": 2.001653799
+        }
+      }
+    },
+    "San_Francisco_USA": {
+      "city": "San Francisco",
+      "country": "United States",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 37.8199,
+            "lon": -122.4783,
+            "location": "Golden Gate Bridge North Lookout"
+          },
+          "end": {
+            "lat": 37.7394,
+            "lon": -122.373,
+            "location": "Civic Center / City Hall"
+          },
+          "length": 8.000264675
+        },
+        "medium": {
+          "start": {
+            "lat": 37.8199,
+            "lon": -122.4783,
+            "location": "Golden Gate Bridge"
+          },
+          "end": {
+            "lat": 37.8024,
+            "lon": -122.4058,
+            "location": "UC San Francisco (Parnassus)"
+          },
+          "length": 4.138137593
+        },
+        "short": {
+          "start": {
+            "lat": 37.8199,
+            "lon": -122.4783,
+            "location": "Golden Gate Bridge North Lookout"
+          },
+          "end": {
+            "lat": 37.8244,
+            "lon": -122.4421,
+            "location": "Crissy Field"
+          },
+          "length": 2.000063208
+        }
+      }
+    },
+    "San_Antonio_USA": {
+      "city": "San Antonio",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 29.4241,
+            "lon": -98.4936,
+            "location": "The Alamo"
+          },
+          "end": {
+            "lat": 29.3129,
+            "lon": -98.4564,
+            "location": "Mission San José"
+          },
+          "length": 8.003125485
+        },
+        "medium": {
+          "start": {
+            "lat": 29.4241,
+            "lon": -98.4936,
+            "location": "The Alamo"
+          },
+          "end": {
+            "lat": 29.4929,
+            "lon": -98.4679,
+            "location": "San Antonio Zoo"
+          },
+          "length": 4.998795867
+        },
+        "short": {
+          "start": {
+            "lat": 29.4241,
+            "lon": -98.4936,
+            "location": "The Alamo"
+          },
+          "end": {
+            "lat": 29.4078,
+            "lon": -98.4662,
+            "location": "San Antonio River Walk"
+          },
+          "length": 1.996984491
+        }
+      }
+    },
+    "Quebec_City_Canada": {
+      "city": "Quebec City",
+      "country": "Canada",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 46.8123,
+            "lon": -71.2145,
+            "location": "Château Frontenac"
+          },
+          "end": {
+            "lat": 46.7635,
+            "lon": -71.3679,
+            "location": "Laval University"
+          },
+          "length": 8.00221597
+        },
+        "medium": {
+          "start": {
+            "lat": 46.8123,
+            "lon": -71.2145,
+            "location": "Château Frontenac"
+          },
+          "end": {
+            "lat": 46.7743,
+            "lon": -71.3045,
+            "location": "Plains of Abraham"
+          },
+          "length": 5.001879266
+        },
+        "short": {
+          "start": {
+            "lat": 46.8123,
+            "lon": -71.2145,
+            "location": "Château Frontenac"
+          },
+          "end": {
+            "lat": 46.8306,
+            "lon": -71.1817,
+            "location": "Old Quebec Fortifications"
+          },
+          "length": 2.00090549
+        }
+      }
+    },
+    "Las_Vegas_USA": {
+      "city": "Las Vegas",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 36.1699,
+            "lon": -115.1398,
+            "location": "Bellagio Fountains"
+          },
+          "end": {
+            "lat": 36.0683,
+            "lon": -115.2085,
+            "location": "UNLV Campus"
+          },
+          "length": 7.998905505
+        },
+        "medium": {
+          "start": {
+            "lat": 36.1699,
+            "lon": -115.1398,
+            "location": "Bellagio Fountains"
+          },
+          "end": {
+            "lat": 36.1699,
+            "lon": -115.2294,
+            "location": "High Roller Observation Wheel"
+          },
+          "length": 4.997674774
+        },
+        "short": {
+          "start": {
+            "lat": 36.1699,
+            "lon": -115.1398,
+            "location": "Bellagio Fountains"
+          },
+          "end": {
+            "lat": 36.1981,
+            "lon": -115.1477,
+            "location": "Venetian Resort"
+          },
+          "length": 1.997640473
+        }
+      }
+    },
+    "Oslo_Norway": {
+      "city": "Oslo",
+      "country": "Norway",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 59.9139,
+            "lon": 10.7522,
+            "location": "Akershus Fortress"
+          },
+          "end": {
+            "lat": 60.013,
+            "lon": 10.6325,
+            "location": "Holmenkollen Ski Museum"
+          },
+          "length": 8.001424625
+        },
+        "medium": {
+          "start": {
+            "lat": 59.9139,
+            "lon": 10.7522,
+            "location": "Akershus Fortress"
+          },
+          "end": {
+            "lat": 59.9662,
+            "lon": 10.6522,
+            "location": "Vigeland Sculpture Park"
+          },
+          "length": 5.003650392
+        },
+        "short": {
+          "start": {
+            "lat": 59.9139,
+            "lon": 10.7522,
+            "location": "Akershus Fortress"
+          },
+          "end": {
+            "lat": 59.9098,
+            "lon": 10.695,
+            "location": "Oslo City Hall"
+          },
+          "length": 2.001503587
+        }
+      }
+    },
+    "Lisbon_Portugal": {
+      "city": "Lisbon",
+      "country": "Portugal",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 38.6916,
+            "lon": -9.216,
+            "location": "Belém Tower"
+          },
+          "end": {
+            "lat": 38.7547,
+            "lon": -9.0916,
+            "location": "University of Lisbon Campus"
+          },
+          "length": 7.998549652
+        },
+        "medium": {
+          "start": {
+            "lat": 38.6916,
+            "lon": -9.216,
+            "location": "Belém Tower"
+          },
+          "end": {
+            "lat": 38.7139,
+            "lon": -9.1394,
+            "location": "São Jorge Castle"
+          },
+          "length": 4.408386837
+        },
+        "short": {
+          "start": {
+            "lat": 38.6916,
+            "lon": -9.216,
+            "location": "Belém Tower"
+          },
+          "end": {
+            "lat": 38.7093,
+            "lon": -9.1867,
+            "location": "Jerónimos Monastery"
+          },
+          "length": 1.997960966
+        }
+      }
+    },
+    "Indianapolis_USA": {
+      "city": "Indianapolis",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.791,
+            "lon": -86.2316,
+            "location": "Indianapolis Motor Speedway"
+          },
+          "end": {
+            "lat": 39.7479,
+            "lon": -86.0918,
+            "location": "Monument Circle"
+          },
+          "length": 7.999386893
+        },
+        "medium": {
+          "start": {
+            "lat": 39.7684,
+            "lon": -86.1581,
+            "location": "Monument Circle"
+          },
+          "end": {
+            "lat": 39.7724,
+            "lon": -86.2521,
+            "location": "Indiana State Capitol"
+          },
+          "length": 4.999673934
+        },
+        "short": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "Indiana State Capitol"
+          },
+          "end": {
+            "lat": 39.7975,
+            "lon": -86.1624,
+            "location": "Crown Hill Cemetery"
+          },
+          "length": 1.997082744
+        }
+      }
+    },
+    "New_York_City_USA": {
+      "city": "New York City",
+      "country": "United States",
+      "price": 500,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.7851,
+            "lon": -73.9683,
+            "location": "Central Park (North End / Great Lawn)"
+          },
+          "end": {
+            "lat": 40.6756,
+            "lon": -74.0181,
+            "location": "New York University"
+          },
+          "length": 8.002514989
+        },
+        "medium": {
+          "start": {
+            "lat": 40.7851,
+            "lon": -73.9683,
+            "location": "Central Park"
+          },
+          "end": {
+            "lat": 40.8562,
+            "lon": -73.9502,
+            "location": "Columbia University"
+          },
+          "length": 5.002921664
+        },
+        "short": {
+          "start": {
+            "lat": 40.7851,
+            "lon": -73.9683,
+            "location": "Central Park (Bethesda Fountain)"
+          },
+          "end": {
+            "lat": 40.7611,
+            "lon": -73.9469,
+            "location": "Metropolitan Museum of Art"
+          },
+          "length": 2.000918648
+        }
+      }
+    },
+    "Dubrovnik_Croatia": {
+      "city": "Dubrovnik",
+      "country": "Croatia",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 42.6507,
+            "lon": 18.0944,
+            "location": "Dubrovnik Old Town Walls"
+          },
+          "end": {
+            "lat": 42.7661,
+            "lon": 18.1078,
+            "location": "Elafiti Islands Ferry Terminal"
+          },
+          "length": 8.002430739
+        },
+        "medium": {
+          "start": {
+            "lat": 42.6507,
+            "lon": 18.0944,
+            "location": "Dubrovnik Old Town Walls"
+          },
+          "end": {
+            "lat": 42.6616,
+            "lon": 17.9971,
+            "location": "Lovrijenac Fortress"
+          },
+          "length": 5.00124295
+        },
+        "short": {
+          "start": {
+            "lat": 42.6507,
+            "lon": 18.0944,
+            "location": "Dubrovnik Old Town Walls"
+          },
+          "end": {
+            "lat": 42.6796,
+            "lon": 18.0944,
+            "location": "Stradun (Main Street)"
+          },
+          "length": 1.996819329
+        }
+      }
+    },
+    "Sacramento_USA": {
+      "city": "Sacramento",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.768597,
+            "lon": -86.162682,
+            "location": "California State Capitol"
+          },
+          "end": {
+            "lat": 39.7864,
+            "lon": -86.3115,
+            "location": "Sacramento State University"
+          },
+          "length": 7.99757997
+        },
+        "medium": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "California State Capitol"
+          },
+          "end": {
+            "lat": 39.7798,
+            "lon": -86.2557,
+            "location": "Old Sacramento Waterfront"
+          },
+          "length": 4.999887637
+        },
+        "short": {
+          "start": {
+            "lat": 38.5758,
+            "lon": -121.5064,
+            "location": "Old Sacramento Waterfront"
+          },
+          "end": {
+            "lat": 38.6013,
+            "lon": -121.4889,
+            "location": "Sutter's Fort"
+          },
+          "length": 1.999386928
+        }
+      }
+    },
+    "Dubai_UAE": {
+      "city": "Dubai",
+      "country": "United Arab Emirates",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 25.1972,
+            "lon": 55.2744,
+            "location": "Burj Khalifa"
+          },
+          "end": {
+            "lat": 25.2606,
+            "lon": 55.3815,
+            "location": "Dubai Creek Historic District"
+          },
+          "length": 8.000028136
+        },
+        "medium": {
+          "start": {
+            "lat": 25.1972,
+            "lon": 55.2744,
+            "location": "Burj Khalifa"
+          },
+          "end": {
+            "lat": 25.1559,
+            "lon": 55.2087,
+            "location": "Atlantis The Palm"
+          },
+          "length": 5.002055779
+        },
+        "short": {
+          "start": {
+            "lat": 25.1972,
+            "lon": 55.2744,
+            "location": "Burj Khalifa"
+          },
+          "end": {
+            "lat": 25.2238,
+            "lon": 55.2618,
+            "location": "Dubai Mall"
+          },
+          "length": 1.999574368
+        }
+      }
+    },
+    "Vienna_Austria": {
+      "city": "Vienna",
+      "country": "Austria",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 48.2082,
+            "lon": 16.3738,
+            "location": "Vienna State Opera"
+          },
+          "end": {
+            "lat": 48.2915,
+            "lon": 16.4946,
+            "location": "Vienna Woods Trailhead (Wienerwald)"
+          },
+          "length": 8.000987039
+        },
+        "medium": {
+          "start": {
+            "lat": 48.2082,
+            "lon": 16.3738,
+            "location": "Vienna State Opera"
+          },
+          "end": {
+            "lat": 48.2649,
+            "lon": 16.4413,
+            "location": "Prater / Giant Ferris Wheel"
+          },
+          "length": 4.99975186
+        },
+        "short": {
+          "start": {
+            "lat": 48.2082,
+            "lon": 16.3738,
+            "location": "Vienna State Opera"
+          },
+          "end": {
+            "lat": 48.1937,
+            "lon": 16.3362,
+            "location": "Schönbrunn Palace"
+          },
+          "length": 2.000523446
+        }
+      }
+    },
+    "Kansas_City_USA": {
+      "city": "Kansas City",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.0456,
+            "lon": -94.5964,
+            "location": "Swope Park / KC Zoo"
+          },
+          "end": {
+            "lat": 39.1578,
+            "lon": -94.5595,
+            "location": "Union Station"
+          },
+          "length": 8.000853465
+        },
+        "medium": {
+          "start": {
+            "lat": 39.0997,
+            "lon": -94.5786,
+            "location": "Union Station"
+          },
+          "end": {
+            "lat": 39.0347,
+            "lon": -94.6196,
+            "location": "Country Club Plaza"
+          },
+          "length": 5.000770925
+        },
+        "short": {
+          "start": {
+            "lat": 39.0997,
+            "lon": -94.5786,
+            "location": "Union Station"
+          },
+          "end": {
+            "lat": 39.0708,
+            "lon": -94.5792,
+            "location": "National WWI Museum"
+          },
+          "length": 1.997078594
+        }
+      }
+    },
+    "Dublin_Ireland": {
+      "city": "Dublin",
+      "country": "Ireland",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 53.3459,
+            "lon": -6.2648,
+            "location": "Trinity College Dublin"
+          },
+          "end": {
+            "lat": 53.3789,
+            "lon": -6.4508,
+            "location": "Phoenix Park"
+          },
+          "length": 8.000922365
+        },
+        "medium": {
+          "start": {
+            "lat": 53.3459,
+            "lon": -6.2648,
+            "location": "Trinity College Dublin"
+          },
+          "end": {
+            "lat": 53.324,
+            "lon": -6.3803,
+            "location": "Guinness Storehouse"
+          },
+          "length": 4.999834861
+        },
+        "short": {
+          "start": {
+            "lat": 53.3459,
+            "lon": -6.2648,
+            "location": "Trinity College Dublin"
+          },
+          "end": {
+            "lat": 53.32,
+            "lon": -6.2864,
+            "location": "Dublin Castle"
+          },
+          "length": 1.999181849
+        }
+      }
+    },
+    "Jerusalem_Israel": {
+      "city": "Jerusalem",
+      "country": "Israel",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 31.7767,
+            "lon": 35.2345,
+            "location": "Old City / Western Wall"
+          },
+          "end": {
+            "lat": 31.8367,
+            "lon": 35.118,
+            "location": "Hebrew University of Jerusalem"
+          },
+          "length": 7.998831572
+        },
+        "medium": {
+          "start": {
+            "lat": 31.7767,
+            "lon": 35.2345,
+            "location": "Old City / Western Wall"
+          },
+          "end": {
+            "lat": 31.7456,
+            "lon": 35.1576,
+            "location": "Yad Vashem Holocaust Memorial"
+          },
+          "length": 5.002672257
+        },
+        "short": {
+          "start": {
+            "lat": 31.7767,
+            "lon": 35.2345,
+            "location": "Old City / Western Wall"
+          },
+          "end": {
+            "lat": 31.7484,
+            "lon": 35.2416,
+            "location": "Church of the Holy Sepulchre"
+          },
+          "length": 1.999353798
+        }
+      }
+    },
+    "Seattle_USA": {
+      "city": "Seattle",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 47.6062,
+            "lon": -122.3321,
+            "location": "Pike Place Market"
+          },
+          "end": {
+            "lat": 47.714,
+            "lon": -122.2693,
+            "location": "University of Washington Campus"
+          },
+          "length": 8.00117902
+        },
+        "medium": {
+          "start": {
+            "lat": 47.6062,
+            "lon": -122.3321,
+            "location": "Pike Place Market"
+          },
+          "end": {
+            "lat": 47.6625,
+            "lon": -122.3996,
+            "location": "Seattle Center / Space Needle"
+          },
+          "length": 5.000914656
+        },
+        "short": {
+          "start": {
+            "lat": 47.6062,
+            "lon": -122.3321,
+            "location": "Pike Place Market"
+          },
+          "end": {
+            "lat": 47.6287,
+            "lon": -122.3591,
+            "location": "Seattle Center / Space Needle"
+          },
+          "length": 1.999546919
+        }
+      }
+    },
+    "Baltimore_USA": {
+      "city": "Baltimore",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.2784,
+            "lon": -76.6077,
+            "location": "Fort McHenry"
+          },
+          "end": {
+            "lat": 39.3921,
+            "lon": -76.636,
+            "location": "Johns Hopkins University"
+          },
+          "length": 8.000249522
+        },
+        "medium": {
+          "start": {
+            "lat": 39.2784,
+            "lon": -76.6077,
+            "location": "Fort McHenry"
+          },
+          "end": {
+            "lat": 39.3434,
+            "lon": -76.6489,
+            "location": "Inner Harbor"
+          },
+          "length": 5.002125568
+        },
+        "short": {
+          "start": {
+            "lat": 39.2855,
+            "lon": -76.6122,
+            "location": "Inner Harbor"
+          },
+          "end": {
+            "lat": 39.2855,
+            "lon": -76.5748,
+            "location": "National Aquarium"
+          },
+          "length": 2.000109425
+        }
+      }
+    },
+    "Minneapolis_USA": {
+      "city": "Minneapolis",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 44.9778,
+            "lon": -93.265,
+            "location": "Walker Art Center"
+          },
+          "end": {
+            "lat": 44.9126,
+            "lon": -93.4002,
+            "location": "Chain of Lakes (Bde Maka Ska)"
+          },
+          "length": 8.000617814
+        },
+        "medium": {
+          "start": {
+            "lat": 44.9778,
+            "lon": -93.265,
+            "location": "Walker Art Center"
+          },
+          "end": {
+            "lat": 44.968,
+            "lon": -93.1636,
+            "location": "University of Minnesota"
+          },
+          "length": 5.002470881
+        },
+        "short": {
+          "start": {
+            "lat": 44.9778,
+            "lon": -93.265,
+            "location": "Walker Art Center"
+          },
+          "end": {
+            "lat": 44.9778,
+            "lon": -93.3059,
+            "location": "Minneapolis Sculpture Garden"
+          },
+          "length": 1.999021397
+        }
+      }
+    },
+    "Louisville_USA": {
+      "city": "Louisville",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 38.2009,
+            "lon": -85.7595,
+            "location": "Churchill Downs"
+          },
+          "end": {
+            "lat": 38.1161,
+            "lon": -85.6592,
+            "location": "Waterfront Park"
+          },
+          "length": 8.001483259
+        },
+        "medium": {
+          "start": {
+            "lat": 32.7781,
+            "lon": -79.9253,
+            "location": "Waterfront Park"
+          },
+          "end": {
+            "lat": 32.834,
+            "lon": -79.9799,
+            "location": "Louisville Slugger Museum"
+          },
+          "length": 5.000086089
+        },
+        "short": {
+          "start": {
+            "lat": 38.249,
+            "lon": -85.7648,
+            "location": "Louisville Slugger Museum"
+          },
+          "end": {
+            "lat": 38.2246,
+            "lon": -85.7585,
+            "location": "University of Louisville"
+          },
+          "length": 1.720216248
+        }
+      }
+    },
+    "Istanbul_Turkey": {
+      "city": "Istanbul",
+      "country": "Turkey",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.0082,
+            "lon": 28.9784,
+            "location": "Hagia Sophia"
+          },
+          "end": {
+            "lat": 41.1132,
+            "lon": 29.0431,
+            "location": "Boğaziçi University"
+          },
+          "length": 7.999695626
+        },
+        "medium": {
+          "start": {
+            "lat": 41.0082,
+            "lon": 28.9784,
+            "location": "Hagia Sophia"
+          },
+          "end": {
+            "lat": 41.0293,
+            "lon": 28.8867,
+            "location": "Topkapi Palace"
+          },
+          "length": 4.997788861
+        },
+        "short": {
+          "start": {
+            "lat": 41.0082,
+            "lon": 28.9784,
+            "location": "Hagia Sophia"
+          },
+          "end": {
+            "lat": 40.9815,
+            "lon": 28.9636,
+            "location": "Blue Mosque (Sultan Ahmed)"
+          },
+          "length": 1.999759911
+        }
+      }
+    },
+    "New_Orleans_USA": {
+      "city": "New Orleans",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 29.9577,
+            "lon": -90.0637,
+            "location": "French Quarter / Jackson Square"
+          },
+          "end": {
+            "lat": 30.0124,
+            "lon": -90.1815,
+            "location": "City Park & NOMA"
+          },
+          "length": 7.999071018
+        },
+        "medium": {
+          "start": {
+            "lat": 29.9577,
+            "lon": -90.0637,
+            "location": "French Quarter"
+          },
+          "end": {
+            "lat": 29.9333,
+            "lon": -90.1423,
+            "location": "Tulane University Campus"
+          },
+          "length": 4.998668159
+        },
+        "short": {
+          "start": {
+            "lat": 29.9577,
+            "lon": -90.0637,
+            "location": "French Quarter / Jackson Square"
+          },
+          "end": {
+            "lat": 29.9522,
+            "lon": -90.0309,
+            "location": "St. Louis Cathedral"
+          },
+          "length": 1.999987294
+        }
+      }
+    },
+    "Porto_Portugal": {
+      "city": "Porto",
+      "country": "Portugal",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.1579,
+            "lon": -8.6291,
+            "location": "Dom Luís I Bridge"
+          },
+          "end": {
+            "lat": 41.2062,
+            "lon": -8.7689,
+            "location": "Foz do Douro Beach"
+          },
+          "length": 7.999230256
+        },
+        "medium": {
+          "start": {
+            "lat": 41.1579,
+            "lon": -8.6291,
+            "location": "Dom Luís I Bridge"
+          },
+          "end": {
+            "lat": 41.1579,
+            "lon": -8.7252,
+            "location": "Crystal Palace Gardens"
+          },
+          "length": 4.999203803
+        },
+        "short": {
+          "start": {
+            "lat": 41.1579,
+            "lon": -8.6291,
+            "location": "Dom Luís I Bridge"
+          },
+          "end": {
+            "lat": 41.1438,
+            "lon": -8.5955,
+            "location": "Ribeira Waterfront"
+          },
+          "length": 2.001232536
+        }
+      }
+    },
+    "Munich_Germany": {
+      "city": "Munich",
+      "country": "Germany",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 48.1351,
+            "lon": 11.582,
+            "location": "Marienplatz / Glockenspiel"
+          },
+          "end": {
+            "lat": 48.155,
+            "lon": 11.4111,
+            "location": "Nymphenburg Palace"
+          },
+          "length": 7.998047334
+        },
+        "medium": {
+          "start": {
+            "lat": 48.1351,
+            "lon": 11.582,
+            "location": "Marienplatz"
+          },
+          "end": {
+            "lat": 48.2047,
+            "lon": 11.5522,
+            "location": "English Garden (Englischer Garten)"
+          },
+          "length": 5.001166381
+        },
+        "short": {
+          "start": {
+            "lat": 48.1351,
+            "lon": 11.582,
+            "location": "Marienplatz"
+          },
+          "end": {
+            "lat": 48.1611,
+            "lon": 11.563,
+            "location": "Residenz Palace"
+          },
+          "length": 1.998605464
+        }
+      }
+    },
+    "Brussels_Belgium": {
+      "city": "Brussels",
+      "country": "Belgium",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 50.8503,
+            "lon": 4.3517,
+            "location": "Grand Place"
+          },
+          "end": {
+            "lat": 50.9649,
+            "lon": 4.3251,
+            "location": "Atomium"
+          },
+          "length": 8.002546202
+        },
+        "medium": {
+          "start": {
+            "lat": 50.8503,
+            "lon": 4.3517,
+            "location": "Grand Place"
+          },
+          "end": {
+            "lat": 50.7845,
+            "lon": 4.3995,
+            "location": "Bois de la Cambre Park"
+          },
+          "length": 5.002366778
+        },
+        "short": {
+          "start": {
+            "lat": 50.8503,
+            "lon": 4.3517,
+            "location": "Grand Place"
+          },
+          "end": {
+            "lat": 50.822,
+            "lon": 4.3424,
+            "location": "Manneken Pis"
+          },
+          "length": 1.997029628
+        }
+      }
+    },
+    "Mykonos_Greece": {
+      "city": "Mykonos",
+      "country": "Greece",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 37.4467,
+            "lon": 25.3289,
+            "location": "Mykonos Town (Chora)"
+          },
+          "end": {
+            "lat": 37.3856,
+            "lon": 25.4527,
+            "location": "Ano Mera Village & Monastery"
+          },
+          "length": 7.998658431
+        },
+        "medium": {
+          "start": {
+            "lat": 37.4467,
+            "lon": 25.3289,
+            "location": "Mykonos Town"
+          },
+          "end": {
+            "lat": 37.3755,
+            "lon": 25.3455,
+            "location": "Paradise Beach"
+          },
+          "length": 5.003143809
+        },
+        "short": {
+          "start": {
+            "lat": 37.4467,
+            "lon": 25.3289,
+            "location": "Mykonos Town / Little Venice"
+          },
+          "end": {
+            "lat": 37.424,
+            "lon": 25.3516,
+            "location": "Windmills of Mykonos"
+          },
+          "length": 2.002751495
+        }
+      }
+    },
+    "Lucerne_Switzerland": {
+      "city": "Lucerne",
+      "country": "Switzerland",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 47.0502,
+            "lon": 8.3093,
+            "location": "Chapel Bridge (Kapellbrücke)"
+          },
+          "end": {
+            "lat": 47.111,
+            "lon": 8.1646,
+            "location": "Mount Pilatus Gondola Base"
+          },
+          "length": 8.000014549
+        },
+        "medium": {
+          "start": {
+            "lat": 47.0502,
+            "lon": 8.3093,
+            "location": "Chapel Bridge"
+          },
+          "end": {
+            "lat": 47.0834,
+            "lon": 8.2149,
+            "location": "Lake Lucerne Promenade"
+          },
+          "length": 5.000017927
+        },
+        "short": {
+          "start": {
+            "lat": 47.0502,
+            "lon": 8.3093,
+            "location": "Chapel Bridge (Kapellbrücke)"
+          },
+          "end": {
+            "lat": 47.0785,
+            "lon": 8.318,
+            "location": "Lion Monument"
+          },
+          "length": 1.99777574
+        }
+      }
+    },
+    "Kathmandu_Nepal": {
+      "city": "Kathmandu",
+      "country": "Nepal",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 27.7172,
+            "lon": 85.324,
+            "location": "Boudhanath Stupa"
+          },
+          "end": {
+            "lat": 27.6951,
+            "lon": 85.1956,
+            "location": "Patan Durbar Square"
+          },
+          "length": 8.001539676
+        },
+        "medium": {
+          "start": {
+            "lat": 27.7172,
+            "lon": 85.324,
+            "location": "Boudhanath Stupa"
+          },
+          "end": {
+            "lat": 27.764,
+            "lon": 85.3864,
+            "location": "Tribhuvan University Campus"
+          },
+          "length": 5.001749606
+        },
+        "short": {
+          "start": {
+            "lat": 27.7172,
+            "lon": 85.324,
+            "location": "Boudhanath Stupa"
+          },
+          "end": {
+            "lat": 27.7098,
+            "lon": 85.3485,
+            "location": "Pashupatinath Temple"
+          },
+          "length": 1.583435055
+        }
+      }
+    },
+    "Buenos_Aires_Argentina": {
+      "city": "Buenos Aires",
+      "country": "Argentina",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -34.6037,
+            "lon": -58.3816,
+            "location": "Casa Rosada / Plaza de Mayo"
+          },
+          "end": {
+            "lat": -34.5287,
+            "lon": -58.4887,
+            "location": "University of Buenos Aires Law School"
+          },
+          "length": 7.999155839
+        },
+        "medium": {
+          "start": {
+            "lat": -34.6037,
+            "lon": -58.3816,
+            "location": "Casa Rosada"
+          },
+          "end": {
+            "lat": -34.5421,
+            "lon": -58.4278,
+            "location": "Recoleta Cemetery"
+          },
+          "length": 5.002384035
+        },
+        "short": {
+          "start": {
+            "lat": -34.6037,
+            "lon": -58.3816,
+            "location": "Casa Rosada / Plaza de Mayo"
+          },
+          "end": {
+            "lat": -34.6123,
+            "lon": -58.348,
+            "location": "La Boca / Caminito"
+          },
+          "length": 2.001038697
+        }
+      }
+    },
+    "Havana_Cuba": {
+      "city": "Havana",
+      "country": "Cuba",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 23.1136,
+            "lon": -82.3666,
+            "location": "Morro Castle (Castillo de los Tres Reyes)"
+          },
+          "end": {
+            "lat": 23.1661,
+            "lon": -82.4788,
+            "location": "Hemingway Museum (Finca Vigía)"
+          },
+          "length": 7.998513467
+        },
+        "medium": {
+          "start": {
+            "lat": 23.1136,
+            "lon": -82.3666,
+            "location": "Morro Castle"
+          },
+          "end": {
+            "lat": 23.1605,
+            "lon": -82.4265,
+            "location": "El Malecón Seawall"
+          },
+          "length": 4.99853984
+        },
+        "short": {
+          "start": {
+            "lat": 23.128,
+            "lon": -82.385,
+            "location": "El Malecón"
+          },
+          "end": {
+            "lat": 23.1549,
+            "lon": -82.3735,
+            "location": "University of Havana"
+          },
+          "length": 1.997086916
+        }
+      }
+    },
+    "Geneva_Switzerland": {
+      "city": "Geneva",
+      "country": "Switzerland",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 46.2044,
+            "lon": 6.1432,
+            "location": "Jet d'Eau"
+          },
+          "end": {
+            "lat": 46.2551,
+            "lon": 5.9927,
+            "location": "Salève Mountain Trailhead"
+          },
+          "length": 8.001087626
+        },
+        "medium": {
+          "start": {
+            "lat": 46.2044,
+            "lon": 6.1432,
+            "location": "Jet d'Eau"
+          },
+          "end": {
+            "lat": 46.23,
+            "lon": 6.06,
+            "location": "UN Palais des Nations"
+          },
+          "length": 4.353183817
+        },
+        "short": {
+          "start": {
+            "lat": 46.2044,
+            "lon": 6.1432,
+            "location": "Jet d'Eau"
+          },
+          "end": {
+            "lat": 46.1766,
+            "lon": 6.1547,
+            "location": "Old Town (Vieille Ville)"
+          },
+          "length": 1.99802378
+        }
+      }
+    },
+    "Cincinnati_USA": {
+      "city": "Cincinnati",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 39.1031,
+            "lon": -84.512,
+            "location": "Eden Park / Cincinnati Art Museum"
+          },
+          "end": {
+            "lat": 39.2185,
+            "lon": -84.5,
+            "location": "Great American Ball Park"
+          },
+          "length": 7.999333987
+        },
+        "medium": {
+          "start": {
+            "lat": 39.1031,
+            "lon": -84.512,
+            "location": "Eden Park"
+          },
+          "end": {
+            "lat": 39.1752,
+            "lon": -84.5205,
+            "location": "University of Cincinnati"
+          },
+          "length": 5.002466867
+        },
+        "short": {
+          "start": {
+            "lat": 39.1031,
+            "lon": -84.512,
+            "location": "Eden Park"
+          },
+          "end": {
+            "lat": 39.132,
+            "lon": -84.512,
+            "location": "Mount Adams"
+          },
+          "length": 1.996819329
+        }
+      }
+    },
+    "Boston_USA": {
+      "city": "Boston",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 42.3601,
+            "lon": -71.0589,
+            "location": "Boston Common"
+          },
+          "end": {
+            "lat": 42.36,
+            "lon": -71.2156,
+            "location": "Arnold Arboretum (Emerald Necklace)"
+          },
+          "length": 8.000379294
+        },
+        "medium": {
+          "start": {
+            "lat": 42.3601,
+            "lon": -71.0589,
+            "location": "Boston Common"
+          },
+          "end": {
+            "lat": 42.3867,
+            "lon": -71.15,
+            "location": "Harvard University Campus"
+          },
+          "length": 5.000183866
+        },
+        "short": {
+          "start": {
+            "lat": 42.3601,
+            "lon": -71.0589,
+            "location": "Boston Common / Massachusetts State House"
+          },
+          "end": {
+            "lat": 42.3571,
+            "lon": -71.0199,
+            "location": "Massachusetts State House"
+          },
+          "length": 2.001965455
+        }
+      }
+    },
+    "Lagos_Nigeria": {
+      "city": "Lagos",
+      "country": "Nigeria",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 6.455,
+            "lon": 3.3841,
+            "location": "University of Lagos Campus"
+          },
+          "end": {
+            "lat": 6.4018,
+            "lon": 3.4876,
+            "location": "Lekki Conservation Centre"
+          },
+          "length": 8.000668632
+        },
+        "medium": {
+          "start": {
+            "lat": 6.455,
+            "lon": 3.3841,
+            "location": "University of Lagos"
+          },
+          "end": {
+            "lat": 6.4008,
+            "lon": 3.4323,
+            "location": "National Museum Lagos"
+          },
+          "length": 4.99763925
+        },
+        "short": {
+          "start": {
+            "lat": 6.4541,
+            "lon": 3.3849,
+            "location": "National Museum Lagos"
+          },
+          "end": {
+            "lat": 6.4315,
+            "lon": 3.4031,
+            "location": "Tafawa Balewa Square"
+          },
+          "length": 1.999947907
+        }
+      }
+    },
+    "Pittsburgh_USA": {
+      "city": "Pittsburgh",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.4406,
+            "lon": -79.9959,
+            "location": "Point State Park"
+          },
+          "end": {
+            "lat": 40.4506,
+            "lon": -79.8443,
+            "location": "Carnegie Mellon University"
+          },
+          "length": 8.001340156
+        },
+        "medium": {
+          "start": {
+            "lat": 40.4441,
+            "lon": -79.943,
+            "location": "Carnegie Mellon University"
+          },
+          "end": {
+            "lat": 40.4486,
+            "lon": -80.0379,
+            "location": "University of Pittsburgh / Cathedral of Learning"
+          },
+          "length": 4.999666793
+        },
+        "short": {
+          "start": {
+            "lat": 40.4446,
+            "lon": -79.9535,
+            "location": "University of Pittsburgh"
+          },
+          "end": {
+            "lat": 40.4529,
+            "lon": -79.9256,
+            "location": "Frick Park Entrance"
+          },
+          "length": 1.575084217
+        }
+      }
+    },
+    "Glasgow_United_Kingdom": {
+      "city": "Glasgow",
+      "country": "United Kingdom",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 55.868255,
+            "lon": -4.286917,
+            "location": "Kelvingrove Art Gallery"
+          },
+          "end": {
+            "lat": 55.753,
+            "lon": -4.3062,
+            "location": "Pollok Country Park"
+          },
+          "length": 7.998556023
+        },
+        "medium": {
+          "start": {
+            "lat": 55.8683,
+            "lon": -4.2869,
+            "location": "Kelvingrove Art Gallery"
+          },
+          "end": {
+            "lat": 55.8588,
+            "lon": -4.1591,
+            "location": "University of Glasgow"
+          },
+          "length": 4.998753133
+        },
+        "short": {
+          "start": {
+            "lat": 55.8651,
+            "lon": -4.244,
+            "location": "University of Glasgow"
+          },
+          "end": {
+            "lat": 55.8683,
+            "lon": -4.2869,
+            "location": "Kelvingrove Art Gallery"
+          },
+          "length": 1.678115983
+        }
+      }
+    },
+    "Madrid_Spain": {
+      "city": "Madrid",
+      "country": "Spain",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.4153,
+            "lon": -3.7036,
+            "location": "Prado Museum"
+          },
+          "end": {
+            "lat": 40.5259,
+            "lon": -3.6588,
+            "location": "Santiago Bernabéu Stadium"
+          },
+          "length": 7.996393325
+        },
+        "medium": {
+          "start": {
+            "lat": 40.4153,
+            "lon": -3.7036,
+            "location": "Prado Museum"
+          },
+          "end": {
+            "lat": 40.4873,
+            "lon": -3.7132,
+            "location": "Retiro Park"
+          },
+          "length": 5.000315238
+        },
+        "short": {
+          "start": {
+            "lat": 40.4153,
+            "lon": -3.7036,
+            "location": "Prado Museum"
+          },
+          "end": {
+            "lat": 40.4153,
+            "lon": -3.7416,
+            "location": "Royal Palace of Madrid"
+          },
+          "length": 1.999021892
+        }
+      }
+    },
+    "Zagreb_Croatia": {
+      "city": "Zagreb",
+      "country": "Croatia",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 45.815,
+            "lon": 15.9819,
+            "location": "Ban Jelai Square"
+          },
+          "end": {
+            "lat": 45.9007,
+            "lon": 16.0936,
+            "location": "Maksimir Park"
+          },
+          "length": 7.997070415
+        },
+        "medium": {
+          "start": {
+            "lat": 45.815,
+            "lon": 15.9819,
+            "location": "Ban Jelai Square"
+          },
+          "end": {
+            "lat": 45.7519,
+            "lon": 16.0328,
+            "location": "Zagreb Cathedral area"
+          },
+          "length": 5.002332592
+        },
+        "short": {
+          "start": {
+            "lat": 45.815,
+            "lon": 15.9819,
+            "location": "Ban Jelai Square"
+          },
+          "end": {
+            "lat": 45.7997,
+            "lon": 15.9467,
+            "location": "Dolac Market"
+          },
+          "length": 1.997946366
+        }
+      }
+    },
+    "Nashville_USA": {
+      "city": "Nashville",
+      "country": "United States",
+      "price": 0,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 36.1627,
+            "lon": -86.7816,
+            "location": "Bicentennial Capitol Mall"
+          },
+          "end": {
+            "lat": 36.0702,
+            "lon": -86.8678,
+            "location": "Belmont University"
+          },
+          "length": 7.999759746
+        },
+        "medium": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "Tennessee State Capitol"
+          },
+          "end": {
+            "lat": 39.697,
+            "lon": -86.176,
+            "location": "Vanderbilt University"
+          },
+          "length": 4.997289197
+        },
+        "short": {
+          "start": {
+            "lat": 39.7686,
+            "lon": -86.1627,
+            "location": "Tennessee State Capitol"
+          },
+          "end": {
+            "lat": 39.7399,
+            "lon": -86.1681,
+            "location": "Centennial Park / Parthenon"
+          },
+          "length": 2.003571205
+        }
+      }
+    },
+    "Rio_de_Janeiro_Brazil": {
+      "city": "Rio de Janeiro",
+      "country": "Brazil",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -22.9519,
+            "lon": -43.2105,
+            "location": "Christ the Redeemer (Corcovado)"
+          },
+          "end": {
+            "lat": -23.0574,
+            "lon": -43.2622,
+            "location": "Ipanema Beach"
+          },
+          "length": 7.996700663
+        },
+        "medium": {
+          "start": {
+            "lat": -22.9519,
+            "lon": -43.2105,
+            "location": "Christ the Redeemer"
+          },
+          "end": {
+            "lat": -22.9949,
+            "lon": -43.1473,
+            "location": "Sugarloaf Mountain Cable Car"
+          },
+          "length": 4.999075502
+        },
+        "short": {
+          "start": {
+            "lat": -22.9519,
+            "lon": -43.2105,
+            "location": "Christ the Redeemer / Tijuca Forest Trailhead"
+          },
+          "end": {
+            "lat": -22.9714,
+            "lon": -43.1818,
+            "location": "Sugarloaf Mountain"
+          },
+          "length": 2.269173451
+        }
+      }
+    },
+    "Whistler_Canada": {
+      "city": "Whistler",
+      "country": "Canada",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 50.1163,
+            "lon": -122.9574,
+            "location": "Whistler Mountain Base / Olympic Plaza"
+          },
+          "end": {
+            "lat": 50.0005,
+            "lon": -122.955,
+            "location": "Nita Lake Lodge"
+          },
+          "length": 8.00180438
+        },
+        "medium": {
+          "start": {
+            "lat": 50.1163,
+            "lon": -122.9574,
+            "location": "Whistler Village"
+          },
+          "end": {
+            "lat": 50.1886,
+            "lon": -122.9533,
+            "location": "Lost Lake Park"
+          },
+          "length": 4.998799656
+        },
+        "short": {
+          "start": {
+            "lat": 50.1163,
+            "lon": -122.9574,
+            "location": "Whistler Village Gondola"
+          },
+          "end": {
+            "lat": 50.1421,
+            "lon": -122.9368,
+            "location": "Whistler Olympic Plaza"
+          },
+          "length": 2.002576813
+        }
+      }
+    },
+    "Florence_Italy": {
+      "city": "Florence",
+      "country": "Italy",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 43.7731,
+            "lon": 11.256,
+            "location": "Florence Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 43.8698,
+            "lon": 11.3442,
+            "location": "Fiesole Archaeological Area"
+          },
+          "length": 7.998361901
+        },
+        "medium": {
+          "start": {
+            "lat": 43.7731,
+            "lon": 11.256,
+            "location": "Florence Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 43.7071,
+            "lon": 11.215,
+            "location": "Piazzale Michelangelo"
+          },
+          "length": 4.998446491
+        },
+        "short": {
+          "start": {
+            "lat": 43.7731,
+            "lon": 11.256,
+            "location": "Florence Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 43.7462,
+            "lon": 11.2413,
+            "location": "Uffizi Gallery"
+          },
+          "length": 1.998159506
+        }
+      }
+    },
+    "Detroit_USA": {
+      "city": "Detroit",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 42.3297,
+            "lon": -83.0455,
+            "location": "Hart Plaza / Riverwalk"
+          },
+          "end": {
+            "lat": 42.4275,
+            "lon": -83.1293,
+            "location": "New Center / Fisher Building"
+          },
+          "length": 7.99729427
+        },
+        "medium": {
+          "start": {
+            "lat": 42.3297,
+            "lon": -83.0455,
+            "location": "Hart Plaza"
+          },
+          "end": {
+            "lat": 42.3332,
+            "lon": -82.9477,
+            "location": "Belle Isle Park"
+          },
+          "length": 5.001337608
+        },
+        "short": {
+          "start": {
+            "lat": 42.3314,
+            "lon": -82.9989,
+            "location": "Belle Isle Park"
+          },
+          "end": {
+            "lat": 42.3428,
+            "lon": -83.0349,
+            "location": "Detroit Institute of Arts"
+          },
+          "length": 2.000278997
+        }
+      }
+    },
+    "Seoul_South_Korea": {
+      "city": "Seoul",
+      "country": "South Korea",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 37.5796,
+            "lon": 126.977,
+            "location": "Gyeongbokgung Palace"
+          },
+          "end": {
+            "lat": 37.4838,
+            "lon": 127.059,
+            "location": "Seoul National University (Gwanak)"
+          },
+          "length": 8.000067617
+        },
+        "medium": {
+          "start": {
+            "lat": 37.5796,
+            "lon": 126.977,
+            "location": "Gyeongbokgung Palace"
+          },
+          "end": {
+            "lat": 37.644,
+            "lon": 127.0187,
+            "location": "Seoul National University (Main Gate)"
+          },
+          "length": 5.000882608
+        },
+        "short": {
+          "start": {
+            "lat": 37.5796,
+            "lon": 126.977,
+            "location": "Gyeongbokgung Palace"
+          },
+          "end": {
+            "lat": 37.5508,
+            "lon": 126.9801,
+            "location": "Cheonggyecheon Stream"
+          },
+          "length": 1.997139741
+        }
+      }
+    },
+    "Charleston_USA": {
+      "city": "Charleston",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 32.8168,
+            "lon": -79.9466,
+            "location": "White Point Garden"
+          },
+          "end": {
+            "lat": 32.7069,
+            "lon": -79.9901,
+            "location": "Fort Sumter Ferry Terminal"
+          },
+          "length": 8.003031953
+        },
+        "medium": {
+          "start": {
+            "lat": 32.8168,
+            "lon": -79.9466,
+            "location": "White Point Garden"
+          },
+          "end": {
+            "lat": 32.7546,
+            "lon": -79.9905,
+            "location": "The Citadel Campus"
+          },
+          "length": 4.997252608
+        },
+        "short": {
+          "start": {
+            "lat": 32.7765,
+            "lon": -79.9311,
+            "location": "Rainbow Row"
+          },
+          "end": {
+            "lat": 32.7853,
+            "lon": -79.8983,
+            "location": "Waterfront Park"
+          },
+          "length": 2.000036765
+        }
+      }
+    },
+    "Marrakesh_Morocco": {
+      "city": "Marrakesh",
+      "country": "Morocco",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 31.6295,
+            "lon": -7.9811,
+            "location": "Djemaa el-Fna Square"
+          },
+          "end": {
+            "lat": 31.564,
+            "lon": -8.0932,
+            "location": "Menara Gardens & Pavilion"
+          },
+          "length": 8.000321719
+        },
+        "medium": {
+          "start": {
+            "lat": 31.6295,
+            "lon": -7.9811,
+            "location": "Djemaa el-Fna Square"
+          },
+          "end": {
+            "lat": 31.6804,
+            "lon": -8.0416,
+            "location": "Majorelle Garden"
+          },
+          "length": 5.002985949
+        },
+        "short": {
+          "start": {
+            "lat": 31.6295,
+            "lon": -7.9811,
+            "location": "Djemaa el-Fna Square"
+          },
+          "end": {
+            "lat": 31.6009,
+            "lon": -7.9867,
+            "location": "Koutoubia Mosque"
+          },
+          "length": 2.003374102
+        }
+      }
+    },
+    "Salt_Lake_City_USA": {
+      "city": "Salt Lake City",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.7608,
+            "lon": -111.891,
+            "location": "Temple Square"
+          },
+          "end": {
+            "lat": 40.781,
+            "lon": -111.7404,
+            "location": "University of Utah Campus"
+          },
+          "length": 8.00305861
+        },
+        "medium": {
+          "start": {
+            "lat": 40.7608,
+            "lon": -111.891,
+            "location": "Temple Square"
+          },
+          "end": {
+            "lat": 40.7785,
+            "lon": -111.7983,
+            "location": "Natural History Museum of Utah"
+          },
+          "length": 5.002576615
+        },
+        "short": {
+          "start": {
+            "lat": 40.7608,
+            "lon": -111.891,
+            "location": "Temple Square"
+          },
+          "end": {
+            "lat": 40.7636,
+            "lon": -111.853,
+            "location": "Utah State Capitol"
+          },
+          "length": 1.998067268
+        }
+      }
+    },
+    "Milwaukee_USA": {
+      "city": "Milwaukee",
+      "country": "United States",
+      "price": 100,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 43.0389,
+            "lon": -87.9065,
+            "location": "Milwaukee Art Museum"
+          },
+          "end": {
+            "lat": 43.1526,
+            "lon": -87.9368,
+            "location": "University of Wisconsin–Milwaukee"
+          },
+          "length": 8.003358696
+        },
+        "medium": {
+          "start": {
+            "lat": 43.0389,
+            "lon": -87.9065,
+            "location": "Milwaukee Art Museum"
+          },
+          "end": {
+            "lat": 43.0389,
+            "lon": -88.0055,
+            "location": "Harley-Davidson Museum"
+          },
+          "length": 4.999521228
+        },
+        "short": {
+          "start": {
+            "lat": 43.0389,
+            "lon": -87.9065,
+            "location": "Milwaukee Art Museum"
+          },
+          "end": {
+            "lat": 43.0107,
+            "lon": -87.9152,
+            "location": "Discovery World"
+          },
+          "length": 1.997395725
+        }
+      }
+    },
+    "Atlanta_USA": {
+      "city": "Atlanta",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 33.7756,
+            "lon": -84.3963,
+            "location": "Georgia Tech Campus"
+          },
+          "end": {
+            "lat": 33.8914,
+            "lon": -84.397,
+            "location": "Piedmont Park"
+          },
+          "length": 8.001197
+        },
+        "medium": {
+          "start": {
+            "lat": 33.749,
+            "lon": -84.388,
+            "location": "Georgia Aquarium"
+          },
+          "end": {
+            "lat": 33.8214,
+            "lon": -84.388,
+            "location": "Centennial Olympic Park"
+          },
+          "length": 5.002412437
+        },
+        "short": {
+          "start": {
+            "lat": 33.749,
+            "lon": -84.388,
+            "location": "Georgia Aquarium / Centennial Park"
+          },
+          "end": {
+            "lat": 33.7747,
+            "lon": -84.3721,
+            "location": "Emory University"
+          },
+          "length": 1.996831022
+        }
+      }
+    },
+    "Reykjavík_Iceland": {
+      "city": "Reykjavík",
+      "country": "Iceland",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 64.1415,
+            "lon": -21.932,
+            "location": "Hallgrímskirkja Church"
+          },
+          "end": {
+            "lat": 64.1883,
+            "lon": -22.175,
+            "location": "Esja Mountain Trailhead"
+          },
+          "length": 7.999414328
+        },
+        "medium": {
+          "start": {
+            "lat": 64.1415,
+            "lon": -21.932,
+            "location": "Hallgrímskirkja Church"
+          },
+          "end": {
+            "lat": 64.1197,
+            "lon": -22.0902,
+            "location": "University of Iceland Campus"
+          },
+          "length": 5.001491176
+        },
+        "short": {
+          "start": {
+            "lat": 64.1415,
+            "lon": -21.932,
+            "location": "Hallgrímskirkja Church"
+          },
+          "end": {
+            "lat": 64.1703,
+            "lon": -21.9252,
+            "location": "Harpa Concert Hall"
+          },
+          "length": 2.000422562
+        }
+      }
+    },
+    "Tel_Aviv_Israel": {
+      "city": "Tel Aviv",
+      "country": "Israel",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 32.0853,
+            "lon": 34.7818,
+            "location": "Tel Aviv Port (Namal)"
+          },
+          "end": {
+            "lat": 32.1809,
+            "lon": 34.859,
+            "location": "Tel Aviv University Campus"
+          },
+          "length": 8.002137498
+        },
+        "medium": {
+          "start": {
+            "lat": 32.0853,
+            "lon": 34.7818,
+            "location": "Tel Aviv Port"
+          },
+          "end": {
+            "lat": 32.0853,
+            "lon": 34.8672,
+            "location": "Hayarkon Park"
+          },
+          "length": 4.999362004
+        },
+        "short": {
+          "start": {
+            "lat": 32.0853,
+            "lon": 34.7818,
+            "location": "Tel Aviv Port / Namal"
+          },
+          "end": {
+            "lat": 32.0688,
+            "lon": 34.7537,
+            "location": "Jaffa Clock Tower"
+          },
+          "length": 2.001548826
+        }
+      }
+    },
+    "Park_City_USA": {
+      "city": "Park City",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 40.6461,
+            "lon": -111.498,
+            "location": "Deer Valley Resort"
+          },
+          "end": {
+            "lat": 40.7618,
+            "lon": -111.4909,
+            "location": "Summit Park Trailhead"
+          },
+          "length": 8.002832419
+        },
+        "medium": {
+          "start": {
+            "lat": 40.6461,
+            "lon": -111.498,
+            "location": "Park City Mountain Resort Base"
+          },
+          "end": {
+            "lat": 40.7195,
+            "lon": -111.5497,
+            "location": "Utah Olympic Park"
+          },
+          "length": 5.749626521
+        },
+        "short": {
+          "start": {
+            "lat": 40.6461,
+            "lon": -111.498,
+            "location": "Park City Mountain Resort Base"
+          },
+          "end": {
+            "lat": 40.6746,
+            "lon": -111.5046,
+            "location": "Historic Main Street"
+          },
+          "length": 1.999336068
+        }
+      }
+    },
+    "Venice_Italy": {
+      "city": "Venice",
+      "country": "Italy",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 45.4341,
+            "lon": 12.3388,
+            "location": "St. Mark's Square (Piazza San Marco)"
+          },
+          "end": {
+            "lat": 45.5464,
+            "lon": 12.379,
+            "location": "Murano Island Ferry Stop"
+          },
+          "length": 7.999855569
+        },
+        "medium": {
+          "start": {
+            "lat": 45.4341,
+            "lon": 12.3388,
+            "location": "St. Mark's Square"
+          },
+          "end": {
+            "lat": 45.4615,
+            "lon": 12.2433,
+            "location": "Gallerie dell'Accademia"
+          },
+          "length": 5.001384958
+        },
+        "short": {
+          "start": {
+            "lat": 45.4341,
+            "lon": 12.3388,
+            "location": "St. Mark's Square"
+          },
+          "end": {
+            "lat": 45.4086,
+            "lon": 12.3194,
+            "location": "Bridge of Sighs"
+          },
+          "length": 1.997360002
+        }
+      }
+    },
+    "Honolulu_USA": {
+      "city": "Honolulu",
+      "country": "United States",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 21.2815,
+            "lon": -157.8374,
+            "location": "Diamond Head Crater Trailhead"
+          },
+          "end": {
+            "lat": 21.3734,
+            "lon": -157.913,
+            "location": "University of Hawaii at Manoa"
+          },
+          "length": 7.999700975
+        },
+        "medium": {
+          "start": {
+            "lat": 21.2815,
+            "lon": -157.8374,
+            "location": "Diamond Head Crater"
+          },
+          "end": {
+            "lat": 21.3389,
+            "lon": -157.8847,
+            "location": "Waikiki Beach"
+          },
+          "length": 4.999933611
+        },
+        "short": {
+          "start": {
+            "lat": 21.2815,
+            "lon": -157.8374,
+            "location": "Diamond Head Crater Trailhead"
+          },
+          "end": {
+            "lat": 21.2836,
+            "lon": -157.8064,
+            "location": "Kapi'olani Park"
+          },
+          "length": 2.001109422
+        }
+      }
+    },
+    "Budapest_Hungary": {
+      "city": "Budapest",
+      "country": "Hungary",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 47.502,
+            "lon": 19.035,
+            "location": "Hungarian Parliament Building"
+          },
+          "end": {
+            "lat": 47.487,
+            "lon": 18.8651,
+            "location": "Eötvös Loránd University Campus"
+          },
+          "length": 7.999067373
+        },
+        "medium": {
+          "start": {
+            "lat": 47.502,
+            "lon": 19.035,
+            "location": "Hungarian Parliament Building"
+          },
+          "end": {
+            "lat": 47.5706,
+            "lon": 19.069,
+            "location": "Margaret Island Park"
+          },
+          "length": 4.99816102
+        },
+        "short": {
+          "start": {
+            "lat": 47.502,
+            "lon": 19.035,
+            "location": "Hungarian Parliament Building"
+          },
+          "end": {
+            "lat": 47.4767,
+            "lon": 19.0557,
+            "location": "Fisherman's Bastion"
+          },
+          "length": 1.997454759
+        }
+      }
+    },
+    "Rome_Italy": {
+      "city": "Rome",
+      "country": "Italy",
+      "price": 500,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.8902,
+            "lon": 12.4922,
+            "location": "Colosseum"
+          },
+          "end": {
+            "lat": 41.9367,
+            "lon": 12.3497,
+            "location": "Vatican Museums"
+          },
+          "length": 8.000356888
+        },
+        "medium": {
+          "start": {
+            "lat": 41.8902,
+            "lon": 12.4922,
+            "location": "Colosseum"
+          },
+          "end": {
+            "lat": 41.9559,
+            "lon": 12.4514,
+            "location": "Piazza Navona"
+          },
+          "length": 5.000654013
+        },
+        "short": {
+          "start": {
+            "lat": 41.8902,
+            "lon": 12.4922,
+            "location": "Colosseum"
+          },
+          "end": {
+            "lat": 41.8784,
+            "lon": 12.4567,
+            "location": "Roman Forum"
+          },
+          "length": 2.001557607
+        }
+      }
+    },
+    "Amsterdam_Netherlands": {
+      "city": "Amsterdam",
+      "country": "Netherlands",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 52.3676,
+            "lon": 4.9041,
+            "location": "Rijksmuseum"
+          },
+          "end": {
+            "lat": 52.3772,
+            "lon": 5.0931,
+            "location": "University of Amsterdam"
+          },
+          "length": 8.000279169
+        },
+        "medium": {
+          "start": {
+            "lat": 52.3676,
+            "lon": 4.9041,
+            "location": "Rijksmuseum"
+          },
+          "end": {
+            "lat": 52.4384,
+            "lon": 4.8797,
+            "location": "Vondelpark"
+          },
+          "length": 4.998826941
+        },
+        "short": {
+          "start": {
+            "lat": 52.3676,
+            "lon": 4.9041,
+            "location": "Rijksmuseum"
+          },
+          "end": {
+            "lat": 52.3517,
+            "lon": 4.8645,
+            "location": "Van Gogh Museum"
+          },
+          "length": 1.999755431
+        }
+      }
+    },
+    "Bordeaux_France": {
+      "city": "Bordeaux",
+      "country": "France",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 44.8378,
+            "lon": -0.5792,
+            "location": "Place de la Bourse"
+          },
+          "end": {
+            "lat": 44.9536,
+            "lon": -0.5781,
+            "location": "University of Bordeaux"
+          },
+          "length": 8.001277281
+        },
+        "medium": {
+          "start": {
+            "lat": 44.8378,
+            "lon": -0.5792,
+            "location": "Place de la Bourse"
+          },
+          "end": {
+            "lat": 44.8992,
+            "lon": -0.5251,
+            "location": "Cité du Vin"
+          },
+          "length": 5.001611543
+        },
+        "short": {
+          "start": {
+            "lat": 44.8378,
+            "lon": -0.5792,
+            "location": "Place de la Bourse"
+          },
+          "end": {
+            "lat": 44.8312,
+            "lon": -0.5395,
+            "location": "Water Mirror (Miroir d'eau)"
+          },
+          "length": 1.997951676
+        }
+      }
+    },
+    "London_United_Kingdom": {
+      "city": "London",
+      "country": "United Kingdom",
+      "price": 500,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 51.5081,
+            "lon": -0.1281,
+            "location": "Trafalgar Square"
+          },
+          "end": {
+            "lat": 51.4728,
+            "lon": -0.3052,
+            "location": "Imperial College London"
+          },
+          "length": 7.999906384
+        },
+        "medium": {
+          "start": {
+            "lat": 51.5081,
+            "lon": -0.1281,
+            "location": "Trafalgar Square"
+          },
+          "end": {
+            "lat": 51.5467,
+            "lon": -0.2265,
+            "location": "Hyde Park / Kensington Gardens"
+          },
+          "length": 5.00046347
+        },
+        "short": {
+          "start": {
+            "lat": 51.5081,
+            "lon": -0.1281,
+            "location": "Trafalgar Square"
+          },
+          "end": {
+            "lat": 51.4801,
+            "lon": -0.1161,
+            "location": "National Gallery"
+          },
+          "length": 2.002320113
+        }
+      }
+    },
+    "Interlaken_Switzerland": {
+      "city": "Interlaken",
+      "country": "Switzerland",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 46.6863,
+            "lon": 7.8632,
+            "location": "Lake Thun Promenade (Thunersee)"
+          },
+          "end": {
+            "lat": 46.7676,
+            "lon": 7.9835,
+            "location": "Niederhorn Trailhead"
+          },
+          "length": 8.001140907
+        },
+        "medium": {
+          "start": {
+            "lat": 46.6863,
+            "lon": 7.8632,
+            "location": "Lake Thun Promenade"
+          },
+          "end": {
+            "lat": 46.7565,
+            "lon": 7.8375,
+            "location": "Harder Kulm Funicular Base"
+          },
+          "length": 5.000834161
+        },
+        "short": {
+          "start": {
+            "lat": 46.6863,
+            "lon": 7.8632,
+            "location": "Interlaken West Station"
+          },
+          "end": {
+            "lat": 46.7054,
+            "lon": 7.8949,
+            "location": "Höhematte Park"
+          },
+          "length": 1.999590066
+        }
+      }
+    },
+    "Moscow_Russia": {
+      "city": "Moscow",
+      "country": "Russia",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 55.7539,
+            "lon": 37.6208,
+            "location": "Red Square / Kremlin"
+          },
+          "end": {
+            "lat": 55.6667,
+            "lon": 37.4855,
+            "location": "Moscow State University"
+          },
+          "length": 8.002419854
+        },
+        "medium": {
+          "start": {
+            "lat": 55.7539,
+            "lon": 37.6208,
+            "location": "Red Square"
+          },
+          "end": {
+            "lat": 55.7261,
+            "lon": 37.5021,
+            "location": "Gorky Park"
+          },
+          "length": 5.000630886
+        },
+        "short": {
+          "start": {
+            "lat": 55.7539,
+            "lon": 37.6208,
+            "location": "Red Square / St. Basil's Cathedral"
+          },
+          "end": {
+            "lat": 55.741,
+            "lon": 37.5748,
+            "location": "St. Basil's Cathedral"
+          },
+          "length": 1.998646593
+        }
+      }
+    },
+    "Paris_France": {
+      "city": "Paris",
+      "country": "France",
+      "price": 500,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 48.8566,
+            "lon": 2.3522,
+            "location": "Notre-Dame Cathedral"
+          },
+          "end": {
+            "lat": 48.8139,
+            "lon": 2.1887,
+            "location": "Champ de Mars (Eiffel Tower)"
+          },
+          "length": 7.999816728
+        },
+        "medium": {
+          "start": {
+            "lat": 48.8566,
+            "lon": 2.3522,
+            "location": "Notre-Dame Cathedral"
+          },
+          "end": {
+            "lat": 48.8864,
+            "lon": 2.2519,
+            "location": "Arc de Triomphe"
+          },
+          "length": 5.001757033
+        },
+        "short": {
+          "start": {
+            "lat": 48.8566,
+            "lon": 2.3522,
+            "location": "Notre-Dame Cathedral"
+          },
+          "end": {
+            "lat": 48.8688,
+            "lon": 2.3123,
+            "location": "Louvre Museum"
+          },
+          "length": 1.999962681
+        }
+      }
+    },
+    "Zürich_Switzerland": {
+      "city": "Zürich",
+      "country": "Switzerland",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 47.3769,
+            "lon": 8.5417,
+            "location": "Grossmünster Cathedral"
+          },
+          "end": {
+            "lat": 47.2636,
+            "lon": 8.5771,
+            "location": "Uetliberg Mountain Summit"
+          },
+          "length": 8.002031844
+        },
+        "medium": {
+          "start": {
+            "lat": 47.3769,
+            "lon": 8.5417,
+            "location": "Grossmünster Cathedral"
+          },
+          "end": {
+            "lat": 47.3449,
+            "lon": 8.6375,
+            "location": "ETH Zürich Campus"
+          },
+          "length": 4.9992229
+        },
+        "short": {
+          "start": {
+            "lat": 47.3769,
+            "lon": 8.5417,
+            "location": "Grossmünster Cathedral"
+          },
+          "end": {
+            "lat": 47.3769,
+            "lon": 8.499,
+            "location": "Old Town (Altstadt)"
+          },
+          "length": 1.997874631
+        }
+      }
+    },
+    "Washington_D.C._USA": {
+      "city": "Washington D.C.",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 38.8893,
+            "lon": -77.0502,
+            "location": "Lincoln Memorial"
+          },
+          "end": {
+            "lat": 38.9775,
+            "lon": -76.9537,
+            "location": "Georgetown University"
+          },
+          "length": 8.002399538
+        },
+        "medium": {
+          "start": {
+            "lat": 38.8893,
+            "lon": -77.0502,
+            "location": "Lincoln Memorial"
+          },
+          "end": {
+            "lat": 38.8906,
+            "lon": -76.9572,
+            "location": "National Mall / Capitol Building"
+          },
+          "length": 5.002310509
+        },
+        "short": {
+          "start": {
+            "lat": 38.8893,
+            "lon": -77.0502,
+            "location": "Lincoln Memorial"
+          },
+          "end": {
+            "lat": 38.8911,
+            "lon": -77.0131,
+            "location": "Washington Monument"
+          },
+          "length": 1.999089141
+        }
+      }
+    },
+    "Vancouver_Canada": {
+      "city": "Vancouver",
+      "country": "Canada",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 49.3043,
+            "lon": -123.1443,
+            "location": "University of British Columbia Campus"
+          },
+          "end": {
+            "lat": 49.21,
+            "lon": -123.0414,
+            "location": "Granville Island"
+          },
+          "length": 7.999069907
+        },
+        "medium": {
+          "start": {
+            "lat": 49.3043,
+            "lon": -123.1443,
+            "location": "UBC Campus"
+          },
+          "end": {
+            "lat": 49.2556,
+            "lon": -123.2264,
+            "location": "Pacific Spirit Regional Park"
+          },
+          "length": 5.001697307
+        },
+        "short": {
+          "start": {
+            "lat": 49.2827,
+            "lon": -123.1207,
+            "location": "Granville Island"
+          },
+          "end": {
+            "lat": 49.3043,
+            "lon": -123.1443,
+            "location": "Vancouver Aquarium / Stanley Park"
+          },
+          "length": 1.832570069
+        }
+      }
+    },
+    "Portland_USA": {
+      "city": "Portland",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 45.5188,
+            "lon": -122.6797,
+            "location": "Powell's Books"
+          },
+          "end": {
+            "lat": 45.4995,
+            "lon": -122.8426,
+            "location": "Forest Park Trailhead (Wildwood Trail)"
+          },
+          "length": 7.999679155
+        },
+        "medium": {
+          "start": {
+            "lat": 45.5144,
+            "lon": -122.717,
+            "location": "Portland Japanese Garden"
+          },
+          "end": {
+            "lat": 45.5341,
+            "lon": -122.6176,
+            "location": "Washington Park"
+          },
+          "length": 5.000555921
+        },
+        "short": {
+          "start": {
+            "lat": 45.5188,
+            "lon": -122.6797,
+            "location": "Powell's Books"
+          },
+          "end": {
+            "lat": 45.5367,
+            "lon": -122.6473,
+            "location": "Pioneer Courthouse Square"
+          },
+          "length": 1.997310828
+        }
+      }
+    },
+    "São_Paulo_Brazil": {
+      "city": "São Paulo",
+      "country": "Brazil",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": -23.5615,
+            "lon": -46.6561,
+            "location": "University of São Paulo"
+          },
+          "end": {
+            "lat": -23.6771,
+            "lon": -46.6628,
+            "location": "Ibirapuera Park"
+          },
+          "length": 7.998531229
+        },
+        "medium": {
+          "start": {
+            "lat": -23.5615,
+            "lon": -46.6561,
+            "location": "University of São Paulo"
+          },
+          "end": {
+            "lat": -23.5268,
+            "lon": -46.7254,
+            "location": "Paulista Avenue / MASP Museum"
+          },
+          "length": 5.001702107
+        },
+        "short": {
+          "start": {
+            "lat": -23.5613,
+            "lon": -46.6565,
+            "location": "MASP Museum / Paulista Avenue"
+          },
+          "end": {
+            "lat": -23.5396,
+            "lon": -46.6774,
+            "location": "Trianon-MASP Park"
+          },
+          "length": 2.000110326
+        }
+      }
+    },
+    "Seville_Spain": {
+      "city": "Seville",
+      "country": "Spain",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 37.3861,
+            "lon": -5.9931,
+            "location": "Seville Cathedral / Giralda Tower"
+          },
+          "end": {
+            "lat": 37.5019,
+            "lon": -5.9936,
+            "location": "University of Seville"
+          },
+          "length": 8.001143148
+        },
+        "medium": {
+          "start": {
+            "lat": 37.3861,
+            "lon": -5.9931,
+            "location": "Seville Cathedral"
+          },
+          "end": {
+            "lat": 37.4304,
+            "lon": -5.9211,
+            "location": "Plaza de España"
+          },
+          "length": 4.998404225
+        },
+        "short": {
+          "start": {
+            "lat": 37.3861,
+            "lon": -5.9931,
+            "location": "Seville Cathedral"
+          },
+          "end": {
+            "lat": 37.3577,
+            "lon": -6.0002,
+            "location": "Real Alcázar"
+          },
+          "length": 2.000625835
+        }
+      }
+    },
+    "Chiang_Mai_Thailand": {
+      "city": "Chiang Mai",
+      "country": "Thailand",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 18.7953,
+            "lon": 98.962,
+            "location": "Doi Suthep-Pui National Park"
+          },
+          "end": {
+            "lat": 18.7602,
+            "lon": 99.0786,
+            "location": "Nimman Road Arts District"
+          },
+          "length": 8.003834211
+        },
+        "medium": {
+          "start": {
+            "lat": 18.7953,
+            "lon": 98.962,
+            "location": "Chiang Mai University Campus"
+          },
+          "end": {
+            "lat": 18.7788,
+            "lon": 99.0364,
+            "location": "Tha Phae Gate"
+          },
+          "length": 4.998468134
+        },
+        "short": {
+          "start": {
+            "lat": 18.7884,
+            "lon": 98.9931,
+            "location": "Tha Phae Gate"
+          },
+          "end": {
+            "lat": 18.7807,
+            "lon": 98.9636,
+            "location": "Wat Phra Singh Temple"
+          },
+          "length": 2.001706308
+        }
+      }
+    },
+    "Toronto_Canada": {
+      "city": "Toronto",
+      "country": "Canada",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 43.6426,
+            "lon": -79.3871,
+            "location": "CN Tower"
+          },
+          "end": {
+            "lat": 43.7029,
+            "lon": -79.5238,
+            "location": "High Park"
+          },
+          "length": 8.001875997
+        },
+        "medium": {
+          "start": {
+            "lat": 43.6426,
+            "lon": -79.3871,
+            "location": "CN Tower"
+          },
+          "end": {
+            "lat": 43.7118,
+            "lon": -79.4164,
+            "location": "University of Toronto"
+          },
+          "length": 5.000473749
+        },
+        "short": {
+          "start": {
+            "lat": 43.6426,
+            "lon": -79.3871,
+            "location": "CN Tower"
+          },
+          "end": {
+            "lat": 43.6313,
+            "lon": -79.3503,
+            "location": "Ripley's Aquarium"
+          },
+          "length": 1.998975626
+        }
+      }
+    },
+    "Milan_Italy": {
+      "city": "Milan",
+      "country": "Italy",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 45.4654,
+            "lon": 9.1859,
+            "location": "Milan Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 45.3621,
+            "lon": 9.1113,
+            "location": "Bocconi University"
+          },
+          "length": 8.002182138
+        },
+        "medium": {
+          "start": {
+            "lat": 45.4654,
+            "lon": 9.1859,
+            "location": "Milan Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 45.4654,
+            "lon": 9.0827,
+            "location": "Sforza Castle"
+          },
+          "length": 5.000910902
+        },
+        "short": {
+          "start": {
+            "lat": 45.4654,
+            "lon": 9.1859,
+            "location": "Milan Cathedral (Duomo)"
+          },
+          "end": {
+            "lat": 45.4747,
+            "lon": 9.225,
+            "location": "Galleria Vittorio Emanuele II"
+          },
+          "length": 2.000573307
+        }
+      }
+    },
+    "Austin_USA": {
+      "city": "Austin",
+      "country": "United States",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 30.2849,
+            "lon": -97.7341,
+            "location": "Barton Creek Greenbelt Trailhead"
+          },
+          "end": {
+            "lat": 30.1789,
+            "lon": -97.788,
+            "location": "South Congress Ave"
+          },
+          "length": 7.999622015
+        },
+        "medium": {
+          "start": {
+            "lat": 30.2849,
+            "lon": -97.7341,
+            "location": "Barton Springs Pool"
+          },
+          "end": {
+            "lat": 30.2202,
+            "lon": -97.7716,
+            "location": "University of Texas Tower"
+          },
+          "length": 4.999374622
+        },
+        "short": {
+          "start": {
+            "lat": 30.2742,
+            "lon": -97.7403,
+            "location": "UT Austin Tower"
+          },
+          "end": {
+            "lat": 30.2958,
+            "lon": -97.718,
+            "location": "Texas State Capitol"
+          },
+          "length": 1.999410661
+        }
+      }
+    },
+    "Frankfurt_Germany": {
+      "city": "Frankfurt",
+      "country": "Germany",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 50.1109,
+            "lon": 8.6821,
+            "location": "Römerberg Old Town"
+          },
+          "end": {
+            "lat": 50.0058,
+            "lon": 8.6065,
+            "location": "Goethe University Campus"
+          },
+          "length": 7.998734274
+        },
+        "medium": {
+          "start": {
+            "lat": 50.1109,
+            "lon": 8.6821,
+            "location": "Römerberg"
+          },
+          "end": {
+            "lat": 50.1364,
+            "lon": 8.5764,
+            "location": "Palmengarten Botanical Garden"
+          },
+          "length": 5.002868893
+        },
+        "short": {
+          "start": {
+            "lat": 50.1109,
+            "lon": 8.6821,
+            "location": "Römerberg Old Town"
+          },
+          "end": {
+            "lat": 50.083,
+            "lon": 8.6942,
+            "location": "Frankfurt Cathedral"
+          },
+          "length": 2.000938224
+        }
+      }
+    },
+    "Barcelona_Spain": {
+      "city": "Barcelona",
+      "country": "Spain",
+      "price": 400,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.4036,
+            "lon": 2.1744,
+            "location": "Sagrada Família"
+          },
+          "end": {
+            "lat": 41.2879,
+            "lon": 2.1682,
+            "location": "University of Barcelona"
+          },
+          "length": 8.000653093
+        },
+        "medium": {
+          "start": {
+            "lat": 41.4036,
+            "lon": 2.1744,
+            "location": "Sagrada Família"
+          },
+          "end": {
+            "lat": 41.4438,
+            "lon": 2.0942,
+            "location": "Park Güell"
+          },
+          "length": 4.997988891
+        },
+        "short": {
+          "start": {
+            "lat": 41.4036,
+            "lon": 2.1744,
+            "location": "Sagrada Família"
+          },
+          "end": {
+            "lat": 41.3795,
+            "lon": 2.186,
+            "location": "Arc de Triomf"
+          },
+          "length": 1.770403341
+        }
+      }
+    },
+    "Salzburg_Austria": {
+      "city": "Salzburg",
+      "country": "Austria",
+      "price": 200,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 47.7994,
+            "lon": 13.0436,
+            "location": "Hohensalzburg Fortress"
+          },
+          "end": {
+            "lat": 47.7265,
+            "lon": 13.1774,
+            "location": "Hellbrunn Palace"
+          },
+          "length": 7.999311575
+        },
+        "medium": {
+          "start": {
+            "lat": 47.7994,
+            "lon": 13.0436,
+            "location": "Hohensalzburg Fortress"
+          },
+          "end": {
+            "lat": 47.8571,
+            "lon": 13.1087,
+            "location": "Mirabell Palace & Gardens"
+          },
+          "length": 5.001303364
+        },
+        "short": {
+          "start": {
+            "lat": 47.8095,
+            "lon": 13.055,
+            "location": "Mirabell Palace"
+          },
+          "end": {
+            "lat": 47.7861,
+            "lon": 13.0296,
+            "location": "Mozart's Birthplace"
+          },
+          "length": 2.00097063
+        }
+      }
+    },
+    "Montreal_Canada": {
+      "city": "Montreal",
+      "country": "Canada",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 45.5017,
+            "lon": -73.5673,
+            "location": "Old Montreal / Notre-Dame Basilica"
+          },
+          "end": {
+            "lat": 45.5529,
+            "lon": -73.7155,
+            "location": "McGill University"
+          },
+          "length": 7.998498731
+        },
+        "medium": {
+          "start": {
+            "lat": 45.5017,
+            "lon": -73.5673,
+            "location": "Old Montreal"
+          },
+          "end": {
+            "lat": 45.5476,
+            "lon": -73.6472,
+            "location": "Mount Royal Park"
+          },
+          "length": 5.001744246
+        },
+        "short": {
+          "start": {
+            "lat": 45.5017,
+            "lon": -73.5673,
+            "location": "Old Montreal"
+          },
+          "end": {
+            "lat": 45.5197,
+            "lon": -73.5996,
+            "location": "McGill University Campus"
+          },
+          "length": 1.998177093
+        }
+      }
+    },
+    "Prague_Czech_Republic": {
+      "city": "Prague",
+      "country": "Czech Republic",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 50.0755,
+            "lon": 14.4378,
+            "location": "Prague Castle"
+          },
+          "end": {
+            "lat": 50.0136,
+            "lon": 14.2854,
+            "location": "Vyšehrad Fortress"
+          },
+          "length": 8.001246514
+        },
+        "medium": {
+          "start": {
+            "lat": 50.0755,
+            "lon": 14.4378,
+            "location": "Prague Castle"
+          },
+          "end": {
+            "lat": 50.1295,
+            "lon": 14.3628,
+            "location": "Stromovka Park"
+          },
+          "length": 4.996896427
+        },
+        "short": {
+          "start": {
+            "lat": 50.0755,
+            "lon": 14.4378,
+            "location": "Prague Castle"
+          },
+          "end": {
+            "lat": 50.0913,
+            "lon": 14.4,
+            "location": "Charles Bridge"
+          },
+          "length": 2.000097456
+        }
+      }
+    },
+    "Chicago_USA": {
+      "city": "Chicago",
+      "country": "United States",
+      "price": 300,
+      "routes": {
+        "long": {
+          "start": {
+            "lat": 41.8827,
+            "lon": -87.6233,
+            "location": "Millennium Park (Cloud Gate)"
+          },
+          "end": {
+            "lat": 41.8827,
+            "lon": -87.6065,
+            "location": "Navy Pier"
+          },
+          "length": 0.864216569
+        },
+        "medium": {
+          "start": {
+            "lat": 41.8827,
+            "lon": -87.6233,
+            "location": "Millennium Park"
+          },
+          "end": {
+            "lat": 41.7886,
+            "lon": -87.5987,
+            "location": "University of Chicago"
+          },
+          "length": 6.623938003
+        },
+        "short": {
+          "start": {
+            "lat": 41.8827,
+            "lon": -87.6233,
+            "location": "Millennium Park (Cloud Gate)"
+          },
+          "end": {
+            "lat": 41.8796,
+            "lon": -87.6237,
+            "location": "Art Institute of Chicago"
+          },
+          "length": 0.215177828
+        }
+      }
+    }
+  }
+}
