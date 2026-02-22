@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 
 from app.core.config import get_settings
-from app.routes import users, sessions, leaderboard, data
+from app.routes import users, sessions, leaderboard, data, destinations
 
 settings = get_settings()
 
@@ -43,6 +43,7 @@ app.include_router(users.router)
 app.include_router(sessions.router)
 app.include_router(leaderboard.router)
 app.include_router(data.router)
+app.include_router(destinations.router)
 
 
 @app.get("/health")

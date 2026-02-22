@@ -72,6 +72,11 @@ class FirestoreClient:
         """Get leaderboard collection reference."""
         return self._db.collection("leaderboard")
 
+    @property
+    def destinations_collection(self):
+        """Get destinations collection reference."""
+        return self._db.collection("destinations")
+
 
 def get_firestore_client() -> FirestoreClient:
     """Dependency injection for Firestore client."""
