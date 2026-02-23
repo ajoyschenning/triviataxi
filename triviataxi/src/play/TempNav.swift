@@ -12,14 +12,12 @@ import MapboxNavigationCore
 import MapboxNavigationUIKit
 
 
-
-
 // MARK: NavigationViewController UI
 struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
     
     func makeUIViewController(context: Context) -> UIViewController {
-        let viewController = UIViewController() // Placeholder UIViewController for now
+        let viewController = UIViewController()
         
         calculateRoutes { navigationViewController in
             DispatchQueue.main.async {
@@ -59,11 +57,15 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                 print(error.localizedDescription)
             case .success(let navigationRoutes):
                 
-                // set up options for NavigationViewController
+                // Create custom bottom banner
+                let customBottomBanner = CustomBottomBannerViewController()
+                
+                // set up options for NavigationViewController with custom bottom banner only
                 let navigationOptions = NavigationOptions(
                     mapboxNavigation: mapboxNavigation,
                     voiceController: mapboxNavigationProvider.routeVoiceController,
-                    eventsManager: mapboxNavigationProvider.eventsManager()
+                    eventsManager: mapboxNavigationProvider.eventsManager(),
+                    bottomBanner: customBottomBanner
                 )
                 
                 // create the NavigationViewController, combining the returned routes and the options defined above
@@ -72,14 +74,42 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                     navigationOptions: navigationOptions
                 )
                 
+                // Hide the top banner to show only map and bottom banner
+                navigationViewController.navigationView.topBannerContainerView.isHidden = true
+                
+                // Hide speed limit view - search through subviews
+                for subview in navigationViewController.navigationView.subviews {
+                    if String(describing: type(of: subview)) == "SpeedLimitView" {
+                        subview.isHidden = true
+                    }
+                }
+                
+                // Hide floating buttons (camera, volume, feedback)
+                navigationViewController.navigationView.floatingStackView.isHidden = true
+                
                 // set additional options on the NavigationViewController
                 navigationViewController.modalPresentationStyle = .fullScreen
                 // Render part of the route that has been traversed with full transparency, to give the illusion of a disappearing route.
                 navigationViewController.routeLineTracksTraversal = true
                 
+                // Set the custom bottom banner's navigation view controller reference
+                customBottomBanner.navigationViewController = navigationViewController
+                
                 // Return the navigation view controller in the completion handler
                 completion(navigationViewController)
             }
         }
+    }
+}
+
+
+// MARK: Custom Bottom Banner
+class CustomBottomBannerViewController: BottomBannerViewController {
+    
+    var navigationViewController: NavigationViewController?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = UIColor(red: 1, green: 0.94, blue: 0.6, alpha: 1) // Yellow background
     }
 }

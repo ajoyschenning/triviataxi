@@ -8,11 +8,16 @@
 
 import SwiftUI
 import MapboxMaps
+import MapboxDirections
+import MapboxNavigationCore
+import MapboxNavigationUIKit
+import CoreLocation
 internal import Combine
 
 
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
+    @State private var showNavigation = false
 
     var body: some View {
         ZStack {
@@ -37,23 +42,19 @@ struct RouteSelectionView: View {
                 ScrollView {
                     VStack(spacing: 28) {
 
-//                        Text("SELECT CITY")
-//                            .font(.system(size: 32, weight: .semibold))
-//                            .italic()
-//                            .foregroundColor(.black)
-//                            .padding(.top, 24)
-
-                        RouteCard(city: "New York").padding(.top, 24)
-                        RouteCard(city: "Washington DC")
-                        RouteCard(city: "Miami")
-                        RouteCard(city: "Boston")
-                        RouteCard(city: "Paris")
+                        RouteCard(city: "Nashville") {
+                            showNavigation = true
+                        }.padding(.top, 24)
 
                         Spacer(minLength: 40)
                     }
                     .padding(.horizontal, 21)
                 }
             }
+        }
+        .fullScreenCover(isPresented: $showNavigation) {
+            NavigationViewControllerRepresentable()
+                .edgesIgnoringSafeArea(.all)
         }
     }
 }
@@ -100,9 +101,8 @@ struct RouteSelectionView: View {
 //}
 
 struct RouteCard: View {
-    @State private var showNavigation = false
-
     let city: String
+    let onDifficultySelected: () -> Void
 
     var body: some View {
         ZStack {
@@ -140,8 +140,7 @@ struct RouteCard: View {
 
     private func difficultyButton(title: String) -> some View {
         Button(action: {
-            // TODO: start route
-            showNavigation = true
+            onDifficultySelected()
         }) {
             Text(title)
                 .font(.system(size: 14, weight: .bold))
