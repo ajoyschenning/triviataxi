@@ -44,11 +44,11 @@ struct RouteSelectionView: View {
 //                            .foregroundColor(.black)
 //                            .padding(.top, 24)
 
-                        RouteCard(journeyID: "100", city: "New York").padding(.top, 24)
-                        //RouteCard(city: "Washington DC")
-                        //RouteCard(city: "Miami")
-                        //RouteCard(city: "Boston")
-                        //RouteCard(city: "Paris")
+                        RouteCard(journeyID: "New_York_City_USA", city: "New York").padding(.top, 24)
+                        RouteCard(journeyID: "Washington_D.C._USA", city: "Washington DC")
+                        RouteCard(journeyID: "Miami_USA", city: "Miami")
+                        RouteCard(journeyID: "Boston_USA", city: "Boston")
+                        RouteCard(journeyID: "Paris_France", city: "Paris")
 
                         Spacer(minLength: 40)
                     }
@@ -145,8 +145,9 @@ struct RouteCard: View {
     private func difficultyButton(title: String) -> some View {
         Button(action: {
             // TODO: start route
-            startRoute()
             showNavigation = true
+            startRoute()
+            
         }) {
             Text(title)
                 .font(.system(size: 14, weight: .bold))
@@ -158,7 +159,6 @@ struct RouteCard: View {
     }
     
     private func startRoute() {
-        print("hello")
         // 1. Prevent duplicate taps while the request is loading
         isProcessing = true
         
@@ -174,7 +174,6 @@ struct RouteCard: View {
                 let token = try await user.getIDToken()
                 
                 // 3. Request the new session from your FastAPI backend
-                // Note: Replace 'self.journeyId' with whatever variable stores your city/route ID
                 let session = try await NetworkService.shared.createSession(
                     journeyId: self.journeyID,
                     token: token
@@ -182,7 +181,6 @@ struct RouteCard: View {
                 
                 // 4. Update UI state on the Main Thread to trigger navigation
                 await MainActor.run {
-                    print("hi")
                     self.isProcessing = false
                     self.showNavigation = true
                 }

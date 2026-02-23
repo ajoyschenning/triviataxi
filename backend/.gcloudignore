@@ -1,0 +1,15 @@
+.gcloudignore
+.git
+.gitignore
+
+# Ignore the massive virtual environment
+.venv/
+venv/
+env/
+
+# Ignore cached python files
+__pycache__/
+*.pyc
+
+serviceAccountKey.json
+google-cloud-sdk/
