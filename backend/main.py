@@ -10,8 +10,17 @@ from contextlib import asynccontextmanager
 from app.core.config import get_settings
 from app.routes import users, sessions, leaderboard
 
-cred = credentials.Certificate("serviceAccountKey.json")
-firebase_admin.initialize_app(cred)
+import os
+
+
+# 'K_SERVICE' is an environment variable automatically set by Google Cloud Run
+if os.environ.get('K_SERVICE'):
+    # We are in the cloud! Use the built-in default credentials.
+    firebase_admin.initialize_app()
+else:
+    # We are on your local MacBook. Use the local key file.
+    cred = credentials.Certificate("serviceAccountKey.json")
+    firebase_admin.initialize_app(cred)
 
 settings = get_settings()
 
