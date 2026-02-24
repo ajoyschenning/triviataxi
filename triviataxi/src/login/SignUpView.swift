@@ -130,8 +130,6 @@ struct SignUpView: View {
                         return }
                     
                     // 3. Create Profile in Backend
-                    // FIX: Pass 'leaderboardName' (String), NOT 'result?.user'
-                    print(token)
                     createUserInBackend(token: token, email: email, username: leaderboardName)
                 }
             

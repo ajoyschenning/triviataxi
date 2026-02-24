@@ -65,9 +65,9 @@ struct LoginView: View {
                                 
                                 if isPasswordVisible {
                                     TextField("Password", text: $password)
-                                        .textInputAutocapitalization(.never)
+                                        .textInputAutocapitalization(.never).autocorrectionDisabled(true)
                                 } else {
-                                    SecureField("Password", text: $password)
+                                    SecureField("Password", text: $password).textInputAutocapitalization(.never).autocorrectionDisabled(true)
                                 }
                                 
                                 Button(action: { isPasswordVisible.toggle() }) {
@@ -88,8 +88,19 @@ struct LoginView: View {
                                     .multilineTextAlignment(.center)
                             }
                             
+                            
+                                
+                            
+                            
                             FancyButton(title: "START RIDE") {
                                 login()
+                            }
+                            
+                            NavigationLink(destination: ForgotPasswordView()) {
+                                Text("Forgot Password?")
+                                    .font(.footnote)
+                                    .foregroundColor(.black.opacity(0.7))
+                                    .underline()
                             }
                             
                             NavigationLink(destination: SignUpView(userIsLoggedIn: $userIsLoggedIn)) {
