@@ -18,6 +18,8 @@ internal import Combine
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
     @State private var showNavigation = false
+    @State private var selectedOrigin: CLLocationCoordinate2D? = nil
+    @State private var selectedDestination: CLLocationCoordinate2D? = nil
 
     var body: some View {
         ZStack {
@@ -42,9 +44,25 @@ struct RouteSelectionView: View {
                 ScrollView {
                     VStack(spacing: 28) {
 
-                        RouteCard(city: "Nashville") {
+                        RouteCard(city: "Nashville", onDifficultySelected: { difficulty in
+                            // Example coordinates for each difficulty
+                            let origin: CLLocationCoordinate2D
+                            let destination: CLLocationCoordinate2D
+                            switch difficulty {
+                            case .short:
+                                origin = CLLocationCoordinate2D(latitude: 36.08555, longitude: -86.48548)
+                                destination = CLLocationCoordinate2D(latitude: 36.09439, longitude: -86.46279)
+                            case .medium:
+                                origin = CLLocationCoordinate2D(latitude: 36.1447, longitude: -86.8027)
+                                destination = CLLocationCoordinate2D(latitude: 36.1627, longitude: -86.7816)
+                            case .long:
+                                origin = CLLocationCoordinate2D(latitude: 36.1627, longitude: -86.7816)
+                                destination = CLLocationCoordinate2D(latitude: 36.1746, longitude: -86.7674)
+                            }
+                            selectedOrigin = origin
+                            selectedDestination = destination
                             showNavigation = true
-                        }.padding(.top, 24)
+                        }).padding(.top, 24)
 
                         Spacer(minLength: 40)
                     }
@@ -53,8 +71,10 @@ struct RouteSelectionView: View {
             }
         }
         .fullScreenCover(isPresented: $showNavigation) {
-            NavigationViewControllerRepresentable()
-                .edgesIgnoringSafeArea(.all)
+            if let origin = selectedOrigin, let destination = selectedDestination {
+                NavigationViewControllerRepresentable(origin: origin, destination: destination)
+                    .edgesIgnoringSafeArea(.all)
+            }
         }
     }
 }
@@ -100,9 +120,14 @@ struct RouteSelectionView: View {
 //    }
 //}
 
+
+enum RouteDifficulty {
+    case short, medium, long
+}
+
 struct RouteCard: View {
     let city: String
-    let onDifficultySelected: () -> Void
+    let onDifficultySelected: (RouteDifficulty) -> Void
 
     var body: some View {
         ZStack {
@@ -115,20 +140,15 @@ struct RouteCard: View {
                 )
 
             VStack(spacing: 16) {
-
-                // City Title
                 Text(city)
                     .font(.system(size: 25, weight: .semibold))
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
                 Spacer()
-
-                // Full-width Equal Buttons
                 HStack(spacing: 8) {
-                    difficultyButton(title: "SHORT")
-                    difficultyButton(title: "MEDIUM")
-                    difficultyButton(title: "LONG")
+                    difficultyButton(title: "SHORT", difficulty: .short)
+                    difficultyButton(title: "MEDIUM", difficulty: .medium)
+                    difficultyButton(title: "LONG", difficulty: .long)
                 }
                 .frame(height: 44)
                 .clipShape(RoundedRectangle(cornerRadius: 10))
@@ -138,9 +158,9 @@ struct RouteCard: View {
         .frame(height: 140)
     }
 
-    private func difficultyButton(title: String) -> some View {
+    private func difficultyButton(title: String, difficulty: RouteDifficulty) -> some View {
         Button(action: {
-            onDifficultySelected()
+            onDifficultySelected(difficulty)
         }) {
             Text(title)
                 .font(.system(size: 14, weight: .bold))
