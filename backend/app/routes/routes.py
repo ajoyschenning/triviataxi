@@ -5,12 +5,11 @@ from app.core.firestore import get_firestore_client
 router = APIRouter(prefix="/routes", tags=["routes"])
 
 class RouteCoordinates(BaseModel):
-    origin_lat: float
-    origin_lng: float
-    destination_lat: float
-    destination_lng: float
+    short: list[list[float]]
+    medium: list[list[float]]
+    long: list[list[float]]
 
-@router.get("/{destination_id}/{difficulty}", response_model=RouteCoordinates)
+@router.get("/{destination_id}/{difficulty}", response_model=dict)
 async def get_route_coordinates(destination_id: str, difficulty: str):
     """Return coordinates for a given destination and difficulty."""
     client = get_firestore_client()
@@ -23,9 +22,10 @@ async def get_route_coordinates(destination_id: str, difficulty: str):
     route = routes.get(difficulty)
     if not route:
         raise HTTPException(status_code=404, detail="Route not found for difficulty")
-    return RouteCoordinates(
-        origin_lat=route["origin_lat"],
-        origin_lng=route["origin_lng"],
-        destination_lat=route["destination_lat"],
-        destination_lng=route["destination_lng"]
-    )
+    
+    return {
+        difficulty: [
+            [route["start"]["lat"], route["start"]["lon"]],
+            [route["end"]["lat"], route["end"]["lon"]]
+        ]
+    }
