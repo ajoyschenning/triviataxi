@@ -1,6 +1,6 @@
 import Foundation
 import SwiftUI
-internal import Combine
+import FirebaseAuth
 
 @MainActor
 class ShopViewModel: ObservableObject {
@@ -19,20 +19,28 @@ class ShopViewModel: ObservableObject {
     @Published var purchasingItemId: String? = nil
     @Published var lastPurchaseError: String? = nil
 
-    // Replace with real user id from auth when available
-    private let currentUserId: String = "CURRENT_USER_ID"
+    // Get current user ID from Firebase Auth
+    private var currentUserId: String? {
+        Auth.auth().currentUser?.uid
+    }
 
     func load() async {
         isLoading = true
         errorMessage = nil
 
+        guard let userId = currentUserId else {
+            errorMessage = "User not authenticated"
+            isLoading = false
+            return
+        }
+
         do {
             let responses = try await NetworkService.shared.fetchDestinations()
 
-            // Try fetch owned ids; if it fails, assume none owned
+            // Try fetch owned ids; if it fails, assume none owned to avoid blocking shop access
             var owned: [String] = []
             do {
-                owned = try await NetworkService.shared.fetchOwnedDestinationIDs(for: currentUserId)
+                owned = try await NetworkService.shared.fetchOwnedDestinationIDs(for: userId)
             } catch {
                 print("Could not fetch owned destinations: \(error)")
             }
@@ -61,11 +69,16 @@ class ShopViewModel: ObservableObject {
     }
 
     func purchase(_ item: DestinationItem) async {
+        guard let userId = currentUserId else {
+            lastPurchaseError = "User not authenticated"
+            return
+        }
+
         purchasingItemId = item.id
         lastPurchaseError = nil
 
         do {
-            let response = try await NetworkService.shared.purchaseDestination(userId: currentUserId, destinationId: item.id)
+            let response = try await NetworkService.shared.purchaseDestination(userId: userId, destinationId: item.id)
 
             if response.success {
                 // Update coin balance from server response
