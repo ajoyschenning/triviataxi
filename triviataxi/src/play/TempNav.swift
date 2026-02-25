@@ -13,13 +13,12 @@ import MapboxNavigationUIKit
 
 
 
-
-// MARK: NavigationViewController UI
 struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     typealias UIViewControllerType = UIViewController
 
     let origin: CLLocationCoordinate2D
     let destination: CLLocationCoordinate2D
+    let sessionId: String
 
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
