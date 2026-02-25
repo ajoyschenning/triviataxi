@@ -16,11 +16,19 @@ internal import Combine
 import FirebaseAuth
 
 
+struct DestinationData: Codable {
+    let id: String
+    let city: String
+    let country: String
+}
+
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
     @State private var showNavigation = false
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
+    @State private var ownedDestinations: [DestinationData] = []
+    @State private var isLoadingDestinations = false
 
     var body: some View {
         ZStack {
@@ -44,30 +52,31 @@ struct RouteSelectionView: View {
                 // 📜 Scrollable Cities
                 ScrollView {
                     VStack(spacing: 28) {
-
-                        RouteCard(journeyID: "Nashville_USA", city: "Nashville", onDifficultySelected: { difficulty in
-                            // Example coordinates for each difficulty
-                            let origin: CLLocationCoordinate2D
-                            let destination: CLLocationCoordinate2D
-                            switch difficulty {
-                            case .short:
-                                origin = CLLocationCoordinate2D(latitude: 36.08555, longitude: -86.48548)
-                                destination = CLLocationCoordinate2D(latitude: 36.09439, longitude: -86.46279)
-                            case .medium:
-                                origin = CLLocationCoordinate2D(latitude: 36.1447, longitude: -86.8027)
-                                destination = CLLocationCoordinate2D(latitude: 36.1627, longitude: -86.7816)
-                            case .long:
-                                origin = CLLocationCoordinate2D(latitude: 36.1627, longitude: -86.7816)
-                                destination = CLLocationCoordinate2D(latitude: 36.1746, longitude: -86.7674)
+                        if isLoadingDestinations {
+                            ProgressView()
+                                .padding()
+                        } else if ownedDestinations.isEmpty {
+                            Text("No destinations owned")
+                                .foregroundColor(.gray)
+                                .padding()
+                        } else {
+                            ForEach(ownedDestinations, id: \.id) { destination in
+                                RouteCard(
+                                    journeyID: destination.id,
+                                    city: destination.city,
+                                    onDifficultySelected: { difficulty in
+                                        fetchRouteCoordinates(destinationId: destination.id, difficulty: difficulty)
+                                    }
+                                )
                             }
-                            selectedOrigin = origin
-                            selectedDestination = destination
-                            showNavigation = true
-                        }).padding(.top, 24)
+                        }
 
                         Spacer(minLength: 40)
                     }
                     .padding(.horizontal, 21)
+                }
+                .onAppear {
+                    fetchOwnedDestinations()
                 }
             }
         }
@@ -122,7 +131,7 @@ struct RouteSelectionView: View {
 //}
 
 
-enum RouteDifficulty {
+enum RouteDifficulty: String {
     case short, medium, long
 }
 
@@ -167,8 +176,7 @@ struct RouteCard: View {
     private func difficultyButton(title: String, difficulty: RouteDifficulty) -> some View {
         Button(action: {
             onDifficultySelected(difficulty)
-            startRoute()
-            
+            startRoute(journeyID: journeyID)
         }) {
             Text(title)
                 .font(.system(size: 14, weight: .bold))
@@ -179,7 +187,7 @@ struct RouteCard: View {
         }
     }
     
-    private func startRoute() {
+    private func startRoute(journeyID: String) {
         // 1. Prevent duplicate taps while the request is loading
         isProcessing = true
         
@@ -196,7 +204,7 @@ struct RouteCard: View {
                 
                 // 3. Request the new session from your FastAPI backend
                 let session = try await NetworkService.shared.createSession(
-                    journeyId: self.journeyID,
+                    journeyId: journeyID,
                     token: token
                 )
                 
@@ -214,6 +222,74 @@ struct RouteCard: View {
                     print("🚨 API Error: \(error.localizedDescription)")
                     self.isProcessing = false
                 }
+            }
+        }
+    }
+}
+
+extension RouteSelectionView {
+    private func fetchOwnedDestinations() {
+        isLoadingDestinations = true
+        Task {
+            do {
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in")
+                    await MainActor.run { isLoadingDestinations = false }
+                    return
+                }
+
+                let token = try await user.getIDToken()
+                let userProfile = try await NetworkService.shared.fetchUserProfile(token: token)
+                
+                var destinations: [DestinationData] = []
+                for destinationId in userProfile.owned {
+                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
+                    destinations.append(DestinationData(
+                        id: destinationId,
+                        city: destination["city"] as? String ?? "",
+                        country: destination["country"] as? String ?? ""
+                    ))
+                }
+                
+                await MainActor.run {
+                    self.ownedDestinations = destinations
+                    isLoadingDestinations = false
+                }
+            } catch {
+                print("🚨 Error fetching owned destinations: \(error)")
+                await MainActor.run { isLoadingDestinations = false }
+            }
+        }
+    }
+
+    private func fetchRouteCoordinates(destinationId: String, difficulty: RouteDifficulty) {
+        Task {
+            do {
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in")
+                    return
+                }
+
+                let token = try await user.getIDToken()
+                let coords = try await NetworkService.shared.fetchRouteCoordinates(
+                    destinationId: destinationId,
+                    difficulty: difficulty.rawValue,
+                    token: token
+                )
+                
+                await MainActor.run {
+                    selectedOrigin = CLLocationCoordinate2D(
+                        latitude: coords.origin_lat,
+                        longitude: coords.origin_lng
+                    )
+                    selectedDestination = CLLocationCoordinate2D(
+                        latitude: coords.destination_lat,
+                        longitude: coords.destination_lng
+                    )
+                    showNavigation = true
+                }
+            } catch {
+                print("🚨 Error fetching route coordinates: \(error)")
             }
         }
     }
