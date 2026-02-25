@@ -32,6 +32,19 @@ class UserUpdate(BaseModel):
     avatar_url: str | None = None
 
 
+class PurchaseRequest(BaseModel):
+    """Purchase destination request model."""
+    destination_id: str
+
+
+class PurchaseResponse(BaseModel):
+    """Purchase destination response model."""
+    success: bool
+    message: str
+    new_coin_balance: int | None = None
+    destination_id: str | None = None
+
+
 @router.post("/me")
 def create_user_profile(user: UserCreate, authorization: str = Header(None)):
     """Creates a user document in Firestore after Firebase Auth signup."""
@@ -121,3 +134,85 @@ async def update_user_profile(user_data: UserUpdate, authorization: str = Header
         return {"message": "User profile updated successfully"}
     except Exception:
         raise HTTPException(status_code=500, detail="Failed to update user profile")
+
+
+@router.get("/{user_id}/owned_destinations")
+async def get_owned_destinations(user_id: str):
+    """Get list of destination IDs that a user owns."""
+    try:
+        db = firestore.client()
+        user_doc = db.collection('users').document(user_id).get()
+        
+        if not user_doc.exists:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_data = user_doc.to_dict() or {}
+        owned = user_data.get('owned', [])
+        
+        return owned
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to fetch owned destinations")
+
+
+@router.post("/{user_id}/purchase", response_model=PurchaseResponse)
+async def purchase_destination(user_id: str, request: PurchaseRequest):
+    """Purchase a destination for the user. Deducts coins and adds to owned list."""
+    try:
+        db = firestore.client()
+        
+        # 1. Get user document
+        user_doc = db.collection('users').document(user_id).get()
+        if not user_doc.exists:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        user_data = user_doc.to_dict() or {}
+        user_coins = float(user_data.get('coins', 0.0))
+        user_owned = user_data.get('owned', [])
+        
+        # 2. Get destination document to get price
+        dest_doc = db.collection('destinations').document(request.destination_id).get()
+        if not dest_doc.exists:
+            return PurchaseResponse(
+                success=False,
+                message="Destination not found"
+            )
+        
+        dest_data = dest_doc.to_dict() or {}
+        dest_price = float(dest_data.get('price', 0.0))
+        
+        # 3. Check if user already owns this destination
+        if request.destination_id in user_owned:
+            return PurchaseResponse(
+                success=False,
+                message="You already own this destination"
+            )
+        
+        # 4. Check if user has enough coins
+        if user_coins < dest_price:
+            return PurchaseResponse(
+                success=False,
+                message=f"Insufficient coins. You need {dest_price} coins but have {user_coins}"
+            )
+        
+        # 5. Deduct coins and add destination to owned list
+        new_coin_balance = user_coins - dest_price
+        user_owned.append(request.destination_id)
+        
+        db.collection('users').document(user_id).update({
+            'coins': new_coin_balance,
+            'owned': user_owned
+        })
+        
+        return PurchaseResponse(
+            success=True,
+            message="Purchase successful",
+            new_coin_balance=int(new_coin_balance),
+            destination_id=request.destination_id
+        )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Failed to complete purchase")
