@@ -1,6 +1,7 @@
 import Foundation
 import SwiftUI
 import FirebaseAuth
+internal import Combine
 
 @MainActor
 class ShopViewModel: ObservableObject {

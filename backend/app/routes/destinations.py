@@ -76,8 +76,8 @@ async def get_route_coordinates(destination_id: str, difficulty: str):
         raise HTTPException(status_code=404, detail="Route not found for difficulty")
     
     return {
-        difficulty: [
-            [route["start"]["lat"], route["start"]["lon"]],
-            [route["end"]["lat"], route["end"]["lon"]]
-        ]
+        "origin_lat": route["start"]["lat"],
+        "origin_lng": route["start"]["lon"],
+        "destination_lat": route["end"]["lat"],
+        "destination_lng": route["end"]["lon"]
     }

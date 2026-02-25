@@ -56,40 +56,45 @@ enum NetworkError: Error {
 
 class NetworkService {
     static let shared = NetworkService()
-    private let baseURL = "https://trivia-taxi-api-423193744278.us-central1.run.app/"
-    
+    private let baseURL =
+        "https://trivia-taxi-api-423193744278.us-central1.run.app/"
+
     // High-standard approach: Use a Result type or Async/Await
-    func createSession(journeyId: String, token: String) async throws -> SessionResponse {
+    func createSession(journeyId: String, token: String) async throws
+        -> SessionResponse
+    {
         // 1. Construct URL with Query Items
         var components = URLComponents(string: "\(baseURL)/sessions")
-        components?.queryItems = [URLQueryItem(name: "journey_id", value: journeyId)]
-        
+        components?.queryItems = [
+            URLQueryItem(name: "journey_id", value: journeyId)
+        ]
+
         guard let url = components?.url else {
             throw NetworkError.invalidURL
         }
-        
+
         // 2. Setup Request
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "accept")
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        
+
         // 3. Execute Request
         let (data, response) = try await URLSession.shared.data(for: request)
-        
+
         // 4. Validate Response
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.noData
         }
-        
+
         if httpResponse.statusCode == 401 {
             throw NetworkError.unauthorized
         }
-        
+
         guard (200...299).contains(httpResponse.statusCode) else {
             throw NetworkError.serverError(httpResponse.statusCode)
         }
-        
+
         // 5. Decode JSON
         do {
             let decoder = JSONDecoder()
@@ -99,28 +104,10 @@ class NetworkService {
             throw NetworkError.decodingError
         }
     }
-
-    // MARK: - Shop / Destinations API Stubs
-
-    struct DestinationResponse: Codable, Identifiable {
-        let id: String
-        let city: String
-        let miles: String?
-        let price: Int
-        let imageUrl: String?
-
-        enum CodingKeys: String, CodingKey {
-            case id
-            case city
-            case miles
-            case price
-            case imageUrl = "image_url"
-        }
-    }
-
+    
     /// Fetch current user profile using Bearer token from /users/me endpoint.
     func fetchUserProfile(token: String) async throws -> UserProfile {
-        guard let url = URL(string: "\(baseURL)users/me") else {
+        guard let url = URL(string: "\(baseURL)/users/me") else {
             throw NetworkError.invalidURL
         }
 
@@ -145,16 +132,19 @@ class NetworkService {
         do {
             let decoder = JSONDecoder()
             let userProfile = try decoder.decode(UserProfile.self, from: data)
-            print("DEBUG: User Profile fetched - \(userProfile)")
+            print("DEBUG: User Profile fetched - \(userProfile.username)")
             return userProfile
         } catch {
+            print("🚨 UserProfile Decoding Error: \(error)")
             throw NetworkError.decodingError
         }
     }
 
     /// Fetch a single destination by ID.
-    func fetchDestination(id: String, token: String) async throws -> [String: Any] {
-        guard let url = URL(string: "\(baseURL)destinations/\(id)") else {
+    func fetchDestination(id: String, token: String) async throws
+        -> DestinationData
+    {
+        guard let url = URL(string: "\(baseURL)/destinations/\(id)") else {
             throw NetworkError.invalidURL
         }
 
@@ -165,21 +155,33 @@ class NetworkService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError((response as? HTTPURLResponse)?.statusCode ?? -1)
+            (200...299).contains(httpResponse.statusCode)
+        else {
+            throw NetworkError.serverError(
+                (response as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
 
         do {
             let decoder = JSONDecoder()
-            return try decoder.decode([String: AnyCodable].self, from: data).mapValues { $0.value }
+            return try decoder.decode(DestinationData.self, from: data)
         } catch {
+            print("🚨 Destination Decoding Error: \(error)")
             throw NetworkError.decodingError
         }
     }
 
     /// Fetch route coordinates for a specific destination and difficulty.
-    func fetchRouteCoordinates(destinationId: String, difficulty: String, token: String) async throws -> RouteCoordinates {
-        guard let url = URL(string: "\(baseURL)routes/\(destinationId)/\(difficulty)") else {
+    func fetchRouteCoordinates(
+        destinationId: String,
+        difficulty: String,
+        token: String
+    ) async throws -> RouteCoordinates {
+        guard
+            let url = URL(
+                string: "\(baseURL)/destinations/\(destinationId)/\(difficulty)"
+            )
+        else {
             throw NetworkError.invalidURL
         }
 
@@ -205,10 +207,10 @@ class NetworkService {
             let decoder = JSONDecoder()
             return try decoder.decode(RouteCoordinates.self, from: data)
         } catch {
+            print("🚨 RouteCoordinates Decoding Error: \(error)")
             throw NetworkError.decodingError
         }
     }
-
     // MARK: - Destinations API
 
     /// Fetch all destinations from the backend API.
@@ -224,8 +226,11 @@ class NetworkService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError((response as? HTTPURLResponse)?.statusCode ?? -1)
+            (200...299).contains(httpResponse.statusCode)
+        else {
+            throw NetworkError.serverError(
+                (response as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
 
         do {
@@ -248,8 +253,11 @@ class NetworkService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError((response as? HTTPURLResponse)?.statusCode ?? -1)
+            (200...299).contains(httpResponse.statusCode)
+        else {
+            throw NetworkError.serverError(
+                (response as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
 
         do {
@@ -258,26 +266,6 @@ class NetworkService {
         } catch {
             throw NetworkError.decodingError
         }
-    }
-
-    struct UserProfile: Codable {
-        let firebase_uid: String
-        let username: String
-        let email: String
-        let avatar_url: String?
-        let coins: Float
-        let miles: Float
-        let owned: [String]
-        let lifetime_games: Int
-        let win_streak: Int
-        let rank: Int?
-    }
-
-    struct RouteCoordinates: Codable {
-        let origin_lat: Double
-        let origin_lng: Double
-        let destination_lat: Double
-        let destination_lng: Double
     }
 
     struct PurchaseResponse: Codable {
@@ -295,7 +283,9 @@ class NetworkService {
     }
 
     /// Purchase a destination for the user. Returns updated coin balance.
-    func purchaseDestination(userId: String, destinationId: String) async throws -> PurchaseResponse {
+    func purchaseDestination(userId: String, destinationId: String) async throws
+        -> PurchaseResponse
+    {
         guard let url = URL(string: "\(baseURL)users/\(userId)/purchase") else {
             throw NetworkError.invalidURL
         }
@@ -309,8 +299,11 @@ class NetworkService {
 
         let (data, response) = try await URLSession.shared.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
-              (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError((response as? HTTPURLResponse)?.statusCode ?? -1)
+            (200...299).contains(httpResponse.statusCode)
+        else {
+            throw NetworkError.serverError(
+                (response as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
 
         do {

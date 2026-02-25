@@ -16,11 +16,6 @@ internal import Combine
 import FirebaseAuth
 
 
-struct DestinationData: Codable {
-    let id: String
-    let city: String
-    let country: String
-}
 
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
@@ -239,14 +234,10 @@ extension RouteSelectionView {
                 let userProfile = try await NetworkService.shared.fetchUserProfile(token: token)
                 
                 var destinations: [DestinationData] = []
-                for destinationId in userProfile.owned {
-                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
-                    destinations.append(DestinationData(
-                        id: destinationId,
-                        city: destination["city"] as? String ?? "",
-                        country: destination["country"] as? String ?? ""
-                    ))
-                }
+                for destinationId in userProfile.owned ?? [] {
+                                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
+                                    destinations.append(destination)
+                                }
                 
                 await MainActor.run {
                     self.ownedDestinations = destinations
@@ -276,13 +267,15 @@ extension RouteSelectionView {
                 
                 await MainActor.run {
                     selectedOrigin = CLLocationCoordinate2D(
-                        latitude: coords.origin_lat,
-                        longitude: coords.origin_lng
+                        latitude: coords.originLat,
+                        longitude: coords.originLng
                     )
                     selectedDestination = CLLocationCoordinate2D(
-                        latitude: coords.destination_lat,
-                        longitude: coords.destination_lng
+                        latitude: coords.destinationLat,
+                        longitude: coords.destinationLng
                     )
+                    print(selectedOrigin)
+                    print(selectedDestination)
                     showNavigation = true
                 }
             } catch {
