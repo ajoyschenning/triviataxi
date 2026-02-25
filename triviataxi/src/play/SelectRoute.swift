@@ -13,6 +13,7 @@ import MapboxNavigationCore
 import MapboxNavigationUIKit
 import CoreLocation
 internal import Combine
+import FirebaseAuth
 
 
 struct RouteSelectionView: View {
@@ -44,7 +45,7 @@ struct RouteSelectionView: View {
                 ScrollView {
                     VStack(spacing: 28) {
 
-                        RouteCard(city: "Nashville", onDifficultySelected: { difficulty in
+                        RouteCard(journeyID: "Nashville_USA", city: "Nashville", onDifficultySelected: { difficulty in
                             // Example coordinates for each difficulty
                             let origin: CLLocationCoordinate2D
                             let destination: CLLocationCoordinate2D
@@ -126,6 +127,11 @@ enum RouteDifficulty {
 }
 
 struct RouteCard: View {
+    @State private var showNavigation = false
+    @State private var isProcessing = false
+    
+    let journeyID: String
+    
     let city: String
     let onDifficultySelected: (RouteDifficulty) -> Void
 
@@ -161,6 +167,8 @@ struct RouteCard: View {
     private func difficultyButton(title: String, difficulty: RouteDifficulty) -> some View {
         Button(action: {
             onDifficultySelected(difficulty)
+            startRoute()
+            
         }) {
             Text(title)
                 .font(.system(size: 14, weight: .bold))
@@ -168,6 +176,45 @@ struct RouteCard: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.black)
                 .cornerRadius(10)
+        }
+    }
+    
+    private func startRoute() {
+        // 1. Prevent duplicate taps while the request is loading
+        isProcessing = true
+        
+        Task {
+            do {
+                // 2. Fetch the current Firebase user and their ID Token
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in. Cannot fetch token.")
+                    await MainActor.run { isProcessing = false }
+                    return
+                }
+                
+                let token = try await user.getIDToken()
+                
+                // 3. Request the new session from your FastAPI backend
+                let session = try await NetworkService.shared.createSession(
+                    journeyId: self.journeyID,
+                    token: token
+                )
+                
+                // 4. Update UI state on the Main Thread to trigger navigation
+                await MainActor.run {
+                    self.isProcessing = false
+                    self.showNavigation = true
+                }
+                
+                print("✅ Session Started: \(session.sessionId)")
+                
+            } catch {
+                // 5. Handle errors (Network timeout, 401 Unauthorized, etc.)
+                await MainActor.run {
+                    print("🚨 API Error: \(error.localizedDescription)")
+                    self.isProcessing = false
+                }
+            }
         }
     }
 }
