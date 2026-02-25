@@ -40,7 +40,6 @@ struct LeaderboardView: View {
             }
         }
         .background(Color(red: 1, green: 0.98, blue: 0.80))
-        .ignoresSafeArea(edges: .top)
     }
 }
 

@@ -16,19 +16,6 @@ struct Header: View {
     var body: some View {
         ZStack {
 
-            //TODO: Figure out why title is covered by camera
-            Button(action: onHomeTapped) {
-                Circle()
-                    .fill(Color(red: 1, green: 0.84, blue: 0))
-                    .frame(width: 44, height: 44)
-                    .overlay(
-                        Image(systemName: "house.fill")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.black)
-                    )
-            }
-            .offset(x: -150)
-
             Text(title)
                 .font(.system(size: 32, weight: .semibold))
                 .italic()
