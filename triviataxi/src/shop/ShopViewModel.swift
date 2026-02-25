@@ -37,7 +37,7 @@ class ShopViewModel: ObservableObject {
         do {
             let responses = try await NetworkService.shared.fetchDestinations()
 
-            // Try fetch owned ids; if it fails, assume none owned
+            // Try fetch owned ids; if it fails, assume none owned to avoid blocking shop access
             var owned: [String] = []
             do {
                 owned = try await NetworkService.shared.fetchOwnedDestinationIDs(for: userId)

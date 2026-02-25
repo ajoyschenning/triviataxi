@@ -139,6 +139,7 @@ async def update_user_profile(user_data: UserUpdate, authorization: str = Header
     except Exception:
         raise HTTPException(status_code=500, detail="Failed to update user profile")
 
+# Added by Sophia Pieri 2/24/2026
 
 @router.get("/{user_id}/owned_destinations")
 async def get_owned_destinations(user_id: str):
