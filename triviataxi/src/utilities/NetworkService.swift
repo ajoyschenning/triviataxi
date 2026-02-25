@@ -2,8 +2,6 @@
 //  NetworkService.swift
 //  triviataxi
 //
-//  Created by Cami Krugel on 2/20/26.
-//
 
 import Foundation
 
@@ -21,7 +19,8 @@ struct AnyCodable: Codable {
             value = stringVal
         } else if let boolVal = try? container.decode(Bool.self) {
             value = boolVal
-        } else if let dictVal = try? container.decode([String: AnyCodable].self) {
+        } else if let dictVal = try? container.decode([String: AnyCodable].self)
+        {
             value = dictVal.mapValues { $0.value }
         } else if let arrayVal = try? container.decode([AnyCodable].self) {
             value = arrayVal.map { $0.value }
@@ -104,7 +103,7 @@ class NetworkService {
             throw NetworkError.decodingError
         }
     }
-    
+
     /// Fetch current user profile using Bearer token from /users/me endpoint.
     func fetchUserProfile(token: String) async throws -> UserProfile {
         guard let url = URL(string: "\(baseURL)/users/me") else {

@@ -2,15 +2,13 @@
 //  RouteHeader.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/12/26.
-//
 
-import SwiftUI
-import MapboxMaps
 internal import Combine
+import MapboxMaps
+import SwiftUI
 
 struct Header: View {
-    let title : String
+    let title: String
     let onHomeTapped: () -> Void
 
     var body: some View {

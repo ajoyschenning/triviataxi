@@ -2,7 +2,6 @@
 //  UserProfile.swift
 //  triviataxi
 //
-//  Created by Cami Krugel on 2/25/26.
 
 import Foundation
 

@@ -1,7 +1,12 @@
+//
+//  ShopViewModel.swift
+//  triviataxi
+//
+
+internal import Combine
+import FirebaseAuth
 import Foundation
 import SwiftUI
-import FirebaseAuth
-internal import Combine
 
 @MainActor
 class ShopViewModel: ObservableObject {
@@ -41,13 +46,15 @@ class ShopViewModel: ObservableObject {
             // Try fetch owned ids; if it fails, assume none owned to avoid blocking shop access
             var owned: [String] = []
             do {
-                owned = try await NetworkService.shared.fetchOwnedDestinationIDs(for: userId)
+                owned = try await NetworkService.shared
+                    .fetchOwnedDestinationIDs(for: userId)
             } catch {
                 print("Could not fetch owned destinations: \(error)")
             }
 
             // Map responses to items, filter out owned, and sort by price ascending
-            let items = responses
+            let items =
+                responses
                 .filter { !owned.contains($0.id) }
                 .map { resp in
                     DestinationItem(
@@ -79,7 +86,10 @@ class ShopViewModel: ObservableObject {
         lastPurchaseError = nil
 
         do {
-            let response = try await NetworkService.shared.purchaseDestination(userId: userId, destinationId: item.id)
+            let response = try await NetworkService.shared.purchaseDestination(
+                userId: userId,
+                destinationId: item.id
+            )
 
             if response.success {
                 // Update coin balance from server response
@@ -90,11 +100,14 @@ class ShopViewModel: ObservableObject {
                 destinations.removeAll { $0.id == item.id }
             } else {
                 // Server returned success: false
-                lastPurchaseError = response.message.isEmpty ? "Purchase failed. Please try again." : response.message
+                lastPurchaseError =
+                    response.message.isEmpty
+                    ? "Purchase failed. Please try again." : response.message
             }
         } catch {
             print("Purchase failed: \(error)")
-            lastPurchaseError = "Failed to complete purchase. Please check your connection."
+            lastPurchaseError =
+                "Failed to complete purchase. Please check your connection."
         }
 
         purchasingItemId = nil

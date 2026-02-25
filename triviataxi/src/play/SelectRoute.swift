@@ -3,14 +3,14 @@
 //  triviataxi
 //
 
-import SwiftUI
-import MapboxMaps
+internal import Combine
+import CoreLocation
+import FirebaseAuth
 import MapboxDirections
+import MapboxMaps
 import MapboxNavigationCore
 import MapboxNavigationUIKit
-import CoreLocation
-internal import Combine
-import FirebaseAuth
+import SwiftUI
 
 enum RouteDifficulty: String {
     case short, medium, long
@@ -18,13 +18,12 @@ enum RouteDifficulty: String {
 
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
-    
-    // 🚀 Navigation State
+
     @State private var showNavigation = false
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
     @State private var activeSessionId: String? = nil
-    
+
     @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
 
@@ -51,13 +50,16 @@ struct RouteSelectionView: View {
                                 .foregroundColor(.gray)
                                 .padding()
                         } else {
-                            ForEach(ownedDestinations, id: \.id) { destination in
+                            ForEach(ownedDestinations, id: \.id) {
+                                destination in
                                 RouteCard(
                                     journeyID: destination.id,
                                     city: destination.city,
-                                    // 🚀 Waits for BOTH API calls to finish before triggering navigation
                                     onDifficultySelected: { difficulty in
-                                        await prepareJourney(destinationId: destination.id, difficulty: difficulty)
+                                        await prepareJourney(
+                                            destinationId: destination.id,
+                                            difficulty: difficulty
+                                        )
                                     }
                                 )
                             }
@@ -71,12 +73,12 @@ struct RouteSelectionView: View {
                 }
             }
         }
-        // 🚀 THE FIX: Modern iOS 16+ Navigation Push instead of FullScreenCover
         .navigationDestination(isPresented: $showNavigation) {
             if let origin = selectedOrigin,
-               let destination = selectedDestination,
-               let sessionId = activeSessionId {
-                
+                let destination = selectedDestination,
+                let sessionId = activeSessionId
+            {
+
                 NavigationViewControllerRepresentable(
                     origin: origin,
                     destination: destination,
@@ -84,7 +86,7 @@ struct RouteSelectionView: View {
                 )
                 .edgesIgnoringSafeArea(.all)
                 // Hides the default iOS back button so your custom Mapbox UI takes over
-                .navigationBarBackButtonHidden(true)
+                //  .navigationBarBackButtonHidden(true)
             }
         }
     }
@@ -103,14 +105,16 @@ extension RouteSelectionView {
                 }
 
                 let token = try await user.getIDToken()
-                let userProfile = try await NetworkService.shared.fetchUserProfile(token: token)
-                
+                let userProfile = try await NetworkService.shared
+                    .fetchUserProfile(token: token)
+
                 var destinations: [DestinationData] = []
                 for destinationId in userProfile.owned ?? [] {
-                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
+                    let destination = try await NetworkService.shared
+                        .fetchDestination(id: destinationId, token: token)
                     destinations.append(destination)
                 }
-                
+
                 await MainActor.run {
                     self.ownedDestinations = destinations
                     isLoadingDestinations = false
@@ -122,8 +126,10 @@ extension RouteSelectionView {
         }
     }
 
-    // 🚀 The Unified Orchestrator Function
-    private func prepareJourney(destinationId: String, difficulty: RouteDifficulty) async {
+    private func prepareJourney(
+        destinationId: String,
+        difficulty: RouteDifficulty
+    ) async {
         do {
             guard let user = Auth.auth().currentUser else {
                 print("🚨 Error: No user logged in")
@@ -137,22 +143,28 @@ extension RouteSelectionView {
                 difficulty: difficulty.rawValue,
                 token: token
             )
-            
+
             // 2. Create the Session
             let session = try await NetworkService.shared.createSession(
                 journeyId: destinationId,
                 token: token
             )
-            
+
             // 3. Trigger the navigation push ONLY when both are successful
             await MainActor.run {
-                self.selectedOrigin = CLLocationCoordinate2D(latitude: coords.originLat, longitude: coords.originLng)
-                self.selectedDestination = CLLocationCoordinate2D(latitude: coords.destinationLat, longitude: coords.destinationLng)
+                self.selectedOrigin = CLLocationCoordinate2D(
+                    latitude: coords.originLat,
+                    longitude: coords.originLng
+                )
+                self.selectedDestination = CLLocationCoordinate2D(
+                    latitude: coords.destinationLat,
+                    longitude: coords.destinationLng
+                )
                 self.activeSessionId = session.sessionId
                 self.showNavigation = true
             }
             print("✅ Journey Prepared! Session: \(session.sessionId)")
-            
+
         } catch {
             print("🚨 Journey Preparation Error: \(error)")
         }
@@ -162,7 +174,7 @@ extension RouteSelectionView {
 // MARK: - UI Components
 struct RouteCard: View {
     @State private var isProcessing = false
-    
+
     let journeyID: String
     let city: String
     let onDifficultySelected: (RouteDifficulty) async -> Void
@@ -171,16 +183,25 @@ struct RouteCard: View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.white)
-                .shadow(color: Color(red: 0.71, green: 0.74, blue: 0.79, opacity: 0.14), radius: 20, y: 6)
+                .shadow(
+                    color: Color(
+                        red: 0.71,
+                        green: 0.74,
+                        blue: 0.79,
+                        opacity: 0.14
+                    ),
+                    radius: 20,
+                    y: 6
+                )
 
             VStack(spacing: 16) {
                 Text(city)
                     .font(.system(size: 25, weight: .semibold))
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                
+
                 Spacer()
-                
+
                 HStack(spacing: 8) {
                     difficultyButton(title: "SHORT", difficulty: .short)
                     difficultyButton(title: "MEDIUM", difficulty: .medium)
@@ -194,7 +215,9 @@ struct RouteCard: View {
         .frame(height: 140)
     }
 
-    private func difficultyButton(title: String, difficulty: RouteDifficulty) -> some View {
+    private func difficultyButton(title: String, difficulty: RouteDifficulty)
+        -> some View
+    {
         Button(action: {
             isProcessing = true
             Task {

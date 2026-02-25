@@ -39,7 +39,7 @@ struct LeaderboardView: View {
                 .padding(.top, 16)
             }
         }
-        .background(Color(red: 1, green: 0.98, blue: 0.80))
+        .background(Color.backgroundYellow)
     }
 }
 
@@ -78,7 +78,7 @@ struct LeaderboardRow: View {
             .foregroundColor(.black)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color(red: 1, green: 0.84, blue: 0))
+            .background(Color.accentYellow)
             .cornerRadius(8)
         }
         .padding()
@@ -86,7 +86,7 @@ struct LeaderboardRow: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.white)
                 .shadow(
-                    color: Color(red: 0.71, green: 0.74, blue: 0.79, opacity: 0.14),
+                    color: Color.shadow,
                     radius: 12,
                     y: 4
                 )
@@ -119,40 +119,10 @@ struct LeaderboardTabs: View {
                 .background(
                     selectedTab == tab
                     ? Color.black
-                    : Color(red: 1, green: 0.84, blue: 0)
+                    : Color.accentYellow
                 )
                 .cornerRadius(10)
         }
-    }
-}
-
-
-struct LeaderboardHeader: View {
-    let onHomeTapped: () -> Void
-
-    var body: some View {
-        ZStack {
-            Button(action: onHomeTapped) {
-                Circle()
-                    .fill(Color(red: 1, green: 0.84, blue: 0))
-                    .frame(width: 44, height: 44)
-                    .overlay(
-                        Image(systemName: "house.fill")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.black)
-                    )
-            }
-            .offset(x: -150)
-
-            Text("LEADERBOARD")
-                .font(.system(size: 32, weight: .semibold))
-                .italic()
-                .foregroundColor(.black)
-        }
-        .frame(height: 44)
-        .padding(.top, 34)
-        .padding(.bottom, 12)
-        .background(Color(red: 1, green: 0.98, blue: 0.80))
     }
 }
 

@@ -2,27 +2,36 @@
 //  PlayView.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/2/26.
-//
 
-import SwiftUI
-import MapboxMaps
 internal import Combine
-
+import MapboxMaps
+import SwiftUI
 
 // MARK: - Map (Start Ride)
 struct NashvilleMapView: View {
     @Binding var showMap: Bool
-    private let nashville = CLLocationCoordinate2D(latitude: 36.1447, longitude: -86.8027)
+    private let nashville = CLLocationCoordinate2D(
+        latitude: 36.1447,
+        longitude: -86.8027
+    )
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            Map(initialViewport: .camera(
-                center: nashville,
-                zoom: 16,
-                bearing: 0,
-                pitch: 70
-            )).mapStyle(MapStyle(uri: StyleURI(rawValue: "mapbox://styles/ajoyschenning/cmkvltd86003u01s0ccingat8")!))
+            Map(
+                initialViewport: .camera(
+                    center: nashville,
+                    zoom: 16,
+                    bearing: 0,
+                    pitch: 70
+                )
+            ).mapStyle(
+                MapStyle(
+                    uri: StyleURI(
+                        rawValue:
+                            "mapbox://styles/ajoyschenning/cmkvltd86003u01s0ccingat8"
+                    )!
+                )
+            )
             .ignoresSafeArea()
 
             Button(action: {
@@ -44,4 +53,3 @@ struct NashvilleMapView: View {
         }
     }
 }
-

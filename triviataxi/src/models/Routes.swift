@@ -2,8 +2,6 @@
 //  Routes.swift
 //  triviataxi
 //
-//  Created by Cami Krugel on 2/25/26.
-//
 
 import Foundation
 
@@ -20,7 +18,7 @@ struct RouteCoordinates: Codable {
     let originLng: Double
     let destinationLat: Double
     let destinationLng: Double
-    
+
     enum CodingKeys: String, CodingKey {
         case originLat = "origin_lat"
         case originLng = "origin_lng"
@@ -28,7 +26,6 @@ struct RouteCoordinates: Codable {
         case destinationLng = "destination_lng"
     }
 }
-
 
 struct DestinationResponse: Codable, Identifiable {
     let id: String
