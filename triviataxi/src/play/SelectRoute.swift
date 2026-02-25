@@ -25,11 +25,8 @@ struct RouteSelectionView: View {
     var body: some View {
         ZStack {
 
-            // 🟡 Base Yellow Background
             Color.backgroundYellow
                 .ignoresSafeArea()
-
-            // ✨ Gold Fade Overlay
             GoldFadeOverlay()
             .ignoresSafeArea()
             .blendMode(.overlay)

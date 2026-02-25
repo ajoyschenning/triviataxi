@@ -2,47 +2,39 @@
 //  LoginView.swift
 //  triviataxi
 //
-//  Created by Cami Krugel on 1/23/26.
-//
 
 import SwiftUI
 import FirebaseAuth
 internal import Combine
 
-
 struct LoginView: View {
-    @Binding var userIsLoggedIn: Bool // Connected to ContentView
+    @Binding var userIsLoggedIn: Bool
     
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage = ""
     @State private var isPasswordVisible = false
+    
+    // 🚀 1. Added modern navigation states
+    @State private var showForgotPassword = false
+    @State private var showSignUp = false
 
     var body: some View {
         NavigationStack {
-        
             ZStack {
-                
                 Color("BackgroundYellow").ignoresSafeArea()
                 GoldFadeOverlay()
-                ScrollView{
-                    
-                    
+                
+                ScrollView {
                     VStack(spacing: 30) {
                         
                         // Header
-                        
-                        
                         Image("taxi")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 300)
-                            .shadow(color: .black.opacity(0.2), radius: 10, y: 6).padding(.top, 60)
-                        
-                        
-                        
-                        
-                        
+                            .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
+                            .padding(.top, 60)
                         
                         // Login Form
                         VStack(spacing: 20) {
@@ -65,9 +57,12 @@ struct LoginView: View {
                                 
                                 if isPasswordVisible {
                                     TextField("Password", text: $password)
-                                        .textInputAutocapitalization(.never).autocorrectionDisabled(true)
+                                        .textInputAutocapitalization(.never)
+                                        .autocorrectionDisabled(true)
                                 } else {
-                                    SecureField("Password", text: $password).textInputAutocapitalization(.never).autocorrectionDisabled(true)
+                                    SecureField("Password", text: $password)
+                                        .textInputAutocapitalization(.never)
+                                        .autocorrectionDisabled(true)
                                 }
                                 
                                 Button(action: { isPasswordVisible.toggle() }) {
@@ -88,22 +83,22 @@ struct LoginView: View {
                                     .multilineTextAlignment(.center)
                             }
                             
-                            
-                                
-                            
-                            
                             FancyButton(title: "START RIDE") {
-                                login()
+                                // 🚀 2. Added delay so the coin animation can play!
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                    login()
+                                }
                             }
                             
-                            NavigationLink(destination: ForgotPasswordView()) {
+                            // 🚀 3. Replaced deprecated NavigationLinks with Buttons
+                            Button(action: { showForgotPassword = true }) {
                                 Text("Forgot Password?")
                                     .font(.footnote)
                                     .foregroundColor(.black.opacity(0.7))
                                     .underline()
                             }
                             
-                            NavigationLink(destination: SignUpView(userIsLoggedIn: $userIsLoggedIn)) {
+                            Button(action: { showSignUp = true }) {
                                 Text("New Passenger? Sign Up")
                                     .font(.footnote)
                                     .foregroundColor(.black.opacity(0.7))
@@ -114,22 +109,29 @@ struct LoginView: View {
                         
                         Spacer()
                     }
-                }}
-        }
-        }
-    
-    
-    // Logic
-func login() {
-    Auth.auth().signIn(withEmail: email, password: password) { result, error in
-        if let error = error {
-            errorMessage = error.localizedDescription
-        } else {
-            errorMessage = ""
-            userIsLoggedIn = true
+                }
+            }
+            // 🚀 4. Attached modern routing to the bottom of the ZStack
+            .navigationDestination(isPresented: $showForgotPassword) {
+                ForgotPasswordView()
+            }
+            .navigationDestination(isPresented: $showSignUp) {
+                SignUpView(userIsLoggedIn: $userIsLoggedIn)
+            }
         }
     }
-}
+    
+    // Logic
+    func login() {
+        Auth.auth().signIn(withEmail: email, password: password) { result, error in
+            if let error = error {
+                errorMessage = error.localizedDescription
+            } else {
+                errorMessage = ""
+                userIsLoggedIn = true
+            }
+        }
+    }
 }
 
 #Preview {

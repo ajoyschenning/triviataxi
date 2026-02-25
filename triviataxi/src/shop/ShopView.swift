@@ -70,47 +70,6 @@ struct ShopView: View {
             }
         }
         .background(Color(red: 1, green: 0.98, blue: 0.80))
-        .ignoresSafeArea(edges: .top)
-    }
-}
-
-struct ShopHeader: View {
-    let onHomeTapped: () -> Void
-
-    var body: some View {
-        ZStack {
-            // Home Button
-            Button(action: onHomeTapped) {
-                Circle()
-                    .fill(Color(red: 1, green: 0.84, blue: 0))
-                    .frame(width: 44, height: 44)
-                    .overlay(
-                        Image(systemName: "house.fill")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundColor(.black)
-                    )
-            }
-            .offset(x: -150)
-
-            // Title
-            Text("Shop")
-                .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(Color(red: 0.11, green: 0.12, blue: 0.16))
-
-            // Coin Balance
-            HStack(spacing: 6) {
-                Image(systemName: "dollarsign.circle.fill")
-                    .foregroundColor(.black)
-
-                Text("1000")
-                    .font(.system(size: 15, weight: .semibold))
-            }
-            .offset(x: 150)
-        }
-        .frame(height: 44)
-        .padding(.top, 34)
-        .padding(.bottom, 12)
-        .background(Color(red: 1, green: 0.98, blue: 0.80))
     }
 }
 

@@ -8,6 +8,81 @@
 import SwiftUI
 import MapboxMaps
 internal import Combine
+import FirebaseAuth
+
+struct HomeView: View {
+    @Binding var userIsLoggedIn: Bool
+    
+    @State private var showRoutes = false
+    @State private var showShop = false
+    @State private var showLeaderboard = false
+
+    var body: some View {
+        NavigationStack {
+            ZStack {
+                DollarRainBackground()
+                GoldFadeOverlay()
+                
+                VStack(spacing: 36) {
+                    Spacer()
+                    
+                    Image("taxi")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 300)
+                        .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
+                    
+                    VStack(spacing: 20) {
+                        
+                        // 1. Just use the buttons to toggle your state variables
+                        FancyButton(title: "START RIDE") {DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){ showRoutes = true }}
+                        
+                        FancyButton(title: "SHOP") { DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                            showShop = true }}
+                        
+                        FancyButton(title: "LEADERBOARD") {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4){
+                                showLeaderboard = true }}
+                        
+                        FancyButton(title: "LOG OUT") {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                logout()
+                            }
+                        }}
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 32)
+            }
+            // 2. Attach the modern navigation routing here, below the ZStack
+            .navigationDestination(isPresented: $showRoutes) {
+                RouteSelectionView(showRoutes: $showRoutes)
+            }
+            .navigationDestination(isPresented: $showShop) {
+                ShopView(showShop: $showShop)
+            }
+            .navigationDestination(isPresented: $showLeaderboard) {
+                LeaderboardView(showLeaderboard: $showLeaderboard)
+            }
+            
+        }
+    }
+
+    func logout() {
+            // Reset any presented destinations
+            showRoutes = false
+            showShop = false
+            showLeaderboard = false
+
+        try? Auth.auth().signOut()
+        userIsLoggedIn = false
+    }
+}
+
+#Preview {
+    HomeView(userIsLoggedIn: .constant(true))
+}
+
 
 // MARK: Dollar Rain
 struct DollarRainBackground: View {
