@@ -144,7 +144,9 @@ class NetworkService {
 
         do {
             let decoder = JSONDecoder()
-            return try decoder.decode(UserProfile.self, from: data)
+            let userProfile = try decoder.decode(UserProfile.self, from: data)
+            print("DEBUG: User Profile fetched - \(userProfile)")
+            return userProfile
         } catch {
             throw NetworkError.decodingError
         }
