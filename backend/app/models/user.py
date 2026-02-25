@@ -15,6 +15,7 @@ class User(BaseModel):
     lifetime_games: int = Field(default=0, description="Total games played")
     win_streak: int = Field(default=0, description="Current win streak")
     rank: Optional[int] = Field(None, description="Current leaderboard rank")
+    owned: list[str] = Field(default_factory=list, description="Destination IDs owned by the user")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Account creation timestamp")
     updated_at: datetime = Field(default_factory=datetime.utcnow, description="Last update timestamp")
     is_active: bool = Field(default=True, description="Account active status")

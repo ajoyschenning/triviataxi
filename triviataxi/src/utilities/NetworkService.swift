@@ -7,6 +7,45 @@
 
 import Foundation
 
+// Helper to decode dynamic JSON values
+struct AnyCodable: Codable {
+    let value: Any
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        if let intVal = try? container.decode(Int.self) {
+            value = intVal
+        } else if let doubleVal = try? container.decode(Double.self) {
+            value = doubleVal
+        } else if let stringVal = try? container.decode(String.self) {
+            value = stringVal
+        } else if let boolVal = try? container.decode(Bool.self) {
+            value = boolVal
+        } else if let dictVal = try? container.decode([String: AnyCodable].self) {
+            value = dictVal.mapValues { $0.value }
+        } else if let arrayVal = try? container.decode([AnyCodable].self) {
+            value = arrayVal.map { $0.value }
+        } else {
+            value = NSNull()
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        if let intVal = value as? Int {
+            try container.encode(intVal)
+        } else if let doubleVal = value as? Double {
+            try container.encode(doubleVal)
+        } else if let stringVal = value as? String {
+            try container.encode(stringVal)
+        } else if let boolVal = value as? Bool {
+            try container.encode(boolVal)
+        } else {
+            try container.encodeNil()
+        }
+    }
+}
+
 enum NetworkError: Error {
     case invalidURL
     case noData
@@ -79,6 +118,99 @@ class NetworkService {
         }
     }
 
+    /// Fetch current user profile using Bearer token from /users/me endpoint.
+    func fetchUserProfile(token: String) async throws -> UserProfile {
+        guard let url = URL(string: "\(baseURL)users/me") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            let userProfile = try decoder.decode(UserProfile.self, from: data)
+            print("DEBUG: User Profile fetched - \(userProfile)")
+            return userProfile
+        } catch {
+            throw NetworkError.decodingError
+        }
+    }
+
+    /// Fetch a single destination by ID.
+    func fetchDestination(id: String, token: String) async throws -> [String: Any] {
+        guard let url = URL(string: "\(baseURL)destinations/\(id)") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+              (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError((response as? HTTPURLResponse)?.statusCode ?? -1)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode([String: AnyCodable].self, from: data).mapValues { $0.value }
+        } catch {
+            throw NetworkError.decodingError
+        }
+    }
+
+    /// Fetch route coordinates for a specific destination and difficulty.
+    func fetchRouteCoordinates(destinationId: String, difficulty: String, token: String) async throws -> RouteCoordinates {
+        guard let url = URL(string: "\(baseURL)routes/\(destinationId)/\(difficulty)") else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            return try decoder.decode(RouteCoordinates.self, from: data)
+        } catch {
+            throw NetworkError.decodingError
+        }
+    }
+
+    // MARK: - Destinations API
+
     /// Fetch all destinations from the backend API.
     /// This is a best-effort stub — the backend route and JSON keys must match.
     func fetchDestinations() async throws -> [DestinationResponse] {
@@ -106,7 +238,7 @@ class NetworkService {
 
     /// Fetch IDs of destinations/routes the user already owns. Returns array of destination IDs.
     func fetchOwnedDestinationIDs(for userId: String) async throws -> [String] {
-        guard let url = URL(string: "\(baseURL)users/\(userId)/owned_destinations") else {
+        guard let url = URL(string: "\(baseURL)users/\(userId)/owned") else {
             throw NetworkError.invalidURL
         }
 
@@ -126,6 +258,26 @@ class NetworkService {
         } catch {
             throw NetworkError.decodingError
         }
+    }
+
+    struct UserProfile: Codable {
+        let firebase_uid: String
+        let username: String
+        let email: String
+        let avatar_url: String?
+        let coins: Float
+        let miles: Float
+        let owned: [String]
+        let lifetime_games: Int
+        let win_streak: Int
+        let rank: Int?
+    }
+
+    struct RouteCoordinates: Codable {
+        let origin_lat: Double
+        let origin_lng: Double
+        let destination_lat: Double
+        let destination_lng: Double
     }
 
     struct PurchaseResponse: Codable {
