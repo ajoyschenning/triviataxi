@@ -2,6 +2,10 @@
 from fastapi import APIRouter, Header, HTTPException
 from pydantic import BaseModel
 from firebase_admin import auth, firestore
+from fastapi import Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+
+security = HTTPBearer()
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -33,37 +37,37 @@ class UserUpdate(BaseModel):
 
 
 @router.post("/me")
-def create_user_profile(user: UserCreate, authorization: str = Header(None)):
-    """Creates a user document in Firestore after Firebase Auth signup."""
+async def create_user_profile(user: UserCreate, creds: HTTPAuthorizationCredentials = Depends(security)):
+    """Creates a user document in Firestore after c Auth signup."""
     
-    if not authorization:
-        raise HTTPException(status_code=401, detail="No token provided")
-    token = authorization.replace("Bearer ", "")
+    token = creds.credentials
+    # 1. Authenticate user and get firebase_uid
     try:
         decoded_token = auth.verify_id_token(token)
-        uid = decoded_token['uid']
+        firebase_uid = decoded_token['uid']
     except Exception as e:
-        raise HTTPException(status_code=401, detail="Invalid token")
+        print(f"🔥 FIREBASE ERROR: {e}") 
+        raise HTTPException(status_code=401, detail=f"Invalid token: {str(e)}")
 
     try:
         db = firestore.client()
-        user_ref = db.collection('users').document(uid)
+        user_ref = db.collection('users').document(firebase_uid)
         user_ref.set({
-            'firebase_uid': uid,
+            'firebase_uid': firebase_uid,
             'email': user.email,
             'username': user.username,
             'avatar_url': None,
             'coins': 0.0,
             'miles': 0.0,
-            'owned': [],
+            'owned': ['Nashville_USA'],
             'lifetime_games': 0,
             'win_streak': 0,
             'rank': None,
             'created_at': firestore.SERVER_TIMESTAMP
         })
-        return {"status": "success", "uid": uid}
+        return {"status": "success", "uid": firebase_uid}
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Failed to create user document")
+        raise HTTPException(status_code=500, detail=f"Failed to create user document : {str(e)}")
 
 
 @router.get("/me", response_model=UserProfile)
