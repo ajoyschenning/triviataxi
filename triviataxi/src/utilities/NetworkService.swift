@@ -241,31 +241,31 @@ class NetworkService {
     }
 
     /// Fetch IDs of destinations/routes the user already owns. Returns array of destination IDs.
-    func fetchOwnedDestinationIDs(for userId: String) async throws -> [String] {
-        guard let url = URL(string: "\(baseURL)users/\(userId)/owned") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse,
-            (200...299).contains(httpResponse.statusCode)
-        else {
-            throw NetworkError.serverError(
-                (response as? HTTPURLResponse)?.statusCode ?? -1
-            )
-        }
-
-        do {
-            let decoder = JSONDecoder()
-            return try decoder.decode([String].self, from: data)
-        } catch {
-            throw NetworkError.decodingError
-        }
-    }
+//    func fetchOwnedDestinationIDs(for userId: String) async throws -> [String] {
+//        guard let url = URL(string: "\(baseURL)users/\(userId)/owned") else {
+//            throw NetworkError.invalidURL
+//        }
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "accept")
+//
+//        let (data, response) = try await URLSession.shared.data(for: request)
+//        guard let httpResponse = response as? HTTPURLResponse,
+//            (200...299).contains(httpResponse.statusCode)
+//        else {
+//            throw NetworkError.serverError(
+//                (response as? HTTPURLResponse)?.statusCode ?? -1
+//            )
+//        }
+//
+//        do {
+//            let decoder = JSONDecoder()
+//            return try decoder.decode([String].self, from: data)
+//        } catch {
+//            throw NetworkError.decodingError
+//        }
+//    }
 
     struct PurchaseResponse: Codable {
         let success: Bool

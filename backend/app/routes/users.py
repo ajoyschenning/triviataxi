@@ -16,7 +16,8 @@ class UserProfile(BaseModel):
     username: str
     email: str
     avatar_url: str | None
-    total_earnings: float
+    coins: int | None
+    miles: int | None
     owned: list[str]
     lifetime_games: int
     win_streak: int
@@ -104,7 +105,8 @@ async def get_user_profile(authorization: str = Header(None)):
         username=data.get('username', ''),
         email=data.get('email', ''),
         avatar_url=data.get('avatar_url'),
-        total_earnings=float(data.get('total_earnings', 0.0)),
+        coins=int(data.get('coins', 0.0)),
+        miles=int(data.get('miles', 0.0)),
         owned=data.get('owned', []),
         lifetime_games=int(data.get('lifetime_games', 0)),
         win_streak=int(data.get('win_streak', 0)),
