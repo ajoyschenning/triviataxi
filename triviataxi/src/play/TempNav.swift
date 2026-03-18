@@ -8,6 +8,7 @@ import MapboxDirections
 import MapboxNavigationCore
 import MapboxNavigationUIKit
 import SwiftUI
+internal import Combine
 
 
 @MainActor
@@ -78,25 +79,76 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                         }
                         
                         // --- Coin Counter UI ---
-                let coinCounter = UILabel()
-                        coinCounter.text = "\(gameManager.currentEarnings)"
-                coinCounter.font = UIFont.systemFont(ofSize: 12, weight: .bold)
-                coinCounter.textColor = .black
-                coinCounter.backgroundColor = UIColor(red: 1, green: 0.84, blue: 0, alpha: 1)
-                coinCounter.layer.cornerRadius = 20
-                coinCounter.layer.masksToBounds = true
-                coinCounter.textAlignment = .center
-                coinCounter.translatesAutoresizingMaskIntoConstraints = false
+                                                let coinCounter = UILabel()
+                                                coinCounter.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+                                                coinCounter.textColor = .black
+                                                coinCounter.backgroundColor = UIColor(red: 1, green: 0.84, blue: 0, alpha: 1)
+                                                coinCounter.layer.cornerRadius = 20
+                                                coinCounter.layer.masksToBounds = true
+                                                coinCounter.textAlignment = .center
+                                                coinCounter.translatesAutoresizingMaskIntoConstraints = false
 
-                navigationViewController.navigationView.addSubview(coinCounter)
-                NSLayoutConstraint.activate([
-                    coinCounter.trailingAnchor.constraint(equalTo: navigationViewController.navigationView.safeAreaLayoutGuide.trailingAnchor, constant: -18),
-                    coinCounter.bottomAnchor.constraint(equalTo: navigationViewController.navigationView.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-                    coinCounter.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
-                    coinCounter.heightAnchor.constraint(equalToConstant: 40),
-                ])
-                navigationViewController.navigationView.bringSubviewToFront(coinCounter)
+                                                navigationViewController.navigationView.addSubview(coinCounter)
+                                                NSLayoutConstraint.activate([
+                                                    coinCounter.trailingAnchor.constraint(equalTo: navigationViewController.navigationView.safeAreaLayoutGuide.trailingAnchor, constant: -18),
+                                                    coinCounter.bottomAnchor.constraint(equalTo: navigationViewController.navigationView.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+                                                    coinCounter.widthAnchor.constraint(greaterThanOrEqualToConstant: 40),
+                                                    coinCounter.heightAnchor.constraint(equalToConstant: 40),
+                                                ])
+                                                navigationViewController.navigationView.bringSubviewToFront(coinCounter)
 
+                                                // 🚀 2. Listen for Earnings Updates
+                                                self.gameManager.$currentEarnings
+                                                    .receive(on: RunLoop.main)
+                                                    .sink { [weak coinCounter] newEarnings in
+                                                        // Instantly update the coin text when the variable changes
+                                                        coinCounter?.text = "\(Int(newEarnings))"
+                                                    }
+                                                    .store(in: &context.coordinator.cancellables)
+
+                                                // --- Strikes Box UI ---
+                                                let strikesBox = UILabel()
+                                                strikesBox.backgroundColor = .white
+                                                strikesBox.layer.cornerRadius = 20
+                                                strikesBox.layer.masksToBounds = true
+                                                strikesBox.textAlignment = .center
+                                                strikesBox.translatesAutoresizingMaskIntoConstraints = false
+
+                                                navigationViewController.navigationView.addSubview(strikesBox)
+                                                
+                                                NSLayoutConstraint.activate([
+                                                    strikesBox.trailingAnchor.constraint(equalTo: coinCounter.leadingAnchor, constant: -25),
+                                                    strikesBox.bottomAnchor.constraint(equalTo: navigationViewController.navigationView.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+                                                    strikesBox.widthAnchor.constraint(greaterThanOrEqualToConstant: 90),
+                                                    strikesBox.heightAnchor.constraint(equalToConstant: 40),
+                                                ])
+                                                navigationViewController.navigationView.bringSubviewToFront(strikesBox)
+                                                
+                                                // 🚀 3. Listen for Strike Updates and color the X's
+                                                self.gameManager.$strikes
+                                                    .receive(on: RunLoop.main)
+                                                    .sink { [weak strikesBox] currentStrikes in
+                                                        
+                                                        let baseFont = UIFont.systemFont(ofSize: 20, weight: .black)
+                                                        let finalString = NSMutableAttributedString()
+                                                        
+                                                        // Loop 3 times to build the "X X X" string
+                                                        for i in 0..<3 {
+                                                            // If the current X is less than the strike count, paint it RED. Otherwise, paint it light gray.
+                                                            let xColor = i < currentStrikes ? UIColor.systemRed : UIColor.systemGray4
+                                                            
+                                                            let xChar = NSAttributedString(string: "X", attributes: [.foregroundColor: xColor, .font: baseFont])
+                                                            finalString.append(xChar)
+                                                            
+                                                            // Add spacing between the X's
+                                                            if i < 2 {
+                                                                finalString.append(NSAttributedString(string: "  ", attributes: [.font: baseFont]))
+                                                            }
+                                                        }
+                                                        
+                                                        strikesBox?.attributedText = finalString
+                                                    }
+                                                    .store(in: &context.coordinator.cancellables)
                 // --- Native Clear Circle Back Button UI ---
                                 let backButton = UIButton(type: .system)
                                 backButton.translatesAutoresizingMaskIntoConstraints = false
@@ -188,6 +240,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
 
     class Coordinator: NSObject, NavigationViewControllerDelegate {
         var parent: NavigationViewControllerRepresentable
+        var cancellables = Set<AnyCancellable>()
 
         init(_ parent: NavigationViewControllerRepresentable) {
             self.parent = parent
