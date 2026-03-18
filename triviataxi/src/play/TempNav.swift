@@ -79,7 +79,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                         
                         // --- Coin Counter UI ---
                 let coinCounter = UILabel()
-                coinCounter.text = "1000" // Note: You can pass your UserManager in here later!
+                        coinCounter.text = "\(gameManager.currentEarnings)"
                 coinCounter.font = UIFont.systemFont(ofSize: 12, weight: .bold)
                 coinCounter.textColor = .black
                 coinCounter.backgroundColor = UIColor(red: 1, green: 0.84, blue: 0, alpha: 1)
@@ -124,7 +124,6 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                                 ])
                                 navigationViewController.navigationView.bringSubviewToFront(backButton)
 
-                // 🚀 The Bridge
                                 backButton.addAction(
                                     UIAction(handler: { _ in
                                         
