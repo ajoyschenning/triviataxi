@@ -22,7 +22,7 @@ struct RouteSelectionView: View {
     @State private var showNavigation = false
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
-    @State private var ownedDestinations: [DestinationData] = []
+    @State private var ownedDestinations: [DestinationResponse] = []
     @State private var isLoadingDestinations = false
 
     var body: some View {
@@ -134,6 +134,7 @@ struct RouteCard: View {
     let journeyID: String
     
     let city: String
+    let imageUrl: String?
     let onDifficultySelected: (RouteDifficulty) -> Void
 
     var body: some View {
@@ -146,19 +147,52 @@ struct RouteCard: View {
                     y: 6
                 )
 
-            VStack(spacing: 16) {
-                Text(city)
-                    .font(.system(size: 25, weight: .semibold))
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Spacer()
-                HStack(spacing: 8) {
-                    difficultyButton(title: "SHORT", difficulty: .short)
-                    difficultyButton(title: "MEDIUM", difficulty: .medium)
-                    difficultyButton(title: "LONG", difficulty: .long)
+            HStack(spacing: 16) {
+
+                // Image (from URL if available)
+                if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        @unknown default:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        }
+                    }
+                    .frame(width: 95, height: 116)
+                    .clipped()
+                    .cornerRadius(16)
+                } else {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(red: 0.50, green: 0.23, blue: 0.27).opacity(0.5))
+                        .frame(width: 95, height: 116)
                 }
-                .frame(height: 44)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(city)
+                        .font(.system(size: 25, weight: .semibold))
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    HStack(spacing: 8) {
+                        difficultyButton(title: "SHORT", difficulty: .short)
+                        difficultyButton(title: "MEDIUM", difficulty: .medium)
+                        difficultyButton(title: "LONG", difficulty: .long)
+                    }
+                    .frame(height: 44)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+
+                Spacer()
             }
             .padding()
         }
