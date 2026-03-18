@@ -82,7 +82,8 @@ struct RouteSelectionView: View {
                 NavigationViewControllerRepresentable(
                     origin: origin,
                     destination: destination,
-                    sessionId: sessionId
+                    sessionId: sessionId,
+                    questions: sampleQuestions
                 )
                 .edgesIgnoringSafeArea(.all)
                 // Hides the default iOS back button so your custom Mapbox UI takes over

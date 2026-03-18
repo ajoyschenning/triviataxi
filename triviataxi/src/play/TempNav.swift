@@ -15,12 +15,39 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     let origin: CLLocationCoordinate2D
     let destination: CLLocationCoordinate2D
     let sessionId: String
+    let questions: [Question]?
 
     func makeUIViewController(context: Context) -> UIViewController {
         let viewController = UIViewController()
         calculateRoutes(origin: origin, destination: destination) {
             navigationViewController in
             DispatchQueue.main.async {
+                // Add question overlay if questions are provided
+                if let questions = questions, !questions.isEmpty {
+                    let questionOverlay = UIHostingController(
+                        rootView: QuestionOverlayView(questions: questions, sessionId: sessionId)
+                    )
+                    questionOverlay.view.backgroundColor = .clear
+                    questionOverlay.view.translatesAutoresizingMaskIntoConstraints = false
+                    
+                    navigationViewController.navigationView.addSubview(questionOverlay.view)
+                    NSLayoutConstraint.activate([
+                        questionOverlay.view.topAnchor.constraint(
+                            equalTo: navigationViewController.navigationView.topAnchor
+                        ),
+                        questionOverlay.view.leadingAnchor.constraint(
+                            equalTo: navigationViewController.navigationView.leadingAnchor
+                        ),
+                        questionOverlay.view.trailingAnchor.constraint(
+                            equalTo: navigationViewController.navigationView.trailingAnchor
+                        ),
+                        questionOverlay.view.bottomAnchor.constraint(
+                            equalTo: navigationViewController.navigationView.bottomAnchor
+                        ),
+                    ])
+                    navigationViewController.navigationView.bringSubviewToFront(questionOverlay.view)
+                }
+                
                 // Add coin counter overlay
                 let coinCounter = UILabel()
                 coinCounter.text = "1000"
