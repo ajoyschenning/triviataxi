@@ -7,9 +7,13 @@ internal import Combine
 import MapboxMaps
 import SwiftUI
 
+
+
 struct Header: View {
+    @EnvironmentObject var userManager: UserManager
     let title: String
     let onHomeTapped: () -> Void
+    
 
     var body: some View {
         ZStack {
@@ -23,7 +27,7 @@ struct Header: View {
                 Image(systemName: "dollarsign.circle.fill")
                     .foregroundColor(.black)
 
-                Text("1000")
+                Text("\(userManager.coins)")
                     .font(.system(size: 15, weight: .semibold))
             }
             .offset(x: 150)

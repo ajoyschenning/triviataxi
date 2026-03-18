@@ -26,7 +26,7 @@ struct QuestionOverlayView: View {
     @State private var showBuffer = false
     
     let questions: [Question]
-    let sessionId: String
+    let destinationId: String
     
     var currentQuestion: Question {
         questions[currentQuestionIndex]
@@ -359,6 +359,5 @@ let sampleQuestions = [
 
 #Preview {
     
-    
-    QuestionOverlayView(questions: sampleQuestions, sessionId: "test-session")
+    QuestionOverlayView(questions: sampleQuestions, destinationId: "test-session")
 }
