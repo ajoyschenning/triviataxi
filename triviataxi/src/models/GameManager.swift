@@ -132,13 +132,13 @@ class GameManager: ObservableObject {
         
         do {
             // Example Network Call - Replace with your actual NetworkService function
-            try await NetworkService.shared.submitGameResults(
+            let res = try await NetworkService.shared.submitGameResults(
                 userId: userManager.currentUserId!,
                 routeId: self.routeId,
                 totalEarnings: self.currentEarnings,
                 strikes: self.strikes,
                 questionsAnswered: self.currentIndex+1)
-            print("✅ Final Game Data uploaded successfully! Earned: \(self.currentEarnings)")
+            print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId)")
 
             await userManager.loadUserProfile()
             
