@@ -8,7 +8,8 @@ import SwiftUI
 
 @main
 struct triviataxiApp: App {
-    
+    @StateObject private var userManager = UserManager()
+    @StateObject private var gameManager = GameManager()
     @State private var appUserIsLoggedIn = false
     
     init() {
@@ -21,12 +22,16 @@ struct triviataxiApp: App {
             print("👋 User is already signed in")
             _appUserIsLoggedIn = State(initialValue: true)
         }
+        
     }
     
     var body: some Scene {
         WindowGroup {
             if appUserIsLoggedIn {
                 HomeView(userIsLoggedIn: $appUserIsLoggedIn)
+                    .environmentObject(userManager)
+                    .environmentObject(gameManager)
+
             } else {
                 LoginView(userIsLoggedIn: $appUserIsLoggedIn)
             }

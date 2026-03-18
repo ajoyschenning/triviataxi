@@ -22,7 +22,7 @@ struct RouteSelectionView: View {
     @State private var showNavigation = false
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
-    @State private var activeSessionId: String? = nil
+    @State private var destinationId: String? = nil
 
     @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
@@ -76,13 +76,13 @@ struct RouteSelectionView: View {
         .navigationDestination(isPresented: $showNavigation) {
             if let origin = selectedOrigin,
                 let destination = selectedDestination,
-                let sessionId = activeSessionId
+                let destinationId = destinationId
             {
 
                 NavigationViewControllerRepresentable(
                     origin: origin,
                     destination: destination,
-                    sessionId: sessionId,
+                    destinationId: destinationId,
                     questions: sampleQuestions
                 )
                 .edgesIgnoringSafeArea(.all)
@@ -145,11 +145,7 @@ extension RouteSelectionView {
                 token: token
             )
 
-            // 2. Create the Session
-            let session = try await NetworkService.shared.createSession(
-                journeyId: destinationId,
-                token: token
-            )
+
 
             // 3. Trigger the navigation push ONLY when both are successful
             await MainActor.run {
@@ -161,10 +157,10 @@ extension RouteSelectionView {
                     latitude: coords.destinationLat,
                     longitude: coords.destinationLng
                 )
-                self.activeSessionId = session.sessionId
+                self.destinationId = destinationId
                 self.showNavigation = true
             }
-            print("✅ Journey Prepared! Session: \(session.sessionId)")
+            print("✅ Journey Prepared! Destination: \(destinationId)")
 
         } catch {
             print("🚨 Journey Preparation Error: \(error)")
