@@ -84,7 +84,6 @@ async def create_session(journey_id: str,
         total_earnings=0.0,
         strikes=0,
         questions_answered=0,
-        current_question_index=0,
         is_completed=False,
         distance_traveled=0.0,
         total_distance=100.0,
@@ -93,27 +92,23 @@ async def create_session(journey_id: str,
     
     db.collection('game_sessions').document(session_id).set(session_data.model_dump())
     
-    # 3. Fetch initial questions from TriviaService
-    questions_data = await TriviaService.get_questions_from_open_trivia(count=5)
+    # 3. Fetch initial question from TriviaService (fetch one question at a time)
+    questions_data = await TriviaService.get_questions_from_open_trivia()
     
-    # Store questions in Firestore and collect first question
-    first_question_data = None
-    for idx, q in enumerate(questions_data):
-        normalized_q = await TriviaService.normalize_question_format(q)
-        question_obj = QuestionModel(
-            question_id=str(uuid.uuid4()),
-            session_id=session_id,
-            question_text=normalized_q['question'],
-            correct_answer=normalized_q['correct_answer'],
-            incorrect_answers=normalized_q['incorrect_answers'],
-            category=normalized_q.get('category', 'General'),
-            difficulty=normalized_q.get('difficulty', 'medium'),
-            earning_value=10.0 * (1 if normalized_q.get('difficulty') == 'easy' else 2 if normalized_q.get('difficulty') == 'medium' else 3)
-        )
-        db.collection('questions').document(question_obj.question_id).set(question_obj.model_dump())
-        
-        if idx == 0:
-            first_question_data = question_obj
+    # Store the first question in Firestore
+    q = questions_data[0]
+    normalized_q = await TriviaService.normalize_question_format(q)
+    first_question_data = QuestionModel(
+        question_id=str(uuid.uuid4()),
+        session_id=session_id,
+        question_text=normalized_q['question'],
+        correct_answer=normalized_q['correct_answer'],
+        incorrect_answers=normalized_q['incorrect_answers'],
+        category=normalized_q.get('category', 'General'),
+        difficulty=normalized_q.get('difficulty', 'medium'),
+        earning_value=10.0 * (1 if normalized_q.get('difficulty') == 'easy' else 2 if normalized_q.get('difficulty') == 'medium' else 3)
+    )
+    db.collection('questions').document(first_question_data.question_id).set(first_question_data.model_dump())
     
     # 4. Build trip metadata (you may want to fetch this from a journeys collection)
     trip_metadata = TripMetadata(
@@ -155,13 +150,12 @@ async def get_session(session_id: str):
         raise HTTPException(status_code=404, detail="Session not found")
     session_data = session_doc.to_dict()
 
-    # 2. Fetch current question
-    current_index = session_data.get("current_question_index", 0)
+    # 2. Fetch the latest question for this session
     questions = list(db.collection('questions').where('session_id', '==', session_id).stream())
     if not questions:
         raise HTTPException(status_code=404, detail="No questions found for session")
-    # Sort questions by creation or index if needed; here, just use order returned
-    current_question_doc = questions[current_index] if current_index < len(questions) else questions[0]
+    # Get the most recently created question (last one in the list)
+    current_question_doc = questions[-1]
     current_question_data = current_question_doc.to_dict()
 
     # 3. Build response
@@ -186,7 +180,7 @@ async def get_session(session_id: str):
         current_question=current_question,
         current_earnings=session_data.get("total_earnings", 0.0),
         strikes=session_data.get("strikes", 0),
-        progress_percent=(session_data.get("distance_traveled", 0.0) / session_data.get("total_distance", 100.0)) * 100
+        progress_percent=min(100, (session_data.get("questions_answered", 0) / 10) * 100)  # Rough estimate
     )
 
 
@@ -201,12 +195,11 @@ async def submit_answer(session_id: str, submission: AnswerSubmission):
         raise HTTPException(status_code=404, detail="Session not found")
     session_data = session_doc.to_dict()
 
-    # 2. Fetch current question
-    current_index = session_data.get("current_question_index", 0)
+    # 2. Fetch the latest question (most recently created)
     questions = list(db.collection('questions').where('session_id', '==', session_id).stream())
-    if not questions or current_index >= len(questions):
-        raise HTTPException(status_code=404, detail="No more questions in session")
-    current_question_doc = questions[current_index]
+    if not questions:
+        raise HTTPException(status_code=404, detail="No questions found for session")
+    current_question_doc = questions[-1]  # Get the most recent question
     current_question_data = current_question_doc.to_dict()
 
     # 3. Validate answer
@@ -215,24 +208,38 @@ async def submit_answer(session_id: str, submission: AnswerSubmission):
     strikes = session_data.get("strikes", 0) + (0 if is_correct else 1)
     current_earnings = session_data.get("total_earnings", 0.0) + earned_amount
     questions_answered = session_data.get("questions_answered", 0) + 1
-    next_index = current_index + 1
 
-    # 4. Check if session ended
-    session_ended = (next_index >= len(questions)) or (strikes >= 3)
+    # 4. Check if session ended (3 strikes = game over)
+    session_ended = strikes >= 3
     session_result = None
     next_question = None
 
     if not session_ended:
-        next_question_doc = questions[next_index]
-        next_question_data = next_question_doc.to_dict()
+        # Fetch next question from API
+        question_data = await TriviaService.get_questions_from_open_trivia()
+        q = question_data[0]
+        normalized_q = await TriviaService.normalize_question_format(q)
+        
+        next_question_data = QuestionModel(
+            question_id=str(uuid.uuid4()),
+            session_id=session_id,
+            question_text=normalized_q['question'],
+            correct_answer=normalized_q['correct_answer'],
+            incorrect_answers=normalized_q['incorrect_answers'],
+            category=normalized_q.get('category', 'General'),
+            difficulty=normalized_q.get('difficulty', 'medium'),
+            earning_value=10.0 * (1 if normalized_q.get('difficulty') == 'easy' else 2 if normalized_q.get('difficulty') == 'medium' else 3)
+        )
+        db.collection('questions').document(next_question_data.question_id).set(next_question_data.model_dump())
+        
         next_question = Question(
-            question_id=next_question_data["question_id"],
-            text=next_question_data["question_text"],
-            correct_answer=next_question_data["correct_answer"],
-            incorrect_answers=next_question_data["incorrect_answers"],
-            category=next_question_data.get("category", "General"),
-            difficulty=next_question_data.get("difficulty", "medium"),
-            earning_value=next_question_data.get("earning_value", 10.0)
+            question_id=next_question_data.question_id,
+            text=next_question_data.question_text,
+            correct_answer=next_question_data.correct_answer,
+            incorrect_answers=next_question_data.incorrect_answers,
+            category=next_question_data.category,
+            difficulty=next_question_data.difficulty,
+            earning_value=next_question_data.earning_value
         )
 
     # 5. Update session in Firestore
@@ -240,14 +247,12 @@ async def submit_answer(session_id: str, submission: AnswerSubmission):
         "strikes": strikes,
         "total_earnings": current_earnings,
         "questions_answered": questions_answered,
-        "current_question_index": next_index if not session_ended else current_index,
         "is_completed": session_ended,
-        "distance_traveled": (questions_answered / len(questions)) * session_data.get("total_distance", 100.0)
     }
     session_ref.update(update_data)
 
-    # 6. Progress percent
-    progress_percent = (update_data["distance_traveled"] / session_data.get("total_distance", 100.0)) * 100
+    # 6. Progress percent (estimate based on time/questions answered, not total questions)
+    progress_percent = min(100, (questions_answered / 10) * 100)  # Rough estimate
 
     # 7. If session ended, build result
     if session_ended:
@@ -255,7 +260,7 @@ async def submit_answer(session_id: str, submission: AnswerSubmission):
             "total_earnings": current_earnings,
             "strikes": strikes,
             "questions_answered": questions_answered,
-            "completed": next_index >= len(questions)
+            "completed": True
         }
 
     return AnswerResponse(
@@ -280,26 +285,38 @@ async def skip_question(session_id: str):
         raise HTTPException(status_code=404, detail="Session not found")
     session_data = session_doc.to_dict()
 
-    current_index = session_data.get("current_question_index", 0)
     strikes = session_data.get("strikes", 0) + 1
     questions_answered = session_data.get("questions_answered", 0) + 1
 
-    questions = list(db.collection('questions').where('session_id', '==', session_id).stream())
-    next_index = current_index + 1
-    session_ended = (next_index >= len(questions)) or (strikes >= 3)
+    # Check if session ended (3 strikes = game over)
+    session_ended = strikes >= 3
 
     update_data = {
         "strikes": strikes,
         "questions_answered": questions_answered,
-        "current_question_index": next_index if not session_ended else current_index,
-        "is_completed": session_ended,
-        "distance_traveled": (questions_answered / len(questions)) * session_data.get("total_distance", 100.0)
+        "is_completed": session_ended
     }
     session_ref.update(update_data)
 
     if session_ended:
-        return {"message": "Session ended due to skips or strikes."}
+        return {"message": "Session ended due to strikes.", "strikes": strikes}
     else:
+        # Fetch next question from API
+        question_data = await TriviaService.get_questions_from_open_trivia()
+        q = question_data[0]
+        normalized_q = await TriviaService.normalize_question_format(q)
+        
+        next_question_data = QuestionModel(
+            question_id=str(uuid.uuid4()),
+            session_id=session_id,
+            question_text=normalized_q['question'],
+            correct_answer=normalized_q['correct_answer'],
+            incorrect_answers=normalized_q['incorrect_answers'],
+            category=normalized_q.get('category', 'General'),
+            difficulty=normalized_q.get('difficulty', 'medium'),
+            earning_value=10.0 * (1 if normalized_q.get('difficulty') == 'easy' else 2 if normalized_q.get('difficulty') == 'medium' else 3)
+        )
+        db.collection('questions').document(next_question_data.question_id).set(next_question_data.model_dump())
         return {"message": "Question skipped. Next question loaded.", "strikes": strikes}
 
 
@@ -336,13 +353,13 @@ async def get_current_question(session_id: str):
     session_doc = db.collection('game_sessions').document(session_id).get()
     if not session_doc.exists:
         raise HTTPException(status_code=404, detail="Session not found")
-    session_data = session_doc.to_dict()
-
-    current_index = session_data.get("current_question_index", 0)
+    
+    # Get the most recently created question for this session
     questions = list(db.collection('questions').where('session_id', '==', session_id).stream())
-    if not questions or current_index >= len(questions):
+    if not questions:
         raise HTTPException(status_code=404, detail="No current question found")
-    current_question_doc = questions[current_index]
+    
+    current_question_doc = questions[-1]  # Get the most recent question
     current_question_data = current_question_doc.to_dict()
 
     return Question(

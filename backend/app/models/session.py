@@ -34,7 +34,6 @@ class GameSession(BaseModel):
     total_earnings: float = Field(default=0.0, description="Total earnings in this session")
     strikes: int = Field(default=0, description="Number of strikes (max 3)")
     questions_answered: int = Field(default=0, description="Number of questions answered")
-    current_question_index: int = Field(default=0, description="Current question index")
     is_completed: bool = Field(default=False, description="Whether session is completed")
     distance_traveled: float = Field(default=0.0, description="Distance traveled (0-100%)")
     total_distance: float = Field(default=100.0, description="Total trip distance")
