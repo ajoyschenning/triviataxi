@@ -1,72 +1,95 @@
 """Service for handling trivia question delivery and management."""
 import httpx
+import html
 from typing import List, Dict, Any
 
-#TODO: This is hard coded for testing. 
 class TriviaService:
     """Manages trivia question retrieval from external APIs."""
     
+    # Trivia DB API endpoint - returns one question per request
     OPEN_TRIVIA_BASE_URL = "https://opentdb.com/api.php"
-    THE_TRIVIA_API_BASE_URL = "https://the-trivia-api.com/v2"
+    
+    @staticmethod
+    def _clean_text(text: str) -> str:
+        """Clean and format text by decoding HTML entities and normalizing whitespace.
+        
+        Handles:
+        - HTML entity decoding (&quot; -> ", &amp; -> &, etc.)
+        - Extra whitespace normalization
+        - Proper string trimming
+        """
+        # Decode HTML entities
+        decoded = html.unescape(text)
+        # Normalize whitespace (remove extra spaces, tabs, newlines)
+        cleaned = " ".join(decoded.split())
+        return cleaned
     
     @staticmethod
     async def get_questions_from_open_trivia(
-        count: int = 5,
         category: str | None = None,
         difficulty: str | None = None
     ) -> List[Dict[str, Any]]:
-        """Fetch questions from Open Trivia Database."""
-        # Hardcoded questions for testing
-        return [
-            {
-                "question": "What is the capital of France?",
-                "correct_answer": "Paris",
-                "incorrect_answers": ["London", "Berlin", "Madrid"],
-                "category": "Geography",
-                "difficulty": "easy"
-            },
-            {
-                "question": "Who wrote 'Hamlet'?",
-                "correct_answer": "William Shakespeare",
-                "incorrect_answers": ["Charles Dickens", "Jane Austen", "Mark Twain"],
-                "category": "Literature",
-                "difficulty": "medium"
-            },
-            {
-                "question": "What is the chemical symbol for water?",
-                "correct_answer": "H2O",
-                "incorrect_answers": ["CO2", "NaCl", "O2"],
-                "category": "Science",
-                "difficulty": "easy"
-            },
-            {
-                "question": "Which planet is known as the Red Planet?",
-                "correct_answer": "Mars",
-                "incorrect_answers": ["Venus", "Jupiter", "Saturn"],
-                "category": "Science",
-                "difficulty": "easy"
-            },
-            {
-                "question": "In which year did the Titanic sink?",
-                "correct_answer": "1912",
-                "incorrect_answers": ["1905", "1918", "1925"],
-                "category": "History",
-                "difficulty": "medium"
-            }
-        ][:count]
+        """Fetch one question from Open Trivia Database.
+        
+        Fetches a single question at a time. Call this method repeatedly as needed
+        based on route duration and user performance.
+        """
+        params = {
+            "amount": 1,
+            "type": "multiple"
+        }
+        if category:
+            params["category"] = category
+        if difficulty:
+            params["difficulty"] = difficulty
+        
+        async with httpx.AsyncClient() as client:
+            response = await client.get(TriviaService.OPEN_TRIVIA_BASE_URL, params=params)
+            response.raise_for_status()
+            data = response.json()
+        
+        # Check for API errors
+        if data.get("response_code") != 0:
+            raise Exception(f"Open Trivia API error: {data.get('response_code')}")
+        
+        # Extract and process the single question in the response
+        questions = []
+        if data.get("results"):
+            result = data["results"][0]
+            # Clean and format all text fields
+            question = TriviaService._clean_text(result["question"])
+            correct_answer = TriviaService._clean_text(result["correct_answer"])
+            incorrect_answers = [TriviaService._clean_text(ans) for ans in result["incorrect_answers"]]
+            category_name = TriviaService._clean_text(result["category"])
+            
+            questions.append({
+                "question": question,
+                "correct_answer": correct_answer,
+                "incorrect_answers": incorrect_answers,
+                "category": category_name,
+                "difficulty": result["difficulty"]
+            })
+        
+        return questions
     
     @staticmethod
     async def get_questions_from_trivia_api(
-        count: int = 5,
         category: str | None = None,
         difficulty: str | None = None
     ) -> List[Dict[str, Any]]:
-        """Fetch questions from The Trivia API."""
-        # Hardcoded questions for testing
-        return await TriviaService.get_questions_from_open_trivia(count, category, difficulty)
+        """Fetch one question from the Trivia API."""
+        return await TriviaService.get_questions_from_open_trivia(category, difficulty)
     
     @staticmethod
     async def normalize_question_format(raw_question: Dict[str, Any]) -> Dict[str, Any]:
-        """Normalize question format across different APIs."""
-        # Simple passthrough for hardcoded questions
-        return raw_question
+        """Normalize question format across different APIs.
+        
+        Ensures all text fields are cleaned of HTML entities and properly formatted.
+        """
+        return {
+            "question": TriviaService._clean_text(raw_question.get("question", "")),
+            "correct_answer": TriviaService._clean_text(raw_question.get("correct_answer", "")),
+            "incorrect_answers": [TriviaService._clean_text(ans) for ans in raw_question.get("incorrect_answers", [])],
+            "category": TriviaService._clean_text(raw_question.get("category", "General")),
+            "difficulty": raw_question.get("difficulty", "medium")
+        }
