@@ -12,7 +12,6 @@ import SwiftUI
 struct ShopView: View {
     @Binding var showShop: Bool  // control navigation
     @StateObject private var viewModel = ShopViewModel()
-    @EnvironmentObject var userManager: UserManager
 
     var body: some View {
         VStack(spacing: 0) {
@@ -55,7 +54,7 @@ struct ShopView: View {
                             imageUrl: item.imageUrl,
                             isPurchasing: viewModel.purchasingItemId == item.id,
                             buyAction: {
-                                Task { await viewModel.purchase(item, userManager: userManager) }
+                                Task { await viewModel.purchase(item) }
                             }
                         )
                     }
@@ -64,7 +63,7 @@ struct ShopView: View {
                 }
                 .padding(.horizontal, 21)
                 .task {
-                    await viewModel.load(userManager: userManager)
+                    await viewModel.load()
                 }
             }
         }

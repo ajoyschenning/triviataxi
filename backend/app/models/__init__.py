@@ -1,6 +1,6 @@
 # Database models
 from .user import User
-from .session import GameSession
+from .session import GameSession, Question
 from .leaderboard import LeaderboardEntry
 
-__all__ = ["User", "GameSession",  "LeaderboardEntry"]
+__all__ = ["User", "GameSession", "Question", "LeaderboardEntry"]
