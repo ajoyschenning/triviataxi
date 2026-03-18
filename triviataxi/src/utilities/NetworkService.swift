@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 // Helper to decode dynamic JSON values
 struct AnyCodable: Codable {
@@ -55,54 +56,70 @@ enum NetworkError: Error {
 
 class NetworkService {
     static let shared = NetworkService()
-    private let baseURL =
-        "https://trivia-taxi-api-423193744278.us-central1.run.app/"
+    private let baseURL = "http://127.0.0.1:8000"
+    //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
+    
 
-    // High-standard approach: Use a Result type or Async/Await
-    func createSession(journeyId: String, token: String) async throws
-        -> SessionResponse
-    {
-        // 1. Construct URL with Query Items
-        var components = URLComponents(string: "\(baseURL)/sessions")
-        components?.queryItems = [
-            URLQueryItem(name: "journey_id", value: journeyId)
-        ]
 
-        guard let url = components?.url else {
-            throw NetworkError.invalidURL
+    
+    func submitGameResults(
+        userId: String,
+        routeId: String,
+        totalEarnings: Int,
+        strikes: Int,
+        questionsAnswered: Int) async throws -> GameCompletionRequest{
+            
+            guard let url = URL(string: "\(baseURL)/sessions") else {
+                throw NetworkError.invalidURL
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                        print("🚨 User is not logged in or token is missing.")
+                        throw NetworkError.unauthorized
+                    }
+                    
+                    // 🚀 THE FIX: 2. Staple the pass to the HTTP Header
+                    request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+            let body: [String: Any] = ["user_id": userId,
+                                       "route_id": routeId,
+                                       "total_earnings": totalEarnings,
+                                       "strikes": strikes,
+                                       "questions_answered": questionsAnswered]
+            request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse,
+                (200...299).contains(httpResponse.statusCode)
+            else {
+                throw NetworkError.serverError(
+                    (response as? HTTPURLResponse)?.statusCode ?? -1
+                )
+            }
+            do {
+                do {
+                            let decodedResponse = try JSONDecoder().decode(GameCompletionRequest.self, from: data)
+                            return decodedResponse
+                        } catch let DecodingError.keyNotFound(key, context) {
+                            print("🚨 SWIFT DECODING ERROR: Missing key '\(key.stringValue)' - \(context.debugDescription)")
+                            throw NetworkError.decodingError // Or whatever your error 3 is
+                        } catch let DecodingError.typeMismatch(type, context) {
+                            print("🚨 SWIFT DECODING ERROR: Type mismatch for type \(type) - \(context.debugDescription)")
+                            throw NetworkError.decodingError
+                        } catch {
+                            print("🚨 SWIFT DECODING ERROR: \(error.localizedDescription)")
+                            throw NetworkError.decodingError
+                        }
+            } catch {
+                throw NetworkError.decodingError
+            }
         }
-
-        // 2. Setup Request
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-
-        // 3. Execute Request
-        let (data, response) = try await URLSession.shared.data(for: request)
-
-        // 4. Validate Response
-        guard let httpResponse = response as? HTTPURLResponse else {
-            throw NetworkError.noData
-        }
-
-        if httpResponse.statusCode == 401 {
-            throw NetworkError.unauthorized
-        }
-
-        guard (200...299).contains(httpResponse.statusCode) else {
-            throw NetworkError.serverError(httpResponse.statusCode)
-        }
-
-        // 5. Decode JSON
-        do {
-            let decoder = JSONDecoder()
-            return try decoder.decode(SessionResponse.self, from: data)
-        } catch {
-            print("Decoding error: \(error)")
-            throw NetworkError.decodingError
-        }
-    }
+            
+        
 
     /// Fetch current user profile using Bearer token from /users/me endpoint.
     func fetchUserProfile(token: String) async throws -> UserProfile {
@@ -241,31 +258,31 @@ class NetworkService {
     }
 
     /// Fetch IDs of destinations/routes the user already owns. Returns array of destination IDs.
-    func fetchOwnedDestinationIDs(for userId: String) async throws -> [String] {
-        guard let url = URL(string: "\(baseURL)users/\(userId)/owned") else {
-            throw NetworkError.invalidURL
-        }
-
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.setValue("application/json", forHTTPHeaderField: "accept")
-
-        let (data, response) = try await URLSession.shared.data(for: request)
-        guard let httpResponse = response as? HTTPURLResponse,
-            (200...299).contains(httpResponse.statusCode)
-        else {
-            throw NetworkError.serverError(
-                (response as? HTTPURLResponse)?.statusCode ?? -1
-            )
-        }
-
-        do {
-            let decoder = JSONDecoder()
-            return try decoder.decode([String].self, from: data)
-        } catch {
-            throw NetworkError.decodingError
-        }
-    }
+//    func fetchOwnedDestinationIDs(for userId: String) async throws -> [String] {
+//        guard let url = URL(string: "\(baseURL)users/\(userId)/owned") else {
+//            throw NetworkError.invalidURL
+//        }
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.setValue("application/json", forHTTPHeaderField: "accept")
+//
+//        let (data, response) = try await URLSession.shared.data(for: request)
+//        guard let httpResponse = response as? HTTPURLResponse,
+//            (200...299).contains(httpResponse.statusCode)
+//        else {
+//            throw NetworkError.serverError(
+//                (response as? HTTPURLResponse)?.statusCode ?? -1
+//            )
+//        }
+//
+//        do {
+//            let decoder = JSONDecoder()
+//            return try decoder.decode([String].self, from: data)
+//        } catch {
+//            throw NetworkError.decodingError
+//        }
+//    }
 
     struct PurchaseResponse: Codable {
         let success: Bool

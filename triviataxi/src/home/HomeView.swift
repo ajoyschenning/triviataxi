@@ -9,6 +9,7 @@ import MapboxMaps
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var userManager: UserManager
     @Binding var userIsLoggedIn: Bool
     
     @State private var showRoutes = false
@@ -61,6 +62,10 @@ struct HomeView: View {
                                 logout()
                             }
                         }
+                    }.task {
+                        // This function already has a safety check built in (guard !isProfileLoaded)
+                        // so it will only ever hit your Firebase database ONCE per session.
+                        await userManager.loadUserProfile()
                     }
                     
                     Spacer()

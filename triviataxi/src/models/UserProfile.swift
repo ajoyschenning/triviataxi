@@ -22,7 +22,7 @@ struct UserProfile: Codable {
         case username
         case email
         case avatarUrl = "avatar_url"
-        case coins
+        case coins 
         case miles
         case owned
         case lifetimeGames = "lifetime_games"
