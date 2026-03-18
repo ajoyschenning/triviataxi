@@ -56,6 +56,7 @@ struct RouteSelectionView: View {
                                 RouteCard(
                                     journeyID: destination.id,
                                     city: destination.city,
+                                    imageUrl: destination.imageUrl,
                                     onDifficultySelected: { difficulty in
                                         fetchRouteCoordinates(destinationId: destination.id, difficulty: difficulty)
                                     }
@@ -267,12 +268,12 @@ extension RouteSelectionView {
                 let token = try await user.getIDToken()
                 let userProfile = try await NetworkService.shared.fetchUserProfile(token: token)
                 
-                var destinations: [DestinationData] = []
+                var destinations: [DestinationResponse] = []
                 for destinationId in userProfile.owned ?? [] {
-                                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
-                                    destinations.append(destination)
-                                }
-                
+                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
+                    destinations.append(destination)
+                }
+
                 await MainActor.run {
                     self.ownedDestinations = destinations
                     isLoadingDestinations = false

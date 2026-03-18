@@ -142,7 +142,7 @@ class NetworkService {
 
     /// Fetch a single destination by ID.
     func fetchDestination(id: String, token: String) async throws
-        -> DestinationData
+        -> DestinationResponse
     {
         guard let url = URL(string: "\(baseURL)/destinations/\(id)") else {
             throw NetworkError.invalidURL
@@ -164,7 +164,7 @@ class NetworkService {
 
         do {
             let decoder = JSONDecoder()
-            return try decoder.decode(DestinationData.self, from: data)
+            return try decoder.decode(DestinationResponse.self, from: data)
         } catch {
             print("🚨 Destination Decoding Error: \(error)")
             throw NetworkError.decodingError
