@@ -206,7 +206,7 @@ struct RouteCard: View {
             startRoute(journeyID: journeyID)
         }) {
             Text(title)
-                .font(.system(size: 14, weight: .bold))
+                .font(.system(size: 12, weight: .bold))
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .background(Color.black)
