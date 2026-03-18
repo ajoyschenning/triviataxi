@@ -38,6 +38,7 @@ struct Question: Codable, Identifiable {
     let category: String
     let difficulty: String
     let earningValue: Double
+    let correctAnswer: String
     let incorrectAnswers: [String]
 
     enum CodingKeys: String, CodingKey {
@@ -46,6 +47,7 @@ struct Question: Codable, Identifiable {
         case category
         case difficulty
         case earningValue = "earning_value"
+        case correctAnswer = "correct_answer"
         case incorrectAnswers = "incorrect_answers"
     }
 }
