@@ -20,7 +20,6 @@ struct GameCompletionRequest: Codable {
         }
 }
 
-
 struct Question: Codable, Identifiable {
     var id: String { questionId }
     let questionId: String
@@ -139,13 +138,21 @@ class GameManager: ObservableObject {
                 totalEarnings: self.currentEarnings,
                 strikes: self.strikes,
                 questionsAnswered: self.currentIndex+1)
-            print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId)")
+            print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId) \(self.currentEarnings)")
 
             await userManager.loadUserProfile()
             
         } catch {
             print("🚨 Failed to upload game results: \(error.localizedDescription)")
         }
+    }
+    
+    func addEarnings(earningValue: Int) {
+       currentEarnings += earningValue
+    }
+    
+    func incrementStrikes() {
+        strikes += 1
     }
 }
 
