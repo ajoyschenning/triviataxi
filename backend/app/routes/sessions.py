@@ -182,7 +182,11 @@ async def get_session(session_id: str):
         current_earnings=session_data.get("total_earnings", 0.0),
         strikes=session_data.get("strikes", 0),
         progress_percent=min(100, (session_data.get("questions_answered", 0) / 10) * 100)  # Rough estimate
+<<<<<<< HEAD
     ))
+=======
+    )
+>>>>>>> d98589d63988cb510e488d56d0ef2b1184e5aedb
 
 
 @router.post("/{session_id}/answer", response_model=AnswerResponse)
