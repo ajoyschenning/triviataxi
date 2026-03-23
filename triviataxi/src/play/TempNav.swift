@@ -55,7 +55,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                 // 3. ADD QUESTION OVERLAY (From the top block)
                 if let questions = questions, !questions.isEmpty {
                     let questionOverlay = UIHostingController(
-                        rootView: QuestionOverlayView(questions: questions, destinationId: destinationId).environmentObject(gameManager)
+                        rootView: QuestionOverlayView(questions: questions, destinationId: destinationId).environmentObject(gameManager).environmentObject(userManager)
                     )
                     questionOverlay.view.backgroundColor = .clear
                     questionOverlay.view.isUserInteractionEnabled = true

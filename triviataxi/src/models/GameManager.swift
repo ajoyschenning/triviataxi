@@ -54,6 +54,8 @@ class GameManager: ObservableObject {
     @Published var isGameOver: Bool = false
     
     
+    let maxStrikes: Int = 3
+    
     // Safety property to always grab the active question
     var currentQuestion: Question? {
         guard currentIndex < questions.count else { return nil }
@@ -61,7 +63,7 @@ class GameManager: ObservableObject {
     }
     
     @Published var routeId: String = ""
-    private let maxStrikes: Int = 3
+    
     
     func setRouteId(routeId: String) {
         // Defer the publish to the next runloop tick to avoid publishing during view updates
@@ -83,29 +85,10 @@ class GameManager: ObservableObject {
             
         }
     
-    /// Grades the user's tap instantly with zero API latency
-    func submitAnswer(_ selectedAnswer: String, userManager: UserManager) {
-        guard let question = currentQuestion, !isGameOver else { return }
-        
-        let isCorrect = (selectedAnswer == question.correctAnswer)
-        
-        if isCorrect {
-            currentEarnings += question.earningValue
-        } else {
-            strikes += 1
-        }
-        
-        // Check for game over conditions (Out of questions OR 3 strikes)
-        if strikes >= maxStrikes || currentIndex + 1 >= questions.count {
-            endGameLocally(userManager: userManager)
-        } else {
-            // Move to the next question
-            currentIndex += 1
-        }
-    }
+
     
     /// Locks the local game state and triggers the final background upload
-    private func endGameLocally(userManager: UserManager) {
+    func endGameLocally(userManager: UserManager) {
         self.isGameOver = true
         
         Task {
@@ -130,7 +113,6 @@ class GameManager: ObservableObject {
     private func uploadFinalResults(userManager: UserManager) async {
         
         do {
-            // Example Network Call - Replace with your actual NetworkService function
             let res = try await NetworkService.shared.submitGameResults(
                 userId: userManager.currentUserId!,
                 routeId: self.routeId,
