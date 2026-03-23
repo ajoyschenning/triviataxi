@@ -5,15 +5,11 @@
 
 import SwiftUI
 
-//struct Question {
-//    let id: String
-//    let text: String
-//    let difficulty: String
-//    let answers: [String]
-//    let correctAnswerIndex: Int
-//}
 
 struct QuestionOverlayView: View {
+    @EnvironmentObject var gameManager: GameManager
+    @EnvironmentObject var userManager: UserManager
+    
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String? = nil
     @State private var showQuestion = true
@@ -24,6 +20,8 @@ struct QuestionOverlayView: View {
     @State private var answerTimer: Timer? = nil
     @State private var currentShuffledAnswers: [String] = []
     @State private var showBuffer = false
+    
+    
     
     let questions: [Question]
     let destinationId: String
@@ -103,6 +101,7 @@ struct QuestionOverlayView: View {
                 displayTimer?.invalidate()
                 displayTimer = nil
                 // Question expires, show buffer
+                gameManager.incrementStrikes()
                 showQuestion = false
                 showBuffer = true
                 startBetweenQuestionTimer()
@@ -117,6 +116,16 @@ struct QuestionOverlayView: View {
         displayTimer = nil
         showQuestion = false
         showBuffer = true
+        
+        if answer == currentQuestion.correctAnswer {
+            gameManager.addEarnings(earningValue: currentQuestion.earningValue)
+        } else {
+            gameManager.incrementStrikes()
+        }
+        
+        if gameManager.strikes >= gameManager.maxStrikes || !hasMoreQuestions {
+            gameManager.endGameLocally(userManager: userManager)
+        }
         
         // Wait 5 seconds before showing next question
         startBetweenQuestionTimer()
@@ -343,12 +352,30 @@ let sampleQuestions = [
         category: "Geography",
         difficulty: "Easy",
         earningValue: 5,
-        correctAnswer: "Memphis",
-        incorrectAnswers: ["Nashville", "Knoxville", "Chattanooga"],
+        correctAnswer: "Nashville",
+        incorrectAnswers: ["Memphis", "Knoxville", "Chattanooga"],
     ),
     Question(
         questionId: "2",
         text: "What year was Vanderbilt University founded?",
+        category: "History",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "1875",
+        incorrectAnswers: ["1873", "1879", "1881"],
+    ),
+    Question(
+        questionId: "3",
+        text: "What year was Vanderbilt University founded? 2",
+        category: "History",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "1875",
+        incorrectAnswers: ["1873", "1879", "1881"],
+    ),
+    Question(
+        questionId: "4",
+        text: "What year was Vanderbilt University founded? 3",
         category: "History",
         difficulty: "Medium",
         earningValue: 10,

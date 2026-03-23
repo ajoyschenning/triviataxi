@@ -12,9 +12,6 @@ import SwiftUI
 struct Header: View {
     @EnvironmentObject var userManager: UserManager
     let title: String
-    let onHomeTapped: () -> Void
-    
-
     var body: some View {
         ZStack {
 

@@ -23,6 +23,8 @@ struct RouteSelectionView: View {
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
     @State private var destinationId: String? = nil
+    @State private var sessionId: String? = nil
+    @State private var gameQuestions: [Question] = []
 
     @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
@@ -83,7 +85,7 @@ struct RouteSelectionView: View {
                     origin: origin,
                     destination: destination,
                     destinationId: destinationId,
-                    questions: sampleQuestions
+                    questions: gameQuestions.isEmpty ? sampleQuestions : gameQuestions
                 )
                 .edgesIgnoringSafeArea(.all)
                 // Hides the default iOS back button so your custom Mapbox UI takes over
@@ -145,9 +147,13 @@ extension RouteSelectionView {
                 token: token
             )
 
-
-
-            // 3. Trigger the navigation push ONLY when both are successful
+            // 2. Fetch Trivia Questions
+            let questionLoader = QuestionLoader()
+            // Generate a session ID for question fetching
+            let tempSessionId = UUID().uuidString
+            await questionLoader.fetchMultipleQuestions(tempSessionId, count: 10)
+            
+            // 3. Trigger the navigation push ONLY when all are successful
             await MainActor.run {
                 self.selectedOrigin = CLLocationCoordinate2D(
                     latitude: coords.originLat,
@@ -158,9 +164,11 @@ extension RouteSelectionView {
                     longitude: coords.destinationLng
                 )
                 self.destinationId = destinationId
+                self.sessionId = tempSessionId
+                self.gameQuestions = questionLoader.questions
                 self.showNavigation = true
             }
-            print("✅ Journey Prepared! Destination: \(destinationId)")
+            print("✅ Journey Prepared! Destination: \(destinationId), Questions loaded: \(questionLoader.questions.count)")
 
         } catch {
             print("🚨 Journey Preparation Error: \(error)")

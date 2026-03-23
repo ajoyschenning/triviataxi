@@ -4,6 +4,7 @@ from typing import Optional, List
 from pydantic import BaseModel, Field
 
 
+<<<<<<< HEAD
 class Question(BaseModel):
     """Trivia question model for Firestore."""
     
@@ -40,8 +41,21 @@ class GameSession(BaseModel):
     total_distance: float = Field(default=100.0, description="Total trip distance")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Session start timestamp")
     ended_at: Optional[datetime] = Field(None, description="Session end timestamp")
+=======
+
+class GameSession(BaseModel):
+    """Game session model for Firestore."""
+    user_id: str = Field(..., description="User's Firebase UID")
+    session_id: str = Field(..., description="Unique session ID")
+    route_id: str = Field(..., description="route ID")
+    total_earnings: int = Field(default=0.0, description="Total earnings in this session")
+    strikes: int = Field(default=0, description="Number of strikes (max 3)")
+    questions_answered: int = Field(default=0, description="Number of questions answered")
+    completed_at: Optional[datetime] = Field(default=None, description="Session completion timestamp")
+>>>>>>> 99ae35ec2319c6717abe48318a6ed0c04436463f
     
     class Config:
         json_encoders = {
             datetime: lambda v: v.isoformat()
         }
+
