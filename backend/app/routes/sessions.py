@@ -182,7 +182,7 @@ async def get_session(session_id: str):
         current_earnings=session_data.get("total_earnings", 0.0),
         strikes=session_data.get("strikes", 0),
         progress_percent=min(100, (session_data.get("questions_answered", 0) / 10) * 100)  # Rough estimate
-    )
+    ))
 
 
 @router.post("/{session_id}/answer", response_model=AnswerResponse)
@@ -379,16 +379,3 @@ async def generate_hint(session_id: str):
     """Generate AI-powered hint for current question."""
     # TODO: Implement OpenAI hint generation
     return {"hint": "Here's a helpful hint..."}
-        user_id=payload.user_id,
-        route_id=payload.route_id,
-        total_earnings=payload.total_earnings,
-        strikes=payload.strikes,
-        questions_answered=payload.questions_answered,
-        completed_at=datetime.now()
-    )
-    
-    db.collection('game_sessions').document(session_id).set(session_data.model_dump())
-    
-    return SessionResponse(
-        session_id=session_id
-    )
