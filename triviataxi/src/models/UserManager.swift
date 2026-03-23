@@ -60,7 +60,4 @@ class UserManager: ObservableObject {
     func addCoins(amount: Int){
         self.coins+=amount
     }
-    func deductCoins(amount: Int) {
-        self.coins -= amount
-    }
 }

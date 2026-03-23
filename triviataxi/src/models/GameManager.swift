@@ -65,15 +65,6 @@ class GameManager: ObservableObject {
     @Published var routeId: String = ""
     
     
-    func setRouteId(routeId: String) {
-        // Defer the publish to the next runloop tick to avoid publishing during view updates
-        Task { @MainActor in
-            if self.routeId != routeId {
-                self.routeId = routeId
-            }
-        }
-    }
-    
     /// Call this once when Mapbox starts the route
     func startSession(routeId: String) {
             
