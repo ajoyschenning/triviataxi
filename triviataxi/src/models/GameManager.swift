@@ -73,17 +73,15 @@ class GameManager: ObservableObject {
     }
     
     /// Call this once when Mapbox starts the route
-    func startSession(routeId: String, fetchedQuestions: [Question]) {
-        // Defer batched publishes to avoid triggering SwiftUI's "Publishing changes from within view updates" warning
-        Task { @MainActor in
+    func startSession(routeId: String) {
+            
             self.routeId = routeId
-            self.questions = fetchedQuestions
             self.currentIndex = 0
             self.currentEarnings = 0
             self.strikes = 0
             self.isGameOver = false
+            
         }
-    }
     
     /// Grades the user's tap instantly with zero API latency
     func submitAnswer(_ selectedAnswer: String, userManager: UserManager) {
@@ -124,6 +122,7 @@ class GameManager: ObservableObject {
             Task {
                 await uploadFinalResults(userManager: userManager)
                 print("🛑 Trip aborted. Uploading partial earnings...")
+                
             }
         }
     
@@ -140,7 +139,7 @@ class GameManager: ObservableObject {
                 questionsAnswered: self.currentIndex+1)
             print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId) \(self.currentEarnings)")
 
-            await userManager.loadUserProfile()
+            userManager.addCoins(amount: self.currentEarnings)
             
         } catch {
             print("🚨 Failed to upload game results: \(error.localizedDescription)")

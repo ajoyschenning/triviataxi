@@ -57,7 +57,9 @@ class UserManager: ObservableObject {
             print("🚨 Failed to load user profile: \(error.localizedDescription)")
         }
     }
-    
+    func addCoins(amount: Int){
+        self.coins+=amount
+    }
     func deductCoins(amount: Int) {
         self.coins -= amount
     }

@@ -37,7 +37,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
         viewController.view.backgroundColor = UIColor(Color.backgroundYellow)
         
         // Set the route/session id once the view controller is being created
-        self.gameManager.setRouteId(routeId: destinationId)
+        self.gameManager.startSession(routeId: destinationId)
         
         
         calculateRoutes(origin: origin, destination: destination) { navVC in
