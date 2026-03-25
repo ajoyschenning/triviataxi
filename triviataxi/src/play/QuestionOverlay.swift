@@ -20,6 +20,9 @@ struct QuestionOverlayView: View {
     @State private var loadingError: String? = nil
     @State private var questionCount = 0
     
+    @EnvironmentObject var gameManager: GameManager
+    @EnvironmentObject var userManager: UserManager
+    
     let sessionId: String
     let destinationId: String
     let difficulty: String?
@@ -83,7 +86,17 @@ struct QuestionOverlayView: View {
             Spacer()
         }
         .onAppear {
+            gameManager.startSession(sessionId: sessionId, routeId: destinationId)
             loadQuestion()
+        }
+        .onChange(of: gameManager.isGameOver) { newValue in
+            if newValue {
+                // Game is over, stop loading new questions
+                displayTimer?.invalidate()
+                displayTimer = nil
+                answerTimer?.invalidate()
+                answerTimer = nil
+            }
         }
     }
     
@@ -112,6 +125,11 @@ struct QuestionOverlayView: View {
     }
     
     private func loadQuestion() {
+        // Don't load new questions if game is over
+        if gameManager.isGameOver {
+            return
+        }
+        
         isLoading = true
         loadingError = nil
         
@@ -165,6 +183,16 @@ struct QuestionOverlayView: View {
         displayTimer = nil
         showQuestion = false
         showBuffer = true
+        
+        // Submit answer to GameManager for scoring
+        if let question = currentQuestion {
+            gameManager.submitAnswer(
+                answer,
+                correctAnswer: question.correctAnswer,
+                earningValue: question.earningValue,
+                userManager: userManager
+            )
+        }
         
         // Wait 5 seconds before loading next question
         startBetweenQuestionTimer()

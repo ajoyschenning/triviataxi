@@ -59,6 +59,8 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                                 destinationId: destinationId,
                                 difficulty: nil // Optional: can be "easy", "medium", "hard"
                             )
+                            .environmentObject(self.gameManager)
+                            .environmentObject(self.userManager)
                         )
                             questionOverlay.view.backgroundColor = .clear
                             questionOverlay.view.translatesAutoresizingMaskIntoConstraints = false
