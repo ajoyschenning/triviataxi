@@ -33,7 +33,7 @@ struct QuestionOverlayView: View {
                 if isLoading {
                     VStack {
                         ProgressView()
-                            .scaleEffect(1.5)
+//                            .scaleEffect(1.5)
                         Text("Loading question...")
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.gray)
