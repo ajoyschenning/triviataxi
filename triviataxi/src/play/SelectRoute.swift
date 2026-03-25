@@ -208,7 +208,7 @@ struct RouteCard: View {
             Text(title)
                 .font(.system(size: 12, weight: .bold))
                 .foregroundColor(.white)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(maxWidth: 300, maxHeight: .infinity)
                 .background(Color.black)
                 .cornerRadius(10)
         }
