@@ -57,6 +57,7 @@ struct RouteSelectionView: View {
                                 RouteCard(
                                     journeyID: destination.id,
                                     city: destination.city,
+                                    imageUrl: destination.imageUrl,
                                     onDifficultySelected: { difficulty in
                                         await prepareJourney(
                                             destinationId: destination.id,
@@ -184,6 +185,7 @@ struct RouteCard: View {
 
     let journeyID: String
     let city: String
+    let imageUrl: String?
     let onDifficultySelected: (RouteDifficulty) async -> Void
 
     var body: some View {
@@ -201,21 +203,52 @@ struct RouteCard: View {
                     y: 6
                 )
 
-            VStack(spacing: 16) {
-                Text(city)
-                    .font(.system(size: 25, weight: .semibold))
-                    .foregroundColor(.black)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 16) {
+
+                // Image (from URL if available)
+                if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        @unknown default:
+                            RoundedRectangle(cornerRadius: 16)
+                                .fill(Color.gray.opacity(0.3))
+                        }
+                    }
+                    .frame(width: 95, height: 116)
+                    .clipped()
+                    .cornerRadius(16)
+                } else {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color(red: 0.50, green: 0.23, blue: 0.27).opacity(0.5))
+                        .frame(width: 95, height: 116)
+                }
+
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(city)
+                        .font(.system(size: 25, weight: .semibold))
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Spacer()
+                    HStack(spacing: 8) {
+                        difficultyButton(title: "SHORT", difficulty: .short)
+                        difficultyButton(title: "MEDIUM", difficulty: .medium)
+                        difficultyButton(title: "LONG", difficulty: .long)
+                    }
+                    .frame(height: 44)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
 
                 Spacer()
-
-                HStack(spacing: 8) {
-                    difficultyButton(title: "SHORT", difficulty: .short)
-                    difficultyButton(title: "MEDIUM", difficulty: .medium)
-                    difficultyButton(title: "LONG", difficulty: .long)
-                }
-                .frame(height: 44)
-                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .padding()
         }
@@ -226,10 +259,85 @@ struct RouteCard: View {
         -> some View
     {
         Button(action: {
-            isProcessing = true
-            Task {
-                await onDifficultySelected(difficulty)
-                await MainActor.run { isProcessing = false }
+            onDifficultySelected(difficulty)
+            startRoute(journeyID: journeyID)
+        }) {
+            Text(title)
+                .font(.system(size: 12, weight: .bold))
+                .foregroundColor(.white)
+                .frame(maxWidth: 300, maxHeight: .infinity)
+                .background(Color.black)
+                .cornerRadius(10)
+        }
+    }
+    
+    private func startRoute(journeyID: String) {
+        // 1. Prevent duplicate taps while the request is loading
+        isProcessing = true
+        
+        Task {
+            do {
+                // 2. Fetch the current Firebase user and their ID Token
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in. Cannot fetch token.")
+                    await MainActor.run { isProcessing = false }
+                    return
+                }
+                
+                let token = try await user.getIDToken()
+                
+                // 3. Request the new session from your FastAPI backend
+                let session = try await NetworkService.shared.createSession(
+                    journeyId: journeyID,
+                    token: token
+                )
+                
+                // 4. Update UI state on the Main Thread to trigger navigation
+                await MainActor.run {
+                    self.isProcessing = false
+                    self.showNavigation = true
+                }
+                
+                print("✅ Session Started: \(session.sessionId)")
+                
+            } catch {
+                // 5. Handle errors (Network timeout, 401 Unauthorized, etc.)
+                await MainActor.run {
+                    print("🚨 API Error: \(error.localizedDescription)")
+                    self.isProcessing = false
+                }
+            }
+        }
+    }
+}
+
+extension RouteSelectionView {
+    private func fetchOwnedDestinations() {
+        isLoadingDestinations = true
+        Task {
+            do {
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in")
+                    await MainActor.run { isLoadingDestinations = false }
+                    return
+                }
+
+                let token = try await user.getIDToken()
+                let userProfile = try await NetworkService.shared.fetchUserProfile(token: token)
+                
+                var destinations: [DestinationResponse] = []
+                for destinationId in userProfile.owned ?? [] {
+                    let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
+                    destinations.append(destination)
+                }
+
+                await MainActor.run {
+                    self.ownedDestinations = destinations
+                    isLoadingDestinations = false
+                }
+            } catch {
+                print("🚨 Error fetching owned destinations: \(error)")
+                await MainActor.run { isLoadingDestinations = false }
             }
         }) {
             ZStack {
