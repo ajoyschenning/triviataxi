@@ -23,6 +23,8 @@ struct QuestionOverlayView: View {
     @State private var showBuffer = false
     @State private var lastAnswerCorrect: Bool? = nil
     @State private var showEndSummary = false
+    @State private var lastEarningValue: Int = 0
+    @State private var lastCorrectAnswer: String = ""
     // @State private var questionsAnswered = 0
 
     
@@ -77,7 +79,7 @@ struct QuestionOverlayView: View {
                     }
                     
                     if showBuffer && hasMoreQuestions {
-                        BetweenQuestionsView(timeRemaining: betweenQuestionTimer, isCorrect: lastAnswerCorrect)
+                        BetweenQuestionsView(timeRemaining: betweenQuestionTimer, isCorrect: lastAnswerCorrect, earningValue: lastEarningValue, correctAnswer: lastCorrectAnswer)
                     }
                     
                     if !hasMoreQuestions && isAnswered && !showQuestion {
@@ -154,6 +156,8 @@ struct QuestionOverlayView: View {
         
         let isCorrect = answer == currentQuestion.correctAnswer
         lastAnswerCorrect = isCorrect
+        lastEarningValue = currentQuestion.earningValue
+        lastCorrectAnswer = currentQuestion.correctAnswer
         
         if isCorrect {
             gameManager.addEarnings(earningValue: currentQuestion.earningValue)
@@ -377,6 +381,8 @@ struct TimerCircleView: View {
 struct BetweenQuestionsView: View {
     let timeRemaining: Int
     let isCorrect: Bool?
+    let earningValue: Int
+    let correctAnswer: String
     
     var body: some View {
         VStack(spacing: 12) {
@@ -390,7 +396,18 @@ struct BetweenQuestionsView: View {
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(isCorrect ? .green : .red)
                 }
+                
+                if isCorrect {
+                    Text("+\(earningValue) coins")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.green)
+                } else {
+                    Text("Answer: \(correctAnswer)")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundColor(.red)
+                }
             }
+            
             
             Text("Next question in \(timeRemaining)s...")
                 .font(.system(size: 14, weight: .semibold))
@@ -408,40 +425,454 @@ struct BetweenQuestionsView: View {
 let sampleQuestions = [
     Question(
         questionId: "1",
-        text: "What is the capital of Tennessee?",
+        text: "What is the capital of France?",
         category: "Geography",
         difficulty: "Easy",
         earningValue: 5,
-        correctAnswer: "Nashville",
-        incorrectAnswers: ["Memphis", "Knoxville", "Chattanooga"],
+        correctAnswer: "Paris",
+        incorrectAnswers: ["London", "Berlin", "Madrid"],
     ),
     Question(
         questionId: "2",
-        text: "What year was Vanderbilt University founded?",
-        category: "History",
-        difficulty: "Medium",
-        earningValue: 10,
-        correctAnswer: "1875",
-        incorrectAnswers: ["1873", "1879", "1881"],
+        text: "Which planet is known as the Red Planet?",
+        category: "Science",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Mars",
+        incorrectAnswers: ["Venus", "Jupiter", "Saturn"],
     ),
     Question(
         questionId: "3",
-        text: "What year was Vanderbilt University founded? 2",
-        category: "History",
-        difficulty: "Medium",
-        earningValue: 10,
-        correctAnswer: "1875",
-        incorrectAnswers: ["1873", "1879", "1881"],
+        text: "What is the largest ocean on Earth?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Pacific Ocean",
+        incorrectAnswers: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean"],
     ),
     Question(
         questionId: "4",
-        text: "What year was Vanderbilt University founded? 3",
+        text: "Who wrote 'Romeo and Juliet'?",
+        category: "Literature",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "William Shakespeare",
+        incorrectAnswers: ["Jane Austen", "Charles Dickens", "Mark Twain"],
+    ),
+    Question(
+        questionId: "5",
+        text: "What is the chemical symbol for gold?",
+        category: "Science",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Au",
+        incorrectAnswers: ["Ag", "Fe", "Cu"],
+    ),
+    Question(
+        questionId: "6",
+        text: "In what year did the Titanic sink?",
         category: "History",
         difficulty: "Medium",
         earningValue: 10,
-        correctAnswer: "1875",
-        incorrectAnswers: ["1873", "1879", "1881"],
-    )
+        correctAnswer: "1912",
+        incorrectAnswers: ["1905", "1920", "1898"],
+    ),
+    Question(
+        questionId: "7",
+        text: "What is the smallest prime number?",
+        category: "Mathematics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "2",
+        incorrectAnswers: ["1", "3", "0"],
+    ),
+    Question(
+        questionId: "8",
+        text: "Which country is home to the Eiffel Tower?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "France",
+        incorrectAnswers: ["Italy", "Germany", "Spain"],
+    ),
+    Question(
+        questionId: "9",
+        text: "What is the capital of Japan?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Tokyo",
+        incorrectAnswers: ["Osaka", "Kyoto", "Hiroshima"],
+    ),
+    Question(
+        questionId: "10",
+        text: "How many continents are there?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "7",
+        incorrectAnswers: ["5", "6", "8"],
+    ),
+    Question(
+        questionId: "11",
+        text: "What is the largest mammal in the world?",
+        category: "Biology",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Blue Whale",
+        incorrectAnswers: ["African Elephant", "Giraffe", "Hippopotamus"],
+    ),
+    Question(
+        questionId: "12",
+        text: "Who painted the Mona Lisa?",
+        category: "Art",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Leonardo da Vinci",
+        incorrectAnswers: ["Michelangelo", "Raphael", "Donatello"],
+    ),
+    Question(
+        questionId: "13",
+        text: "What is the speed of light?",
+        category: "Physics",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "299,792,458 m/s",
+        incorrectAnswers: ["300,000 m/s", "150,000,000 m/s", "999,999 m/s"],
+    ),
+    Question(
+        questionId: "14",
+        text: "In what year did World War II end?",
+        category: "History",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "1945",
+        incorrectAnswers: ["1944", "1946", "1943"],
+    ),
+    Question(
+        questionId: "15",
+        text: "What is the capital of Australia?",
+        category: "Geography",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Canberra",
+        incorrectAnswers: ["Sydney", "Melbourne", "Brisbane"],
+    ),
+    Question(
+        questionId: "16",
+        text: "Which element has the atomic number 1?",
+        category: "Chemistry",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Hydrogen",
+        incorrectAnswers: ["Helium", "Lithium", "Carbon"],
+    ),
+    Question(
+        questionId: "17",
+        text: "What is the tallest mountain in the world?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Mount Everest",
+        incorrectAnswers: ["K2", "Kangchenjunga", "Lhotse"],
+    ),
+    Question(
+        questionId: "18",
+        text: "How many sides does a hexagon have?",
+        category: "Mathematics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "6",
+        incorrectAnswers: ["5", "7", "8"],
+    ),
+    Question(
+        questionId: "19",
+        text: "What is the currency of the United Kingdom?",
+        category: "Economics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "British Pound",
+        incorrectAnswers: ["Euro", "Dollar", "Franc"],
+    ),
+    Question(
+        questionId: "20",
+        text: "Who was the first President of the United States?",
+        category: "History",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "George Washington",
+        incorrectAnswers: ["Thomas Jefferson", "John Adams", "James Madison"],
+    ),
+    Question(
+        questionId: "21",
+        text: "What is the capital of Brazil?",
+        category: "Geography",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Brasília",
+        incorrectAnswers: ["Rio de Janeiro", "São Paulo", "Salvador"],
+    ),
+    Question(
+        questionId: "22",
+        text: "How many strings does a violin have?",
+        category: "Music",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "4",
+        incorrectAnswers: ["5", "6", "3"],
+    ),
+    Question(
+        questionId: "23",
+        text: "What is the boiling point of water in Celsius?",
+        category: "Physics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "100",
+        incorrectAnswers: ["0", "212", "50"],
+    ),
+    Question(
+        questionId: "24",
+        text: "Which planet has the most moons?",
+        category: "Astronomy",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Jupiter",
+        incorrectAnswers: ["Saturn", "Uranus", "Neptune"],
+    ),
+    Question(
+        questionId: "25",
+        text: "What is the only mammal that lays eggs?",
+        category: "Biology",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Platypus",
+        incorrectAnswers: ["Echidna", "Bat", "Dolphin"],
+    ),
+    Question(
+        questionId: "26",
+        text: "In what year did the Magna Carta get signed?",
+        category: "History",
+        difficulty: "Hard",
+        earningValue: 15,
+        correctAnswer: "1215",
+        incorrectAnswers: ["1225", "1200", "1260"],
+    ),
+    Question(
+        questionId: "27",
+        text: "What is the capital of South Africa?",
+        category: "Geography",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Pretoria",
+        incorrectAnswers: ["Johannesburg", "Cape Town", "Durban"],
+    ),
+    Question(
+        questionId: "28",
+        text: "How many bones are in the human body?",
+        category: "Biology",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "206",
+        incorrectAnswers: ["186", "226", "196"],
+    ),
+    Question(
+        questionId: "29",
+        text: "What is the smallest country in the world?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Vatican City",
+        incorrectAnswers: ["Monaco", "Liechtenstein", "San Marino"],
+    ),
+    Question(
+        questionId: "30",
+        text: "Who wrote 'The Great Gatsby'?",
+        category: "Literature",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "F. Scott Fitzgerald",
+        incorrectAnswers: ["Ernest Hemingway", "William Faulkner", "John Steinbeck"],
+    ),
+    Question(
+        questionId: "31",
+        text: "What does 'HTTP' stand for?",
+        category: "Technology",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "HyperText Transfer Protocol",
+        incorrectAnswers: ["Home Transfer Text Protocol", "High Text Transfer Protocol", "Hyper Transmit Text Protocol"],
+    ),
+    Question(
+        questionId: "32",
+        text: "In what year did the Berlin Wall fall?",
+        category: "History",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "1989",
+        incorrectAnswers: ["1987", "1991", "1988"],
+    ),
+    Question(
+        questionId: "33",
+        text: "What is the capital of Canada?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Ottawa",
+        incorrectAnswers: ["Toronto", "Vancouver", "Montreal"],
+    ),
+    Question(
+        questionId: "34",
+        text: "Which artist cut off part of his ear?",
+        category: "Art",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Vincent van Gogh",
+        incorrectAnswers: ["Pablo Picasso", "Salvador Dalí", "Andy Warhol"],
+    ),
+    Question(
+        questionId: "35",
+        text: "What is the deepest ocean trench?",
+        category: "Geography",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Mariana Trench",
+        incorrectAnswers: ["Tonga Trench", "Kuril-Kamchatka Trench", "Philippine Trench"],
+    ),
+    Question(
+        questionId: "36",
+        text: "How many strings does a guitar have?",
+        category: "Music",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "6",
+        incorrectAnswers: ["7", "5", "4"],
+    ),
+    Question(
+        questionId: "37",
+        text: "What is the capital of India?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "New Delhi",
+        incorrectAnswers: ["Mumbai", "Bangalore", "Kolkata"],
+    ),
+    Question(
+        questionId: "38",
+        text: "In what year did the Challenger space shuttle disaster occur?",
+        category: "History",
+        difficulty: "Hard",
+        earningValue: 15,
+        correctAnswer: "1986",
+        incorrectAnswers: ["1985", "1987", "1984"],
+    ),
+    Question(
+        questionId: "39",
+        text: "What is the largest desert in the world?",
+        category: "Geography",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Antarctica",
+        incorrectAnswers: ["Sahara", "Arabian", "Kalahari"],
+    ),
+    Question(
+        questionId: "40",
+        text: "How many sides does a pentagon have?",
+        category: "Mathematics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "5",
+        incorrectAnswers: ["6", "4", "7"],
+    ),
+    Question(
+        questionId: "41",
+        text: "What is the capital of Mexico?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Mexico City",
+        incorrectAnswers: ["Guadalajara", "Cancún", "Monterrey"],
+    ),
+    Question(
+        questionId: "42",
+        text: "Who invented the telephone?",
+        category: "History",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Alexander Graham Bell",
+        incorrectAnswers: ["Thomas Edison", "Nikola Tesla", "Benjamin Franklin"],
+    ),
+    Question(
+        questionId: "43",
+        text: "What is the freezing point of water in Celsius?",
+        category: "Physics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "0",
+        incorrectAnswers: ["32", "-40", "100"],
+    ),
+    Question(
+        questionId: "44",
+        text: "Which country hosted the 2016 Summer Olympics?",
+        category: "Sports",
+        difficulty: "Medium",
+        earningValue: 10,
+        correctAnswer: "Brazil",
+        incorrectAnswers: ["China", "Russia", "Great Britain"],
+    ),
+    Question(
+        questionId: "45",
+        text: "What is the capital of Egypt?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Cairo",
+        incorrectAnswers: ["Giza", "Luxor", "Alexandria"],
+    ),
+    Question(
+        questionId: "46",
+        text: "How many planets are in our solar system?",
+        category: "Astronomy",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "8",
+        incorrectAnswers: ["9", "7", "10"],
+    ),
+    Question(
+        questionId: "47",
+        text: "What is the capital of Greece?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Athens",
+        incorrectAnswers: ["Sparta", "Corinth", "Delphi"],
+    ),
+    Question(
+        questionId: "48",
+        text: "Who wrote 'Pride and Prejudice'?",
+        category: "Literature",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Jane Austen",
+        incorrectAnswers: ["Charlotte Brontë", "Emily Dickinson", "George Eliot"],
+    ),
+    Question(
+        questionId: "49",
+        text: "What is the largest country in the world by area?",
+        category: "Geography",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "Russia",
+        incorrectAnswers: ["Canada", "China", "United States"],
+    ),
+    Question(
+        questionId: "50",
+        text: "How many days are there in a leap year?",
+        category: "Mathematics",
+        difficulty: "Easy",
+        earningValue: 5,
+        correctAnswer: "366",
+        incorrectAnswers: ["365", "364", "367"],
+    ),
 ]
 
 #Preview {

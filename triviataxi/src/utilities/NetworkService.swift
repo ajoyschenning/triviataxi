@@ -232,7 +232,7 @@ class NetworkService {
     /// Fetch all destinations from the backend API.
     /// This is a best-effort stub — the backend route and JSON keys must match.
     func fetchDestinations() async throws -> [DestinationResponse] {
-        guard let url = URL(string: "\(baseURL)destinations") else {
+        guard let url = URL(string: "\(baseURL)/destinations") else {
             throw NetworkError.invalidURL
         }
 
@@ -275,7 +275,7 @@ class NetworkService {
     func purchaseDestination(userId: String, destinationId: String) async throws
         -> PurchaseResponse
     {
-        guard let url = URL(string: "\(baseURL)users/\(userId)/purchase") else {
+        guard let url = URL(string: "\(baseURL)/users/\(userId)/purchase") else {
             throw NetworkError.invalidURL
         }
 
