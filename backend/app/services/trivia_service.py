@@ -1,6 +1,5 @@
 """Service for handling trivia question delivery and management."""
 import httpx
-import html
 from typing import List, Dict, Any
 
 #TODO: This is hard coded for testing. 
@@ -17,41 +16,44 @@ class TriviaService:
         difficulty: str | None = None
     ) -> List[Dict[str, Any]]:
         """Fetch questions from Open Trivia Database."""
-        params = {
-            "amount": count,
-            "type": "multiple"
-        }
-        if category:
-            # Open Trivia DB uses numeric category IDs, but for simplicity, we'll skip category filtering for now
-            pass
-        if difficulty:
-            params["difficulty"] = difficulty
-        
-        async with httpx.AsyncClient() as client:
-            response = await client.get(TriviaService.OPEN_TRIVIA_BASE_URL, params=params)
-            response.raise_for_status()
-            data = response.json()
-        
-        if data.get("response_code") != 0:
-            raise Exception(f"Open Trivia API error: {data.get('response_code')}")
-        
-        questions = []
-        for result in data.get("results", []):
-            # Decode HTML entities
-            question = html.unescape(result["question"])
-            correct_answer = html.unescape(result["correct_answer"])
-            incorrect_answers = [html.unescape(ans) for ans in result["incorrect_answers"]]
-            category = html.unescape(result["category"])
-            
-            questions.append({
-                "question": question,
-                "correct_answer": correct_answer,
-                "incorrect_answers": incorrect_answers,
-                "category": category,
-                "difficulty": result["difficulty"]
-            })
-        
-        return questions
+        # Hardcoded questions for testing
+        return [
+            {
+                "question": "What is the capital of France?",
+                "correct_answer": "Paris",
+                "incorrect_answers": ["London", "Berlin", "Madrid"],
+                "category": "Geography",
+                "difficulty": "easy"
+            },
+            {
+                "question": "Who wrote 'Hamlet'?",
+                "correct_answer": "William Shakespeare",
+                "incorrect_answers": ["Charles Dickens", "Jane Austen", "Mark Twain"],
+                "category": "Literature",
+                "difficulty": "medium"
+            },
+            {
+                "question": "What is the chemical symbol for water?",
+                "correct_answer": "H2O",
+                "incorrect_answers": ["CO2", "NaCl", "O2"],
+                "category": "Science",
+                "difficulty": "easy"
+            },
+            {
+                "question": "Which planet is known as the Red Planet?",
+                "correct_answer": "Mars",
+                "incorrect_answers": ["Venus", "Jupiter", "Saturn"],
+                "category": "Science",
+                "difficulty": "easy"
+            },
+            {
+                "question": "In which year did the Titanic sink?",
+                "correct_answer": "1912",
+                "incorrect_answers": ["1905", "1918", "1925"],
+                "category": "History",
+                "difficulty": "medium"
+            }
+        ][:count]
     
     @staticmethod
     async def get_questions_from_trivia_api(
@@ -66,11 +68,5 @@ class TriviaService:
     @staticmethod
     async def normalize_question_format(raw_question: Dict[str, Any]) -> Dict[str, Any]:
         """Normalize question format across different APIs."""
-        # The Open Trivia DB format is already normalized, but ensure all fields are present
-        return {
-            "question": raw_question.get("question", ""),
-            "correct_answer": raw_question.get("correct_answer", ""),
-            "incorrect_answers": raw_question.get("incorrect_answers", []),
-            "category": raw_question.get("category", "General"),
-            "difficulty": raw_question.get("difficulty", "medium")
-        }
+        # Simple passthrough for hardcoded questions
+        return raw_question
