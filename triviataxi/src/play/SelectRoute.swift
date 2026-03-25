@@ -23,6 +23,8 @@ struct RouteSelectionView: View {
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
     @State private var destinationId: String? = nil
+    @State private var selectedCityName: String = ""
+    @State private var selectedRouteLength: String = ""
 
     @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
@@ -83,7 +85,9 @@ struct RouteSelectionView: View {
                     origin: origin,
                     destination: destination,
                     destinationId: destinationId,
-                    questions: sampleQuestions
+                    questions: sampleQuestions,
+                    cityName: selectedCityName,
+                    routeLength: selectedRouteLength
                 )
                 .edgesIgnoringSafeArea(.all)
                 // Hides the default iOS back button so your custom Mapbox UI takes over
@@ -145,7 +149,11 @@ extension RouteSelectionView {
                 token: token
             )
 
-
+            // 2. Get the city name from the destination
+            let destination = try await NetworkService.shared.fetchDestination(
+                id: destinationId,
+                token: token
+            )
 
             // 3. Trigger the navigation push ONLY when both are successful
             await MainActor.run {
@@ -158,6 +166,8 @@ extension RouteSelectionView {
                     longitude: coords.destinationLng
                 )
                 self.destinationId = destinationId
+                self.selectedCityName = destination.city
+                self.selectedRouteLength = difficulty.rawValue
                 self.showNavigation = true
             }
             print("✅ Journey Prepared! Destination: \(destinationId)")

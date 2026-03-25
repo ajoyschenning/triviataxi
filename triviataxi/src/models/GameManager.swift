@@ -52,7 +52,10 @@ class GameManager: ObservableObject {
     @Published var currentEarnings: Int = 0
     @Published var strikes: Int = 0
     @Published var isGameOver: Bool = false
+    @Published var milesTravelled: Double = 0.0
+    @Published var timeElapsed: Int = 0 // in seconds
     
+    private var timeTimer: Timer? = nil
     
     let maxStrikes: Int = 3
     
@@ -73,7 +76,11 @@ class GameManager: ObservableObject {
             self.currentEarnings = 0
             self.strikes = 0
             self.isGameOver = false
+            self.milesTravelled = 0.0
+            self.timeElapsed = 0
             
+            // Start the timer
+            startTimeTimer()
         }
     
 
@@ -81,6 +88,7 @@ class GameManager: ObservableObject {
     /// Locks the local game state and triggers the final background upload
     func endGameLocally(userManager: UserManager) {
         self.isGameOver = true
+        stopTimeTimer()
         
         Task {
             await uploadFinalResults(userManager: userManager)
@@ -92,6 +100,7 @@ class GameManager: ObservableObject {
             guard !isGameOver else { return } // Prevent double-uploads if they already finished
             
             self.isGameOver = true
+            stopTimeTimer()
             
             Task {
                 await uploadFinalResults(userManager: userManager)
@@ -125,6 +134,21 @@ class GameManager: ObservableObject {
     
     func incrementStrikes() {
         strikes += 1
+    }
+    
+    func updateMilesTravelled(_ miles: Double) {
+        milesTravelled = miles
+    }
+    
+    private func startTimeTimer() {
+        timeTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.timeElapsed += 1
+        }
+    }
+    
+    private func stopTimeTimer() {
+        timeTimer?.invalidate()
+        timeTimer = nil
     }
 }
 

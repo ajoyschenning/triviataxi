@@ -9,6 +9,7 @@ import SwiftUI
 struct QuestionOverlayView: View {
     @EnvironmentObject var gameManager: GameManager
     @EnvironmentObject var userManager: UserManager
+    @Environment(\.dismiss) var dismiss
     
     @State private var currentQuestionIndex = 0
     @State private var selectedAnswer: String? = nil
@@ -20,11 +21,18 @@ struct QuestionOverlayView: View {
     @State private var answerTimer: Timer? = nil
     @State private var currentShuffledAnswers: [String] = []
     @State private var showBuffer = false
+    @State private var lastAnswerCorrect: Bool? = nil
+    @State private var showEndSummary = false
+    // @State private var questionsAnswered = 0
+
     
     
     
     let questions: [Question]
     let destinationId: String
+    let cityName: String
+    let routeLength: String
+
     
     var currentQuestion: Question {
         questions[currentQuestionIndex]
@@ -35,37 +43,55 @@ struct QuestionOverlayView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
-            ZStack(alignment: .topLeading) {
-                if showQuestion && !isAnswered && !showBuffer {
-                    QuestionBoxView(
-                        questionNumber: currentQuestionIndex + 1,
-                        totalQuestions: questions.count,
-                        question: currentQuestion,
-                        allAnswers: currentShuffledAnswers,
-                        timeRemaining: timeRemaining,
-                        selectedAnswer: selectedAnswer,
-                        difficultyColor: difficultyColor,
-                        timerColor: timerColor,
-                        onAnswerSelected: selectAnswer
+        if showEndSummary {
+            let miles = gameManager.milesTravelled
+            let seconds = gameManager.timeElapsed
+            EndSummary(cityName: cityName,
+                    routeLength: routeLength, 
+                    milesTravelled: miles, 
+                    timeElapsed: seconds,
+                    questionsAnswered: currentQuestionIndex + 1,
+                    // questionsAnswered: questionsAnswered,
+
+                    earnings: gameManager.currentEarnings,
+                    strikes: gameManager.strikes
                     )
+                    .transition(.opacity)
+        } else {
+            VStack(spacing: 0) {
+                ZStack(alignment: .topLeading) {
+                    if showQuestion && !isAnswered && !showBuffer {
+//                        questionCount += 1
+                        QuestionBoxView(
+                            questionNumber: currentQuestionIndex + 1,
+                            totalQuestions: questions.count,
+                            question: currentQuestion,
+                            allAnswers: currentShuffledAnswers,
+                            timeRemaining: timeRemaining,
+                            selectedAnswer: selectedAnswer,
+                            difficultyColor: difficultyColor,
+                            timerColor: timerColor,
+                            onAnswerSelected: selectAnswer
+                        )
+                        
+                    }
+                    
+                    if showBuffer && hasMoreQuestions {
+                        BetweenQuestionsView(timeRemaining: betweenQuestionTimer, isCorrect: lastAnswerCorrect)
+                    }
+                    
+                    if !hasMoreQuestions && isAnswered && !showQuestion {
+                        // QuizCompleteView()
+                    }
                 }
+                .padding(.top, 20)
                 
-                if showBuffer && hasMoreQuestions {
-                    // Empty during buffer period
-                }
-                
-                if !hasMoreQuestions && isAnswered && !showQuestion {
-                    // QuizCompleteView()
-                }
+                Spacer()
             }
-            .padding(.top, 20)
-            
-            Spacer()
-        }
-        .onAppear {
-            shuffleAnswers()
-            startQuestionTimer()
+            .onAppear {
+                shuffleAnswers()
+                startQuestionTimer()
+            }
         }
     }
     
@@ -104,7 +130,15 @@ struct QuestionOverlayView: View {
                 gameManager.incrementStrikes()
                 showQuestion = false
                 showBuffer = true
-                startBetweenQuestionTimer()
+                
+                if gameManager.strikes >= gameManager.maxStrikes {
+                    gameManager.endGameLocally(userManager: userManager)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        showEndSummary = true
+                    }
+                } else {
+                    startBetweenQuestionTimer()
+                }
             }
         }
     }
@@ -116,19 +150,31 @@ struct QuestionOverlayView: View {
         displayTimer = nil
         showQuestion = false
         showBuffer = true
+        // questionsAnswered += 1
         
-        if answer == currentQuestion.correctAnswer {
+        let isCorrect = answer == currentQuestion.correctAnswer
+        lastAnswerCorrect = isCorrect
+        
+        if isCorrect {
             gameManager.addEarnings(earningValue: currentQuestion.earningValue)
         } else {
             gameManager.incrementStrikes()
         }
         
-        if gameManager.strikes >= gameManager.maxStrikes || !hasMoreQuestions {
+        if gameManager.strikes >= gameManager.maxStrikes {
             gameManager.endGameLocally(userManager: userManager)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showEndSummary = true
+            }
+        } else if !hasMoreQuestions {
+            gameManager.endGameLocally(userManager: userManager)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                showEndSummary = true
+            }
+        } else {
+            // Wait 5 seconds before showing next question
+            startBetweenQuestionTimer()
         }
-        
-        // Wait 5 seconds before showing next question
-        startBetweenQuestionTimer()
     }
     
     private func startBetweenQuestionTimer() {
@@ -151,6 +197,7 @@ struct QuestionOverlayView: View {
             isAnswered = false
             showQuestion = true
             showBuffer = false
+            lastAnswerCorrect = nil
             shuffleAnswers()
             startQuestionTimer()
         } else {
@@ -329,9 +376,22 @@ struct TimerCircleView: View {
 
 struct BetweenQuestionsView: View {
     let timeRemaining: Int
+    let isCorrect: Bool?
     
     var body: some View {
         VStack(spacing: 12) {
+            if let isCorrect = isCorrect {
+                HStack(spacing: 8) {
+                    Image(systemName: isCorrect ? "checkmark.circle.fill" : "xmark.circle.fill")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(isCorrect ? .green : .red)
+                    
+                    Text(isCorrect ? "Correct!" : "Incorrect!")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(isCorrect ? .green : .red)
+                }
+            }
+            
             Text("Next question in \(timeRemaining)s...")
                 .font(.system(size: 14, weight: .semibold))
                 .foregroundColor(.black)
@@ -386,5 +446,5 @@ let sampleQuestions = [
 
 #Preview {
     
-    QuestionOverlayView(questions: sampleQuestions, destinationId: "test-session")
+//    QuestionOverlayView(questions: sampleQuestions, destinationId: "test-session")
 }

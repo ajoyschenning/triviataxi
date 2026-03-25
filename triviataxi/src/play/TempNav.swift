@@ -22,6 +22,8 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     let destination: CLLocationCoordinate2D
     let destinationId: String
     let questions: [Question]?
+    let cityName: String
+    let routeLength: String
     
     @Environment(\.dismiss) var dismiss
     
@@ -55,7 +57,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                 // 3. ADD QUESTION OVERLAY (From the top block)
                 if let questions = questions, !questions.isEmpty {
                     let questionOverlay = UIHostingController(
-                        rootView: QuestionOverlayView(questions: questions, destinationId: destinationId).environmentObject(gameManager).environmentObject(userManager)
+                        rootView: QuestionOverlayView(questions: questions, destinationId: destinationId, cityName: self.cityName, routeLength: self.routeLength).environmentObject(gameManager).environmentObject(userManager)
                     )
                     questionOverlay.view.backgroundColor = .clear
                     questionOverlay.view.isUserInteractionEnabled = true
@@ -150,6 +152,22 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                         strikesBox?.attributedText = finalString
                     }
                     .store(in: &context.coordinator.cancellables)
+                
+                // 🚀 4. Listen for Game Over and hide UI elements
+                self.gameManager.$isGameOver
+                    .receive(on: RunLoop.main)
+                    .sink { [weak coinCounter, weak strikesBox] isGameOver in
+                        if isGameOver {
+                            coinCounter?.alpha = 0
+                            strikesBox?.alpha = 0
+                        }
+                    }
+                    .store(in: &context.coordinator.cancellables)
+                
+                // 🚀 5. Listen for Progress Updates and track miles
+                context.coordinator.gameManager = self.gameManager
+                navigationViewController.delegate = context.coordinator
+                
                 // --- Native Clear Circle Back Button UI ---
                 let backButton = UIButton(type: .system)
                 backButton.translatesAutoresizingMaskIntoConstraints = false
@@ -242,6 +260,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     class Coordinator: NSObject, NavigationViewControllerDelegate {
         var parent: NavigationViewControllerRepresentable
         var cancellables = Set<AnyCancellable>()
+        var gameManager: GameManager?
         
         init(_ parent: NavigationViewControllerRepresentable) {
             self.parent = parent
@@ -249,6 +268,13 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
         
         func navigationViewControllerDidDismiss(_ navigationViewController: NavigationViewController, byCanceling canceled: Bool) {
             parent.dismiss()
+        }
+        
+        func navigationViewController(_ navigationViewController: NavigationViewController, didUpdate progress: RouteProgress, with location: CLLocation, rawLocation: CLLocation) {
+            // Update miles travelled from the route progress
+            let distanceInMeters = progress.distanceTraveled
+            let distanceInMiles = distanceInMeters / 1609.34 // Convert meters to miles
+            gameManager?.updateMilesTravelled(distanceInMiles)
         }
     }
 }
