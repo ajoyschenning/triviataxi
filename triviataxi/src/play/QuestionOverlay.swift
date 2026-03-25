@@ -50,7 +50,7 @@ struct QuestionOverlayView: View {
                             .font(.system(size: 12, weight: .regular))
                             .foregroundColor(.gray)
                             .multilineTextAlignment(.center)
-                        Button(action: { loadQuestion() }) {
+                        Button(action: { loadQuestionBatch() }) {
                             Text("Retry")
                                 .font(.system(size: 14, weight: .semibold))
                                 .foregroundColor(.white)
@@ -62,9 +62,9 @@ struct QuestionOverlayView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(Color(UIColor.systemGray6))
-                } else if let question = currentQuestion, showQuestion && !isAnswered && !showBuffer {
+                } else if let question = gameManager.currentQuestion, showQuestion && !isAnswered && !showBuffer {
                     QuestionBoxView(
-                        questionNumber: questionCount,
+                        questionNumber: gameManager.currentIndex + 1,
                         totalQuestions: 0, // Infinite game, so don't show total
                         question: question,
                         allAnswers: currentShuffledAnswers,
