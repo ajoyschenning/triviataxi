@@ -14,8 +14,6 @@ struct LoginView: View {
     @State private var password = ""
     @State private var errorMessage = ""
     @State private var isPasswordVisible = false
-    
-    // 🚀 1. Added modern navigation states
     @State private var showForgotPassword = false
     @State private var showSignUp = false
 
@@ -84,13 +82,11 @@ struct LoginView: View {
                             }
                             
                             FancyButton(title: "START RIDE") {
-                                // 🚀 2. Added delay so the coin animation can play!
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
                                     login()
                                 }
                             }
                             
-                            // 🚀 3. Replaced deprecated NavigationLinks with Buttons
                             Button(action: { showForgotPassword = true }) {
                                 Text("Forgot Password?")
                                     .font(.footnote)
@@ -111,7 +107,6 @@ struct LoginView: View {
                     }
                 }
             }
-            // 🚀 4. Attached modern routing to the bottom of the ZStack
             .navigationDestination(isPresented: $showForgotPassword) {
                 ForgotPasswordView()
             }

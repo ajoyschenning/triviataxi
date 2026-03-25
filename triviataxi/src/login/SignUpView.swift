@@ -2,11 +2,9 @@
 //  SignUpView.swift
 //  triviataxi
 //
-//  Created by Cami Krugel on 1/24/26.
-//
 
-import SwiftUI
 import FirebaseAuth
+import SwiftUI
 
 struct SignUpView: View {
     @Binding var userIsLoggedIn: Bool
@@ -22,27 +20,33 @@ struct SignUpView: View {
         NavigationStack {
             ZStack {
                 Color("BackgroundYellow").ignoresSafeArea()
-                ScrollView{
+                ScrollView {
                     VStack(spacing: 20) {
                         Image("taxi")
                             .resizable()
                             .scaledToFit()
                             .frame(width: 200)
-                            .shadow(color: .black.opacity(0.2), radius: 10, y: 6)
+                            .shadow(
+                                color: .black.opacity(0.2),
+                                radius: 10,
+                                y: 6
+                            )
                         
                         Text("NEW DRIVER")
                             .font(.system(size: 36, weight: .bold))
-                        
                         
                         // The Form Card
                         VStack(spacing: 20) {
                             
                             // 1. Leaderboard Name
-                            TextField("Leaderboard Name", text: $leaderboardName)
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(12)
-                                .textInputAutocapitalization(.words)
+                            TextField(
+                                "Leaderboard Name",
+                                text: $leaderboardName
+                            )
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .textInputAutocapitalization(.words)
                             
                             // 2. Email
                             TextField("Email Address", text: $email)
@@ -59,21 +63,28 @@ struct SignUpView: View {
                                 .cornerRadius(12)
                             
                             // 4. Confirm Password
-                            SecureField("Confirm Password", text: $confirmPassword)
-                                .padding()
-                                .background(Color.white)
-                                .cornerRadius(12)
-                                .overlay(
-                                    // Show a checkmark if they match
-                                    Group {
-                                        if !password.isEmpty && password == confirmPassword {
-                                            Image(systemName: "checkmark.circle.fill")
-                                                .foregroundColor(.green)
-                                                .padding(.trailing)
-                                        }
+                            SecureField(
+                                "Confirm Password",
+                                text: $confirmPassword
+                            )
+                            .padding()
+                            .background(Color.white)
+                            .cornerRadius(12)
+                            .overlay(
+                                // Show a checkmark if they match
+                                Group {
+                                    if !password.isEmpty
+                                        && password == confirmPassword
+                                    {
+                                        Image(
+                                            systemName: "checkmark.circle.fill"
+                                        )
+                                        .foregroundColor(.green)
+                                        .padding(.trailing)
                                     }
-                                    , alignment: .trailing
-                                )
+                                },
+                                alignment: .trailing
+                            )
                             
                             if !errorMessage.isEmpty {
                                 Text(errorMessage)
@@ -92,7 +103,8 @@ struct SignUpView: View {
                     }
                 }
             }
-        }}
+        }
+    }
     
     func register() {
         // 1. Client-side Validation
@@ -107,37 +119,49 @@ struct SignUpView: View {
         }
         
         // 2. Create User in Firebase
-        
-        Auth.auth().createUser(withEmail: email, password: password) { result, error in
-                if let error = error {
-                    errorMessage = error.localizedDescription
+        Auth.auth().createUser(withEmail: email, password: password) {
+            result,
+            error in
+            if let error = error {
+                errorMessage = error.localizedDescription
+                return
+            }
+            
+            // Save the Display Name (leaderboardName) to Firebase Auth
+            if let changeRequest = result?.user.createProfileChangeRequest() {
+                changeRequest.displayName = leaderboardName
+                changeRequest.commitChanges { error in
+                    if let error = error {
+                        print(
+                            "Failed to save name: \(error.localizedDescription)"
+                        )
+                    }
+                }
+            }
+            
+            // Get the token from the USER
+            result?.user.getIDToken { token, error in
+                guard let token = token else {
                     return
                 }
                 
-                // 1. Save the Display Name (leaderboardName) to Firebase Auth
-                if let changeRequest = result?.user.createProfileChangeRequest() {
-                    changeRequest.displayName = leaderboardName
-                    changeRequest.commitChanges { error in
-                        if let error = error {
-                            print("Failed to save name: \(error.localizedDescription)")
-                        }
-                    }
-                }
-                
-                // 2. Get the token from the USER (not the name)
-                result?.user.getIDToken { token, error in
-                    guard let token = token else {
-                        return }
-                    
-                    // 3. Create Profile in Backend
-                    createUserInBackend(token: token, email: email, username: leaderboardName)
-                }
+                // Create Profile in Backend
+                createUserInBackend(
+                    token: token,
+                    email: email,
+                    username: leaderboardName
+                )
+            }
             
         }
-        }
+    }
     func createUserInBackend(token: String, email: String, username: String) {
-        // Use your REAL Cloud Run URL here
-        guard let url = URL(string: "https://trivia-taxi-api-423193744278.us-central1.run.app/users/me") else { return }
+        guard
+            let url = URL(
+                string:
+                    "https://trivia-taxi-api-423193744278.us-central1.run.app/users/me"
+            )
+        else { return }
         
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -147,32 +171,30 @@ struct SignUpView: View {
         
         let body: [String: Any] = [
             "email": email,
-            "username": username
+            "username": username,
         ]
         request.httpBody = try? JSONSerialization.data(withJSONObject: body)
         
         URLSession.shared.dataTask(with: request) { data, response, error in
-            // 1. Check for Network Error
             if let error = error {
                 print("❌ NETWORK ERROR: \(error.localizedDescription)")
                 return
             }
             
-            // 2. Check the Status Code (Crucial!)
             if let httpResponse = response as? HTTPURLResponse {
-                print("📡 Status Code: \(httpResponse.statusCode)") // Should be 200
+                print("📡 Status Code: \(httpResponse.statusCode)")  // Should be 200
                 
                 if httpResponse.statusCode != 200 {
                     print("❌ SERVER ERROR: Code \(httpResponse.statusCode)")
                     // Print what the server actually said (the error message)
-                    if let data = data, let responseString = String(data: data, encoding: .utf8) {
+                    if let data = data,
+                       let responseString = String(data: data, encoding: .utf8)
+                    {
                         print("📩 Server Response: \(responseString)")
                     }
                     return
                 }
             }
-            
-            // 3. If we get here, it actually worked
             print("✅ SUCCESS: User Profile created!")
             DispatchQueue.main.async {
                 self.userIsLoggedIn = true
@@ -181,7 +203,6 @@ struct SignUpView: View {
         
     }
 }
-
 
 #Preview {
     SignUpView(userIsLoggedIn: .constant(false))

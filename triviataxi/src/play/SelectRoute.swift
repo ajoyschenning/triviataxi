@@ -2,46 +2,46 @@
 //  SelectRoute.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/11/26.
-//
 
-
-import SwiftUI
-import MapboxMaps
+internal import Combine
+import CoreLocation
+import FirebaseAuth
 import MapboxDirections
+import MapboxMaps
 import MapboxNavigationCore
 import MapboxNavigationUIKit
-import CoreLocation
-internal import Combine
-import FirebaseAuth
+import SwiftUI
 
-
+enum RouteDifficulty: String {
+    case short, medium, long
+}
 
 struct RouteSelectionView: View {
     @Binding var showRoutes: Bool
+
     @State private var showNavigation = false
     @State private var selectedOrigin: CLLocationCoordinate2D? = nil
     @State private var selectedDestination: CLLocationCoordinate2D? = nil
-    @State private var ownedDestinations: [DestinationResponse] = []
+    @State private var destinationId: String? = nil
+    @State private var selectedCityName: String = ""
+    @State private var selectedRouteLength: String = ""
+
+    @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
 
     var body: some View {
         ZStack {
-
             Color.backgroundYellow
                 .ignoresSafeArea()
             GoldFadeOverlay()
-            .ignoresSafeArea()
-            .blendMode(.overlay)
+                .ignoresSafeArea()
+                .blendMode(.overlay)
 
             VStack(spacing: 0) {
-
-                // 🔒 Static Header
                 Header(title: "SELECT CITY") {
                     showRoutes = false
                 }
 
-                // 📜 Scrollable Cities
                 ScrollView {
                     VStack(spacing: 28) {
                         if isLoadingDestinations {
@@ -52,18 +52,21 @@ struct RouteSelectionView: View {
                                 .foregroundColor(.gray)
                                 .padding()
                         } else {
-                            ForEach(ownedDestinations, id: \.id) { destination in
+                            ForEach(ownedDestinations, id: \.id) {
+                                destination in
                                 RouteCard(
                                     journeyID: destination.id,
                                     city: destination.city,
                                     imageUrl: destination.imageUrl,
                                     onDifficultySelected: { difficulty in
-                                        fetchRouteCoordinates(destinationId: destination.id, difficulty: difficulty)
+                                        await prepareJourney(
+                                            destinationId: destination.id,
+                                            difficulty: difficulty
+                                        )
                                     }
                                 )
                             }
                         }
-
                         Spacer(minLength: 40)
                     }
                     .padding(.horizontal, 21)
@@ -73,77 +76,129 @@ struct RouteSelectionView: View {
                 }
             }
         }
-        .fullScreenCover(isPresented: $showNavigation) {
-            if let origin = selectedOrigin, let destination = selectedDestination {
-                NavigationViewControllerRepresentable(origin: origin, destination: destination)
-                    .edgesIgnoringSafeArea(.all)
+        .navigationDestination(isPresented: $showNavigation) {
+            if let origin = selectedOrigin,
+                let destination = selectedDestination,
+                let destinationId = destinationId
+            {
+
+                NavigationViewControllerRepresentable(
+                    origin: origin,
+                    destination: destination,
+                    destinationId: destinationId,
+                    questions: sampleQuestions,
+                    cityName: selectedCityName,
+                    routeLength: selectedRouteLength
+                )
+                .edgesIgnoringSafeArea(.all)
+                // Hides the default iOS back button so your custom Mapbox UI takes over
+                //  .navigationBarBackButtonHidden(true)
             }
         }
     }
 }
 
+// MARK: - API Logic
+extension RouteSelectionView {
+    private func fetchOwnedDestinations() {
+        isLoadingDestinations = true
+        Task {
+            do {
+                guard let user = Auth.auth().currentUser else {
+                    print("🚨 Error: No user logged in")
+                    await MainActor.run { isLoadingDestinations = false }
+                    return
+                }
 
+                let token = try await user.getIDToken()
+                let userProfile = try await NetworkService.shared
+                    .fetchUserProfile(token: token)
 
-//struct RouteHeader: View {
-//    let onHomeTapped: () -> Void
-//
-//    var body: some View {
-//        ZStack {
-//
-//            Button(action: onHomeTapped) {
-//                Circle()
-//                    .fill(Color(red: 1, green: 0.84, blue: 0))
-//                    .frame(width: 44, height: 44)
-//                    .overlay(
-//                        Image(systemName: "house.fill")
-//                            .font(.system(size: 18, weight: .bold))
-//                            .foregroundColor(.black)
-//                    )
-//            }
-//            .offset(x: -150)
-//
-//            Text("SELECT CITY")
-//                .font(.system(size: 32, weight: .semibold))
-//                .italic()
-//                .foregroundColor(.black)
-//
-//            HStack(spacing: 6) {
-//                Image(systemName: "dollarsign.circle.fill")
-//                    .foregroundColor(.black)
-//
-//                Text("1000")
-//                    .font(.system(size: 15, weight: .semibold))
-//            }
-//            .offset(x: 150)
-//        }
-//        .frame(height: 44)
-//        .padding(.top, 34)
-//        .padding(.bottom, 12)
-////        .background(Color(red: 1, green: 0.98, blue: 0.80))
-//    }
-//}
+                var destinations: [DestinationData] = []
+                for destinationId in userProfile.owned ?? [] {
+                    let destination = try await NetworkService.shared
+                        .fetchDestination(id: destinationId, token: token)
+                    destinations.append(destination)
+                }
 
+                await MainActor.run {
+                    self.ownedDestinations = destinations
+                    isLoadingDestinations = false
+                }
+            } catch {
+                print("🚨 Error fetching owned destinations: \(error)")
+                await MainActor.run { isLoadingDestinations = false }
+            }
+        }
+    }
 
-enum RouteDifficulty: String {
-    case short, medium, long
+    private func prepareJourney(
+        destinationId: String,
+        difficulty: RouteDifficulty
+    ) async {
+        do {
+            guard let user = Auth.auth().currentUser else {
+                print("🚨 Error: No user logged in")
+                return
+            }
+            let token = try await user.getIDToken()
+
+            // 1. Fetch Coordinates
+            let coords = try await NetworkService.shared.fetchRouteCoordinates(
+                destinationId: destinationId,
+                difficulty: difficulty.rawValue,
+                token: token
+            )
+
+            // 2. Get the city name from the destination
+            let destination = try await NetworkService.shared.fetchDestination(
+                id: destinationId,
+                token: token
+            )
+
+            // 3. Trigger the navigation push ONLY when both are successful
+            await MainActor.run {
+                self.selectedOrigin = CLLocationCoordinate2D(
+                    latitude: coords.originLat,
+                    longitude: coords.originLng
+                )
+                self.selectedDestination = CLLocationCoordinate2D(
+                    latitude: coords.destinationLat,
+                    longitude: coords.destinationLng
+                )
+                self.destinationId = destinationId
+                self.selectedCityName = destination.city
+                self.selectedRouteLength = difficulty.rawValue
+                self.showNavigation = true
+            }
+            print("✅ Journey Prepared! Destination: \(destinationId)")
+
+        } catch {
+            print("🚨 Journey Preparation Error: \(error)")
+        }
+    }
 }
 
+// MARK: - UI Components
 struct RouteCard: View {
-    @State private var showNavigation = false
     @State private var isProcessing = false
-    
+
     let journeyID: String
-    
     let city: String
     let imageUrl: String?
-    let onDifficultySelected: (RouteDifficulty) -> Void
+    let onDifficultySelected: (RouteDifficulty) async -> Void
 
     var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.white)
                 .shadow(
-                    color: Color(red: 0.71, green: 0.74, blue: 0.79, opacity: 0.14),
+                    color: Color(
+                        red: 0.71,
+                        green: 0.74,
+                        blue: 0.79,
+                        opacity: 0.14
+                    ),
                     radius: 20,
                     y: 6
                 )
@@ -200,7 +255,9 @@ struct RouteCard: View {
         .frame(height: 140)
     }
 
-    private func difficultyButton(title: String, difficulty: RouteDifficulty) -> some View {
+    private func difficultyButton(title: String, difficulty: RouteDifficulty)
+        -> some View
+    {
         Button(action: {
             onDifficultySelected(difficulty)
             startRoute(journeyID: journeyID)
@@ -282,45 +339,24 @@ extension RouteSelectionView {
                 print("🚨 Error fetching owned destinations: \(error)")
                 await MainActor.run { isLoadingDestinations = false }
             }
-        }
-    }
-
-    private func fetchRouteCoordinates(destinationId: String, difficulty: RouteDifficulty) {
-        Task {
-            do {
-                guard let user = Auth.auth().currentUser else {
-                    print("🚨 Error: No user logged in")
-                    return
+        }) {
+            ZStack {
+                Color.black
+                if isProcessing {
+                    ProgressView().tint(.white)
+                } else {
+                    Text(title)
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.white)
                 }
-
-                let token = try await user.getIDToken()
-                let coords = try await NetworkService.shared.fetchRouteCoordinates(
-                    destinationId: destinationId,
-                    difficulty: difficulty.rawValue,
-                    token: token
-                )
-                
-                await MainActor.run {
-                    selectedOrigin = CLLocationCoordinate2D(
-                        latitude: coords.originLat,
-                        longitude: coords.originLng
-                    )
-                    selectedDestination = CLLocationCoordinate2D(
-                        latitude: coords.destinationLat,
-                        longitude: coords.destinationLng
-                    )
-                    print(selectedOrigin)
-                    print(selectedDestination)
-                    showNavigation = true
-                }
-            } catch {
-                print("🚨 Error fetching route coordinates: \(error)")
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .cornerRadius(10)
         }
+        .disabled(isProcessing)
     }
 }
 
-
 #Preview {
-    RouteSelectionView(showRoutes: .constant(false))
+    RouteSelectionView(showRoutes: .constant(true))
 }

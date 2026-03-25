@@ -2,18 +2,17 @@
 //  ShopView.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/2/26.
-//
 
-import SwiftUI
-import MapboxMaps
 internal import Combine
+import MapboxMaps
+import SwiftUI
 
 // MARK: Shop View
 
 struct ShopView: View {
-    @Binding var showShop: Bool   // control navigation
+    @Binding var showShop: Bool  // control navigation
     @StateObject private var viewModel = ShopViewModel()
+    @EnvironmentObject var userManager: UserManager
 
     var body: some View {
         VStack(spacing: 0) {
@@ -22,7 +21,7 @@ struct ShopView: View {
                 showShop = false
             }
 
-            // 📜 Scrollable Destinations
+            // Scrollable Destinations
             ScrollView {
                 VStack(spacing: 28) {
                     if viewModel.isLoading {
@@ -56,7 +55,7 @@ struct ShopView: View {
                             imageUrl: item.imageUrl,
                             isPurchasing: viewModel.purchasingItemId == item.id,
                             buyAction: {
-                                Task { await viewModel.purchase(item) }
+                                Task { await viewModel.purchase(item, userManager: userManager) }
                             }
                         )
                     }
@@ -65,11 +64,11 @@ struct ShopView: View {
                 }
                 .padding(.horizontal, 21)
                 .task {
-                    await viewModel.load()
+                    await viewModel.load(userManager: userManager)
                 }
             }
         }
-        .background(Color(red: 1, green: 0.98, blue: 0.80))
+        .background(Color.backgroundYellow)
     }
 }
 
@@ -87,7 +86,7 @@ struct DestinationCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .fill(Color.white)
                 .shadow(
-                    color: Color(red: 0.71, green: 0.74, blue: 0.79, opacity: 0.14),
+                    color: Color.shadow,
                     radius: 20,
                     y: 6
                 )
@@ -118,7 +117,11 @@ struct DestinationCard: View {
                     .cornerRadius(16)
                 } else {
                     RoundedRectangle(cornerRadius: 16)
-                        .fill(Color(red: 0.50, green: 0.23, blue: 0.27).opacity(0.5))
+                        .fill(
+                            Color(red: 0.50, green: 0.23, blue: 0.27).opacity(
+                                0.5
+                            )
+                        )
                         .frame(width: 95, height: 116)
                 }
 
@@ -133,7 +136,7 @@ struct DestinationCard: View {
 
                     Spacer()
 
-                        HStack(spacing: 10) {
+                    HStack(spacing: 10) {
 
                         HStack(spacing: 6) {
                             Image(systemName: "dollarsign.circle.fill")
@@ -145,7 +148,7 @@ struct DestinationCard: View {
                         }
                         .padding(.horizontal, 10)
                         .padding(.vertical, 6)
-                        .background(Color(red: 1, green: 0.84, blue: 0))
+                        .background(Color.accentYellow)
                         .cornerRadius(8)
 
                         Button(action: buyAction) {

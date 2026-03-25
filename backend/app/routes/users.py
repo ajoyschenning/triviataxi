@@ -16,8 +16,10 @@ class UserProfile(BaseModel):
     username: str
     email: str
     avatar_url: str | None
-    total_earnings: float
+    coins: int | None
+    miles: int | None
     owned: list[str]
+    sessions: list[str]
     lifetime_games: int
     win_streak: int
     rank: int | None
@@ -48,6 +50,7 @@ class PurchaseResponse(BaseModel):
     destination_id: str | None = None
 
 
+
 @router.post("/me")
 async def create_user_profile(user: UserCreate, creds: HTTPAuthorizationCredentials = Depends(security)):
     """Creates a user document in Firestore after c Auth signup."""
@@ -72,6 +75,7 @@ async def create_user_profile(user: UserCreate, creds: HTTPAuthorizationCredenti
             'coins': 0.0,
             'miles': 0.0,
             'owned': ['Nashville_USA'],
+            'sessions': [],
             'lifetime_games': 0,
             'win_streak': 0,
             'rank': None,
@@ -104,8 +108,10 @@ async def get_user_profile(authorization: str = Header(None)):
         username=data.get('username', ''),
         email=data.get('email', ''),
         avatar_url=data.get('avatar_url'),
-        total_earnings=float(data.get('total_earnings', 0.0)),
+        coins=int(data.get('coins', 0.0)),
+        miles=int(data.get('miles', 0.0)),
         owned=data.get('owned', []),
+        sessions=data.get('sessions', []),
         lifetime_games=int(data.get('lifetime_games', 0)),
         win_streak=int(data.get('win_streak', 0)),
         rank=data.get('rank')
@@ -221,3 +227,4 @@ async def purchase_destination(user_id: str, request: PurchaseRequest):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail="Failed to complete purchase")
+
