@@ -6,7 +6,6 @@
 import SwiftUI
 
 struct QuestionOverlayView: View {
-    @State private var currentQuestion: Question? = nil
     @State private var selectedAnswer: String? = nil
     @State private var showQuestion = true
     @State private var timeRemaining = 15
@@ -18,7 +17,7 @@ struct QuestionOverlayView: View {
     @State private var showBuffer = false
     @State private var isLoading = false
     @State private var loadingError: String? = nil
-    @State private var questionCount = 0
+    @State private var isFetchingNextBatch = false
     
     @EnvironmentObject var gameManager: GameManager
     @EnvironmentObject var userManager: UserManager
@@ -86,8 +85,7 @@ struct QuestionOverlayView: View {
             Spacer()
         }
         .onAppear {
-            gameManager.startSession(sessionId: sessionId, routeId: destinationId)
-            loadQuestion()
+            loadQuestionBatch()
         }
         .onChange(of: gameManager.isGameOver) { newValue in
             if newValue {
@@ -98,10 +96,16 @@ struct QuestionOverlayView: View {
                 answerTimer = nil
             }
         }
+        .onChange(of: gameManager.currentIndex) { newIndex in
+            // Fetch next batch when approaching the end of current batch
+            if !isFetchingNextBatch && newIndex > gameManager.questions.count - 10 {
+                fetchNextBatch()
+            }
+        }
     }
     
     private var difficultyColor: Color {
-        guard let question = currentQuestion else { return Color.blue }
+        guard let question = gameManager.currentQuestion else { return Color.blue }
         switch question.difficulty.lowercased() {
         case "easy":
             return Color.green
@@ -124,40 +128,64 @@ struct QuestionOverlayView: View {
         }
     }
     
-    private func loadQuestion() {
-        // Don't load new questions if game is over
-        if gameManager.isGameOver {
-            return
-        }
-        
+    private func loadQuestionBatch() {
         isLoading = true
         loadingError = nil
         
         Task {
             do {
-                let question = try await NetworkService.shared.fetchTriviaQuestion(
+                // Fetch 50 questions at a time
+                let questions = try await NetworkService.shared.fetchQuestionBatch(
                     sessionId: sessionId,
-                    difficulty: difficulty
+                    difficulty: difficulty,
+                    batchSize: 50
                 )
                 
                 await MainActor.run {
-                    currentQuestion = question
-                    questionCount += 1
-                    selectedAnswer = nil
-                    isAnswered = false
-                    showQuestion = true
-                    showBuffer = false
                     isLoading = false
-                    shuffleAnswers()
-                    startQuestionTimer()
+                    gameManager.startSession(routeId: destinationId, fetchedQuestions: questions)
+                    showNextQuestion()
                 }
             } catch {
                 await MainActor.run {
                     isLoading = false
-                    loadingError = "Failed to load question: \(error.localizedDescription)"
+                    loadingError = "Failed to load questions: \(error.localizedDescription)"
                 }
             }
         }
+    }
+    
+    private func fetchNextBatch() {
+        isFetchingNextBatch = true
+        
+        Task {
+            do {
+                let questions = try await NetworkService.shared.fetchQuestionBatch(
+                    sessionId: sessionId,
+                    difficulty: difficulty,
+                    batchSize: 50
+                )
+                
+                await MainActor.run {
+                    gameManager.appendMoreQuestions(questions)
+                    isFetchingNextBatch = false
+                }
+            } catch {
+                await MainActor.run {
+                    isFetchingNextBatch = false
+                    print("Failed to fetch next question batch: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    private func showNextQuestion() {
+        selectedAnswer = nil
+        isAnswered = false
+        showQuestion = true
+        showBuffer = false
+        shuffleAnswers()
+        startQuestionTimer()
     }
     
     private func startQuestionTimer() {
@@ -185,16 +213,9 @@ struct QuestionOverlayView: View {
         showBuffer = true
         
         // Submit answer to GameManager for scoring
-        if let question = currentQuestion {
-            gameManager.submitAnswer(
-                answer,
-                correctAnswer: question.correctAnswer,
-                earningValue: question.earningValue,
-                userManager: userManager
-            )
-        }
+        gameManager.submitAnswer(answer, userManager: userManager)
         
-        // Wait 5 seconds before loading next question
+        // Wait 5 seconds before showing next question
         startBetweenQuestionTimer()
     }
     
@@ -206,13 +227,16 @@ struct QuestionOverlayView: View {
             if betweenQuestionTimer <= 0 {
                 answerTimer?.invalidate()
                 answerTimer = nil
-                loadQuestion()
+                // Check if game is still active
+                if !gameManager.isGameOver {
+                    showNextQuestion()
+                }
             }
         }
     }
     
     private func shuffleAnswers() {
-        guard let question = currentQuestion else { return }
+        guard let question = gameManager.currentQuestion else { return }
         var all = [question.correctAnswer] + question.incorrectAnswers
         all.shuffle()
         currentShuffledAnswers = all

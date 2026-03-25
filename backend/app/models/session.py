@@ -40,6 +40,8 @@ class GameSession(BaseModel):
     total_distance: float = Field(default=100.0, description="Total trip distance")
     created_at: datetime = Field(default_factory=datetime.utcnow, description="Session start timestamp")
     ended_at: Optional[datetime] = Field(None, description="Session end timestamp")
+    questions_fetched_count: int = Field(default=0, description="Total questions fetched and stored in pool")
+    current_question_index: int = Field(default=0, description="Index of the next question to return")
     
     class Config:
         json_encoders = {

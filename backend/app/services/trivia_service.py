@@ -116,6 +116,100 @@ class TriviaService:
                 await asyncio.sleep(wait_time)
     
     @staticmethod
+    async def get_questions_batch_from_open_trivia(
+        amount: int = 50,
+        category: str | None = None,
+        difficulty: str | None = None,
+        max_retries: int = 3
+    ) -> list[Dict[str, Any]]:
+        """Fetch a batch of questions from Open Trivia Database.
+        
+        Args:
+            amount: Number of questions to fetch (default 50)
+            category: Optional category ID for the questions
+            difficulty: Optional difficulty level (easy, medium, hard)
+            max_retries: Maximum number of retries on 429 errors (default 3)
+            
+        Returns:
+            List of normalized question dictionaries
+            
+        Raises:
+            Exception: If the API call fails after all retries
+        """
+        params = {
+            "amount": min(amount, 50),  # OpenTrivia caps at 50 per request
+            "type": "multiple"  # Multiple choice questions
+        }
+        
+        # Add optional parameters if provided
+        if category:
+            params["category"] = category
+        if difficulty:
+            params["difficulty"] = difficulty
+        
+        # Enforce rate limiting before making the request
+        await TriviaService._enforce_rate_limit()
+        
+        retry_count = 0
+        base_wait_time = 1.0
+        
+        while retry_count < max_retries:
+            try:
+                async with httpx.AsyncClient(timeout=15.0) as client:
+                    response = await client.get(
+                        TriviaService.OPEN_TRIVIA_BASE_URL,
+                        params=params,
+                    )
+                    
+                    # Handle 429 (Too Many Requests) with exponential backoff
+                    if response.status_code == 429:
+                        retry_count += 1
+                        if retry_count >= max_retries:
+                            raise Exception(
+                                f"API rate limit exceeded after {max_retries} retries. "
+                                "Please wait before making another request."
+                            )
+                        
+                        # Exponential backoff: 1s, 2s, 4s
+                        wait_time = base_wait_time * (2 ** (retry_count - 1))
+                        print(f"Rate limited (429). Retry {retry_count}/{max_retries} after {wait_time}s...")
+                        await asyncio.sleep(wait_time)
+                        
+                        # Reset rate limiter and try again
+                        await TriviaService._enforce_rate_limit()
+                        continue
+                    
+                    # Handle other HTTP errors
+                    response.raise_for_status()
+                    
+                    data = response.json()
+                    
+                    # Check if the API returned results
+                    if data.get("response_code") != 0 or not data.get("results"):
+                        raise Exception(
+                            f"OpenTrivia API error: response_code={data.get('response_code')}. "
+                            "This may mean the API has no more questions for the given criteria."
+                        )
+                    
+                    # Normalize and return all questions in the batch
+                    questions = []
+                    for question in data["results"]:
+                        normalized = await TriviaService.normalize_question_format(question)
+                        questions.append(normalized)
+                    
+                    return questions
+            
+            except httpx.HTTPError as e:
+                retry_count += 1
+                if retry_count >= max_retries:
+                    raise Exception(f"Failed to fetch from OpenTrivia API after {max_retries} attempts: {str(e)}")
+                
+                # Wait before retry with exponential backoff
+                wait_time = base_wait_time * (2 ** (retry_count - 1))
+                print(f"Request failed. Retry {retry_count}/{max_retries} after {wait_time}s...")
+                await asyncio.sleep(wait_time)
+    
+    @staticmethod
     async def normalize_question_format(raw_question: Dict[str, Any]) -> Dict[str, Any]:
         """Normalize question format from OpenTrivia API.
         

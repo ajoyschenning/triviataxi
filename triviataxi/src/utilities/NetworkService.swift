@@ -177,6 +177,64 @@ class NetworkService {
             throw NetworkError.decodingError
         }
     }
+    
+    func fetchQuestionBatch(sessionId: String, difficulty: String? = nil, batchSize: Int = 50) async throws -> [Question] {
+        var urlString = "\(baseURL)/sessions/\(sessionId)/questions"
+        
+        var queryParams: [String] = []
+        if let difficulty = difficulty, !difficulty.isEmpty {
+            queryParams.append("difficulty=\(difficulty)")
+        }
+        queryParams.append("limit=\(batchSize)")
+        
+        if !queryParams.isEmpty {
+            urlString += "?" + queryParams.joined(separator: "&")
+        }
+        
+        guard let url = URL(string: urlString) else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        
+        // Get Firebase token for authentication
+        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+            print("🚨 User is not logged in or token is missing.")
+            throw NetworkError.unauthorized
+        }
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            let questions = try decoder.decode([Question].self, from: data)
+            return questions
+        } catch let DecodingError.keyNotFound(key, context) {
+            print("🚨 SWIFT DECODING ERROR: Missing key '\(key.stringValue)' - \(context.debugDescription)")
+            throw NetworkError.decodingError
+        } catch let DecodingError.typeMismatch(type, context) {
+            print("🚨 SWIFT DECODING ERROR: Type mismatch for type \(type) - \(context.debugDescription)")
+            throw NetworkError.decodingError
+        } catch {
+            print("🚨 SWIFT DECODING ERROR: \(error.localizedDescription)")
+            throw NetworkError.decodingError
+        }
+    }
 
     /// Fetch current user profile using Bearer token from /users/me endpoint.
     func fetchUserProfile(token: String) async throws -> UserProfile {
