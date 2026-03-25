@@ -20,7 +20,7 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
     let origin: CLLocationCoordinate2D
     let destination: CLLocationCoordinate2D
     let destinationId: String
-    let questions: [Question]?
+    // questions parameter removed: now fetched via API in QuestionOverlayView
     
     @Environment(\.dismiss) var dismiss
     
@@ -52,10 +52,14 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                         navigationViewController.delegate = context.coordinator
 
                         // 3. ADD QUESTION OVERLAY (From the top block)
-                        if let questions = questions, !questions.isEmpty {
-                            let questionOverlay = UIHostingController(
-                                rootView: QuestionOverlayView(questions: questions, destinationId: destinationId)
+                        // Now uses API to fetch questions, no longer needs pre-loaded questions
+                        let questionOverlay = UIHostingController(
+                            rootView: QuestionOverlayView(
+                                sessionId: UUID().uuidString, // Use unique session ID for this game
+                                destinationId: destinationId,
+                                difficulty: nil // Optional: can be "easy", "medium", "hard"
                             )
+                        )
                             questionOverlay.view.backgroundColor = .clear
                             questionOverlay.view.translatesAutoresizingMaskIntoConstraints = false
                             
@@ -75,7 +79,6 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                                 ),
                             ])
                             navigationViewController.navigationView.bringSubviewToFront(questionOverlay.view)
-                        }
                         
                         // --- Coin Counter UI ---
                 let coinCounter = UILabel()

@@ -120,6 +120,64 @@ class NetworkService {
             
         
 
+    /// Fetch a single trivia question from the backend API for a game session
+    /// - Parameters:
+    ///   - sessionId: The unique identifier for the game session
+    ///   - difficulty: Optional difficulty filter (easy, medium, hard)
+    /// - Returns: A Question object with trivia content from OpenTrivia API
+    func fetchTriviaQuestion(sessionId: String, difficulty: String? = nil) async throws -> Question {
+        var urlString = "\(baseURL)/sessions/\(sessionId)/question"
+        
+        // Add difficulty as query parameter if provided
+        if let difficulty = difficulty, !difficulty.isEmpty {
+            urlString += "?difficulty=\(difficulty)"
+        }
+        
+        guard let url = URL(string: urlString) else {
+            throw NetworkError.invalidURL
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "accept")
+        
+        // Get Firebase token for authentication
+        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+            print("🚨 User is not logged in or token is missing.")
+            throw NetworkError.unauthorized
+        }
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+        let (data, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            let question = try decoder.decode(Question.self, from: data)
+            return question
+        } catch let DecodingError.keyNotFound(key, context) {
+            print("🚨 SWIFT DECODING ERROR: Missing key '\(key.stringValue)' - \(context.debugDescription)")
+            throw NetworkError.decodingError
+        } catch let DecodingError.typeMismatch(type, context) {
+            print("🚨 SWIFT DECODING ERROR: Type mismatch for type \(type) - \(context.debugDescription)")
+            throw NetworkError.decodingError
+        } catch {
+            print("🚨 SWIFT DECODING ERROR: \(error.localizedDescription)")
+            throw NetworkError.decodingError
+        }
+    }
+
     /// Fetch current user profile using Bearer token from /users/me endpoint.
     func fetchUserProfile(token: String) async throws -> UserProfile {
         guard let url = URL(string: "\(baseURL)/users/me") else {

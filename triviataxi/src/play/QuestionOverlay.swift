@@ -5,16 +5,8 @@
 
 import SwiftUI
 
-//struct Question {
-//    let id: String
-//    let text: String
-//    let difficulty: String
-//    let answers: [String]
-//    let correctAnswerIndex: Int
-//}
-
 struct QuestionOverlayView: View {
-    @State private var currentQuestionIndex = 0
+    @State private var currentQuestion: Question? = nil
     @State private var selectedAnswer: String? = nil
     @State private var showQuestion = true
     @State private var timeRemaining = 15
@@ -24,26 +16,55 @@ struct QuestionOverlayView: View {
     @State private var answerTimer: Timer? = nil
     @State private var currentShuffledAnswers: [String] = []
     @State private var showBuffer = false
+    @State private var isLoading = false
+    @State private var loadingError: String? = nil
+    @State private var questionCount = 0
     
-    let questions: [Question]
+    let sessionId: String
     let destinationId: String
-    
-    var currentQuestion: Question {
-        questions[currentQuestionIndex]
-    }
-    
-    var hasMoreQuestions: Bool {
-        currentQuestionIndex < questions.count - 1
-    }
+    let difficulty: String?
     
     var body: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .topLeading) {
-                if showQuestion && !isAnswered && !showBuffer {
+                if isLoading {
+                    VStack {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                        Text("Loading question...")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(.gray)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(UIColor.systemGray6))
+                } else if let error = loadingError {
+                    VStack(spacing: 12) {
+                        Image(systemName: "exclamationmark.circle.fill")
+                            .font(.system(size: 40))
+                            .foregroundColor(.red)
+                        Text("Error Loading Question")
+                            .font(.system(size: 16, weight: .bold))
+                        Text(error)
+                            .font(.system(size: 12, weight: .regular))
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                        Button(action: { loadQuestion() }) {
+                            Text("Retry")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(.white)
+                                .padding(.horizontal, 20)
+                                .padding(.vertical, 10)
+                                .background(Color.blue)
+                                .cornerRadius(8)
+                        }
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(Color(UIColor.systemGray6))
+                } else if let question = currentQuestion, showQuestion && !isAnswered && !showBuffer {
                     QuestionBoxView(
-                        questionNumber: currentQuestionIndex + 1,
-                        totalQuestions: questions.count,
-                        question: currentQuestion,
+                        questionNumber: questionCount,
+                        totalQuestions: 0, // Infinite game, so don't show total
+                        question: question,
                         allAnswers: currentShuffledAnswers,
                         timeRemaining: timeRemaining,
                         selectedAnswer: selectedAnswer,
@@ -53,12 +74,8 @@ struct QuestionOverlayView: View {
                     )
                 }
                 
-                if showBuffer && hasMoreQuestions {
+                if showBuffer {
                     // Empty during buffer period
-                }
-                
-                if !hasMoreQuestions && isAnswered && !showQuestion {
-                    // QuizCompleteView()
                 }
             }
             .padding(.top, 20)
@@ -66,13 +83,13 @@ struct QuestionOverlayView: View {
             Spacer()
         }
         .onAppear {
-            shuffleAnswers()
-            startQuestionTimer()
+            loadQuestion()
         }
     }
     
     private var difficultyColor: Color {
-        switch currentQuestion.difficulty.lowercased() {
+        guard let question = currentQuestion else { return Color.blue }
+        switch question.difficulty.lowercased() {
         case "easy":
             return Color.green
         case "medium":
@@ -91,6 +108,37 @@ struct QuestionOverlayView: View {
             return Color.orange
         } else {
             return Color.red
+        }
+    }
+    
+    private func loadQuestion() {
+        isLoading = true
+        loadingError = nil
+        
+        Task {
+            do {
+                let question = try await NetworkService.shared.fetchTriviaQuestion(
+                    sessionId: sessionId,
+                    difficulty: difficulty
+                )
+                
+                await MainActor.run {
+                    currentQuestion = question
+                    questionCount += 1
+                    selectedAnswer = nil
+                    isAnswered = false
+                    showQuestion = true
+                    showBuffer = false
+                    isLoading = false
+                    shuffleAnswers()
+                    startQuestionTimer()
+                }
+            } catch {
+                await MainActor.run {
+                    isLoading = false
+                    loadingError = "Failed to load question: \(error.localizedDescription)"
+                }
+            }
         }
     }
     
@@ -118,7 +166,7 @@ struct QuestionOverlayView: View {
         showQuestion = false
         showBuffer = true
         
-        // Wait 5 seconds before showing next question
+        // Wait 5 seconds before loading next question
         startBetweenQuestionTimer()
     }
     
@@ -130,28 +178,14 @@ struct QuestionOverlayView: View {
             if betweenQuestionTimer <= 0 {
                 answerTimer?.invalidate()
                 answerTimer = nil
-                moveToNextQuestion()
+                loadQuestion()
             }
         }
     }
     
-    private func moveToNextQuestion() {
-        if hasMoreQuestions {
-            currentQuestionIndex += 1
-            selectedAnswer = nil
-            isAnswered = false
-            showQuestion = true
-            showBuffer = false
-            shuffleAnswers()
-            startQuestionTimer()
-        } else {
-            // Quiz is complete
-            showQuestion = false
-        }
-    }
-    
     private func shuffleAnswers() {
-        var all = [currentQuestion.correctAnswer] + currentQuestion.incorrectAnswers
+        guard let question = currentQuestion else { return }
+        var all = [question.correctAnswer] + question.incorrectAnswers
         all.shuffle()
         currentShuffledAnswers = all
     }
@@ -344,7 +378,7 @@ let sampleQuestions = [
         difficulty: "Easy",
         earningValue: 5,
         correctAnswer: "Memphis",
-        incorrectAnswers: ["Nashville", "Knoxville", "Chattanooga"],
+        incorrectAnswers: ["Nashville", "Knoxville", "Chattanooga"]
     ),
     Question(
         questionId: "2",
@@ -353,11 +387,14 @@ let sampleQuestions = [
         difficulty: "Medium",
         earningValue: 10,
         correctAnswer: "1875",
-        incorrectAnswers: ["1873", "1879", "1881"],
+        incorrectAnswers: ["1873", "1879", "1881"]
     )
 ]
 
 #Preview {
-    
-    QuestionOverlayView(questions: sampleQuestions, destinationId: "test-session")
+    QuestionOverlayView(
+        sessionId: "preview-session-123",
+        destinationId: "test-destination",
+        difficulty: "easy"
+    )
 }

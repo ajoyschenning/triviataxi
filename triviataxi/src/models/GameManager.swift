@@ -27,7 +27,7 @@ struct Question: Codable, Identifiable {
     let text: String
     let category: String
     let difficulty: String
-    let earningValue: Int
+    let earningValue: Int?  // Optional as it's calculated on the client side
     let correctAnswer: String
     let incorrectAnswers: [String]
 
