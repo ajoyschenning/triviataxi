@@ -12,7 +12,7 @@ struct EndSummary: View {
     
     let cityName: String
     let routeLength: String // "short", "medium", or "long"
-    let milesTravelled: Double
+    let milesTraveled: Double
     let timeElapsed: Int
     let questionsAnswered: Int
     let earnings: Int
@@ -50,7 +50,7 @@ struct EndSummary: View {
 //                }
                 // Stats section
                  VStack(spacing: 40) {
-                    StatRow(label: "Miles Travelled", value: String(format: "%.1f", milesTravelled))
+                    StatRow(label: "Miles Traveled", value: String(format: "%.1f", milesTraveled))
                      StatRow(label: "Time", value: formatTime(timeElapsed))
                      StatRow(label: "Questions Answered", value: "\(questionsAnswered)")
                      StatRow(label: "Coins Earned", value: "\(Int(earnings))")

@@ -1,29 +1,37 @@
 """User-related API endpoints."""
-from fastapi import APIRouter, Header, HTTPException
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends, HTTPException, Header
+from pydantic import BaseModel, Field
 from firebase_admin import auth, firestore
-from fastapi import Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from typing import List, Optional
 
 security = HTTPBearer()
 
 router = APIRouter(prefix="/users", tags=["users"])
 
+# --- 1. Helper for Clean Auth ---
+async def get_current_user_id(creds: HTTPAuthorizationCredentials = Depends(security)) -> str:
+    """Decodes the Firebase token and returns the UID."""
+    try:
+        decoded_token = auth.verify_id_token(creds.credentials)
+        return decoded_token['uid']
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Invalid or expired token: {str(e)}")
 
+# --- 2. Refined Models ---
 class UserProfile(BaseModel):
     """User profile response model."""
     firebase_uid: str
     username: str
     email: str
-    avatar_url: str | None
-    coins: int | None
-    miles: int | None
-    owned: list[str]
-    sessions: list[str]
-    lifetime_games: int
-    win_streak: int
-    rank: int | None
-
+    avatar_url: Optional[str] = None
+    coins: int = 0
+    miles: float = 0.0  
+    owned: List[str] 
+    sessions: List[str] 
+    lifetime_games: int = 0
+    win_streak: int = 0
+    rank: Optional[int] = None
 
 class UserCreate(BaseModel):
     """User creation request model."""
@@ -72,7 +80,7 @@ async def create_user_profile(user: UserCreate, creds: HTTPAuthorizationCredenti
             'email': user.email,
             'username': user.username,
             'avatar_url': None,
-            'coins': 0.0,
+            'coins': 0,
             'miles': 0.0,
             'owned': ['Nashville_USA'],
             'sessions': [],
@@ -108,8 +116,8 @@ async def get_user_profile(authorization: str = Header(None)):
         username=data.get('username', ''),
         email=data.get('email', ''),
         avatar_url=data.get('avatar_url'),
-        coins=int(data.get('coins', 0.0)),
-        miles=int(data.get('miles', 0.0)),
+        coins=int(data.get('coins', 0)),
+        miles=float(data.get('miles', 0.0)), 
         owned=data.get('owned', []),
         sessions=data.get('sessions', []),
         lifetime_games=int(data.get('lifetime_games', 0)),
@@ -191,7 +199,7 @@ async def purchase_destination(user_id: str, request: PurchaseRequest):
             )
         
         dest_data = dest_doc.to_dict() or {}
-        dest_price = float(dest_data.get('price', 0.0))
+        dest_price = int(dest_data.get('price', 0))
         
         # 3. Check if user already owns this destination
         if request.destination_id in user_owned:

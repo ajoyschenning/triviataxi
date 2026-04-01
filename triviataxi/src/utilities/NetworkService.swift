@@ -59,15 +59,14 @@ class NetworkService {
     private let baseURL = "http://127.0.0.1:8000"
     //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
     
-
-
     
     func submitGameResults(
         userId: String,
         routeId: String,
         totalEarnings: Int,
         strikes: Int,
-        questionsAnswered: Int) async throws -> GameCompletionRequest{
+        questionsAnswered: Int,
+        milesTraveled: Double) async throws -> GameCompletionRequest{
             
             guard let url = URL(string: "\(baseURL)/sessions") else {
                 throw NetworkError.invalidURL
@@ -82,14 +81,14 @@ class NetworkService {
                         throw NetworkError.unauthorized
                     }
                     
-                    // 🚀 THE FIX: 2. Staple the pass to the HTTP Header
                     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
             let body: [String: Any] = ["user_id": userId,
                                        "route_id": routeId,
                                        "total_earnings": totalEarnings,
                                        "strikes": strikes,
-                                       "questions_answered": questionsAnswered]
+                                       "questions_answered": questionsAnswered,
+                                       "miles_traveled": milesTraveled]
             request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
             let (data, response) = try await URLSession.shared.data(for: request)

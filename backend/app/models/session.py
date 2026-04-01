@@ -13,6 +13,7 @@ class GameSession(BaseModel):
     total_earnings: int = Field(default=0.0, description="Total earnings in this session")
     strikes: int = Field(default=0, description="Number of strikes (max 3)")
     questions_answered: int = Field(default=0, description="Number of questions answered")
+    miles_traveled: float = Field(default=0.0, description="Miles traveled in this session")
     completed_at: Optional[datetime] = Field(default=None, description="Session completion timestamp")
     
     class Config:

@@ -21,6 +21,7 @@ class GameCompletionPayload(BaseModel):
     route_id: str
     total_earnings: int = 0
     strikes: int = 0
+    miles_traveled: float = 0.0
     questions_answered: int = 0
 
 
@@ -41,6 +42,7 @@ async def save_session(
             total_earnings=payload.total_earnings,
             strikes=payload.strikes,
             questions_answered=payload.questions_answered,
+            miles_traveled=payload.miles_traveled,
             completed_at=datetime.now()
         )
 
@@ -55,11 +57,14 @@ async def save_session(
         user_sessions = user_data.get('sessions', [])
 
         new_coin_balance = user_coins + payload.total_earnings
+        new_miles = float(user_data.get('miles', 0.0)) + payload.miles_traveled
         user_sessions.append(session_id)
 
         db.collection('users').document(payload.user_id).update({
             'coins': new_coin_balance,
-            'sessions': user_sessions
+            'sessions': user_sessions,
+            'miles': new_miles,
+            'lifetime_games': int(user_data.get('lifetime_games', 0)) + 1
         })
         
         return SessionResponse(
