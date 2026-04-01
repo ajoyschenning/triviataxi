@@ -8,31 +8,43 @@
 import SwiftUI
 import MapboxMaps
 internal import Combine
+import FirebaseAuth
+
 
 // MARK: Leaderboard
+enum LeaderboardTab {
 
-// TODO: Make leaderboard based on MILES not coins
+    case week
+
+    case allTime
+
+}
+
 struct LeaderboardView: View {
     @Binding var showLeaderboard: Bool
-    @State private var selectedTab: LeaderboardTab = .week
+    @State private var selectedTab: LeaderboardTab = .allTime // Default to allTime since we built that first
+    @State private var leaderboardEntries: [LeaderboardEntry] = []
+    @State private var isLoading = false
 
     var body: some View {
         VStack(spacing: 0) {
-
             Header(title: "LEADERBOARD") {
                 showLeaderboard = false
             }
 
-            // Tabs
             LeaderboardTabs(selectedTab: $selectedTab)
 
-            // Scrollable content
+            if isLoading {
+                ProgressView("Loading Drivers...")
+                    .padding()
+            }
+
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(data(for: selectedTab)) { entry in
+                    // 🚀 Filter the data based on the selected tab
+                    ForEach(leaderboardEntries.filter { $0.timeframe == selectedTab.toNetworkType }) { entry in
                         LeaderboardRow(entry: entry)
                     }
-
                     Spacer(minLength: 40)
                 }
                 .padding(.horizontal, 21)
@@ -40,19 +52,30 @@ struct LeaderboardView: View {
             }
         }
         .background(Color.backgroundYellow)
+        .task {
+            await loadLeaderboard()
+        }
+    }
+
+    private func loadLeaderboard() async {
+        isLoading = true
+        do {
+            // 🚀 Use the NetworkService we just fixed
+            let token = try await Auth.auth().currentUser?.getIDToken() ?? ""
+            self.leaderboardEntries = try await NetworkService.shared.fetchLeaderboard(token: token)
+        } catch {
+            print("🚨 Failed to load leaderboard: \(error)")
+        }
+        isLoading = false
     }
 }
-
-enum LeaderboardTab {
-    case week
-    case allTime
-}
-
-struct LeaderboardEntry: Identifiable {
-    let id = UUID()
-    let rank: Int
-    let name: String
-    let earnings: Int
+extension LeaderboardTab {
+    var toNetworkType: LeaderboardTimeframe {
+        switch self {
+        case .week: return .weekly
+        case .allTime: return .allTime
+        }
+    }
 }
 
 struct LeaderboardRow: View {
@@ -60,19 +83,19 @@ struct LeaderboardRow: View {
 
     var body: some View {
         HStack(spacing: 16) {
-
             Text("#\(entry.rank)")
                 .font(.system(size: 14, weight: .bold))
                 .frame(width: 36)
 
-            Text(entry.name)
+            Text(entry.username)
                 .font(.system(size: 15, weight: .semibold))
 
             Spacer()
 
             HStack(spacing: 6) {
-                Image(systemName: "dollarsign.circle.fill")
-                Text("\(entry.earnings)")
+                // 🚀 Swapped dollar sign for road icon
+                Image(systemName: "road.lanes")
+                Text(String(format: "%.1f mi", entry.milesTraveled)) // 🚀 1 decimal place
                     .font(.system(size: 14, weight: .bold))
             }
             .foregroundColor(.black)
@@ -131,20 +154,12 @@ extension LeaderboardView {
         switch tab {
         case .week:
             return [
-                LeaderboardEntry(rank: 1, name: "Alex J.S.", earnings: 1240),
-                LeaderboardEntry(rank: 2, name: "Sophia P.", earnings: 980),
-                LeaderboardEntry(rank: 3, name: "Cami K.", earnings: 860),
-                LeaderboardEntry(rank: 4, name: "Sam T.", earnings: 740),
-                LeaderboardEntry(rank: 5, name: "Taylor P.", earnings: 610)
+                
             ]
 
         case .allTime:
             return [
-                LeaderboardEntry(rank: 1, name: "Sophia P.", earnings: 18420),
-                LeaderboardEntry(rank: 2, name: "Alex J.S.", earnings: 16210),
-                LeaderboardEntry(rank: 3, name: "Mia R.", earnings: 14980),
-                LeaderboardEntry(rank: 4, name: "Cami K.", earnings: 13240),
-                LeaderboardEntry(rank: 5, name: "Sam T.", earnings: 12110)
+                
             ]
         }
     }

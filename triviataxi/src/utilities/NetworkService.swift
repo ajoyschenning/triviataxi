@@ -60,6 +60,44 @@ class NetworkService {
     //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
     
     
+    func fetchLeaderboard(token: String) async throws -> [LeaderboardEntry] {
+        guard let url = URL(string: "\(baseURL)/leaderboards/leaderboard") else {
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let leaderboard = try decoder.decode([LeaderboardEntry].self, from: data)
+            print("✅ DEBUG: Leaderboard fetched with \(leaderboard.count) entries")
+            return leaderboard
+        } catch {
+            print("🚨 Leaderboard Decoding Error: \(error)")
+            throw NetworkError.decodingError
+        }
+    }
+    
     func submitGameResults(
         userId: String,
         routeId: String,
