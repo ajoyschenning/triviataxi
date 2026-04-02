@@ -2,8 +2,6 @@
 //  LeaderboardView.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/2/26.
-//
 
 import SwiftUI
 import MapboxMaps
@@ -15,7 +13,6 @@ import FirebaseAuth
 enum LeaderboardTab {
 
     case week
-
     case allTime
 
 }
@@ -24,6 +21,7 @@ struct LeaderboardView: View {
     @Binding var showLeaderboard: Bool
     @State private var selectedTab: LeaderboardTab = .allTime // Default to allTime since we built that first
     @State private var leaderboardEntries: [LeaderboardEntry] = []
+    @State private var currentUserID: String? = Auth.auth().currentUser?.uid
     @State private var isLoading = false
 
     var body: some View {
@@ -41,16 +39,20 @@ struct LeaderboardView: View {
 
             ScrollView {
                 VStack(spacing: 16) {
-                    // 🚀 Filter the data based on the selected tab
-                    ForEach(leaderboardEntries.filter { $0.timeframe == selectedTab.toNetworkType }) { entry in
-                        LeaderboardRow(entry: entry)
+                    
+                    ForEach(leaderboardEntries) { entry in
+                    LeaderboardRow(
+                        entry: entry,
+                       isCurrentUser: entry.firebaseUid == currentUserID
+                    )
+                }
                     }
                     Spacer(minLength: 40)
                 }
                 .padding(.horizontal, 21)
                 .padding(.top, 16)
             }
-        }
+        
         .background(Color.backgroundYellow)
         .task {
             await loadLeaderboard()
@@ -80,43 +82,59 @@ extension LeaderboardTab {
 
 struct LeaderboardRow: View {
     let entry: LeaderboardEntry
-
+    let isCurrentUser: Bool // 🚀 New property
+    
     var body: some View {
         HStack(spacing: 16) {
+            // Rank
             Text("#\(entry.rank)")
                 .font(.system(size: 14, weight: .bold))
+                .foregroundColor(isCurrentUser ? .black : .secondary)
                 .frame(width: 36)
-
-            Text(entry.username)
-                .font(.system(size: 15, weight: .semibold))
-
+            
+            // Name + "YOU" Badge
+            HStack {
+                Text(entry.username)
+                    .font(.system(size: 15, weight: isCurrentUser ? .bold : .semibold))
+                
+                if isCurrentUser {
+                    Text("YOU")
+                        .font(.system(size: 10, weight: .black))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(4)
+                }
+            }
+            
             Spacer()
-
+            
+            // Miles
             HStack(spacing: 6) {
-                // 🚀 Swapped dollar sign for road icon
                 Image(systemName: "road.lanes")
-                Text(String(format: "%.1f mi", entry.milesTraveled)) // 🚀 1 decimal place
+                Text(String(format: "%.1f mi", entry.milesTraveled))
                     .font(.system(size: 14, weight: .bold))
             }
-            .foregroundColor(.black)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color.accentYellow)
+            .background(isCurrentUser ? Color.black : Color.accentYellow)
+            .foregroundColor(isCurrentUser ? .white : .black)
             .cornerRadius(8)
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white)
-                .shadow(
-                    color: Color.shadow,
-                    radius: 12,
-                    y: 4
+                .fill(isCurrentUser ? Color.white : Color.white)
+            // 🚀 Add a gold border if it's the current user
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(isCurrentUser ? Color.black : Color.clear, lineWidth: 2)
+                
                 )
         )
     }
 }
-
 
 struct LeaderboardTabs: View {
     @Binding var selectedTab: LeaderboardTab
