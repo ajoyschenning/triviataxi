@@ -60,14 +60,23 @@ class NetworkService {
     //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
     
     
-    func fetchLeaderboard(token: String) async throws -> [LeaderboardEntry] {
-        guard let url = URL(string: "\(baseURL)/leaderboards/leaderboard") else {
+    func fetchLeaderboard(token: String, timeframe: LeaderboardTimeframe) async throws -> [LeaderboardEntry] {
+        // 🚀 Use URLComponents to safely add query parameters
+        guard var components = URLComponents(string: "\(baseURL)/leaderboards/leaderboard") else {
+            throw NetworkError.invalidURL
+        }
+        
+        // Add ?timeframe=... to the URL
+        components.queryItems = [
+            URLQueryItem(name: "timeframe", value: timeframe.rawValue)
+        ]
+        
+        guard let url = components.url else {
             throw NetworkError.invalidURL
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         
         let (data, response) = try await URLSession.shared.data(for: request)
@@ -86,18 +95,16 @@ class NetworkService {
 
         do {
             let decoder = JSONDecoder()
-            
             decoder.dateDecodingStrategy = .iso8601
             
             let leaderboard = try decoder.decode([LeaderboardEntry].self, from: data)
-            print("✅ DEBUG: Leaderboard fetched with \(leaderboard.count) entries")
+            print("✅ DEBUG: \(timeframe.rawValue) leaderboard fetched with \(leaderboard.count) entries")
             return leaderboard
         } catch {
             print("🚨 Leaderboard Decoding Error: \(error)")
             throw NetworkError.decodingError
         }
     }
-    
     func submitGameResults(
         userId: String,
         routeId: String,

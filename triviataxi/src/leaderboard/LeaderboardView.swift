@@ -54,17 +54,22 @@ struct LeaderboardView: View {
             }
         
         .background(Color.backgroundYellow)
-        .task {
+        .task(id: selectedTab) {
             await loadLeaderboard()
         }
     }
 
+    // Inside LeaderboardView.swift
     private func loadLeaderboard() async {
         isLoading = true
         do {
-            // 🚀 Use the NetworkService we just fixed
             let token = try await Auth.auth().currentUser?.getIDToken() ?? ""
-            self.leaderboardEntries = try await NetworkService.shared.fetchLeaderboard(token: token)
+            
+            // 🚀 Pass the selected tab's timeframe to the network call
+            self.leaderboardEntries = try await NetworkService.shared.fetchLeaderboard(
+                token: token,
+                timeframe: selectedTab.toNetworkType // Use that helper we made!
+            )
         } catch {
             print("🚨 Failed to load leaderboard: \(error)")
         }

@@ -66,6 +66,16 @@ async def save_session(
             'miles': new_miles,
             'lifetime_games': int(user_data.get('lifetime_games', 0)) + 1
         })
+
+        week_id = datetime.now().strftime("%Y-W%U")
+        weekly_doc_id = f"{payload.user_id}_{week_id}"
+
+        db.collection('weekly_stats').document(weekly_doc_id).set({
+            'firebase_uid': payload.user_id,
+            'username': user_data.get('username', 'Unknown Driver'),
+            'week_id': week_id,
+            'miles': firestore.Increment(payload.miles_traveled),
+        }, merge=True)
         
         return SessionResponse(
             session_id=session_id
