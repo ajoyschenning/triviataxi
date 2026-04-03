@@ -38,65 +38,31 @@ struct OpenTriviaQuestion: Codable {
 // MARK: - HTML Entity Decoder
 
 class HTMLEntityDecoder {
-    private static let htmlEntities: [String: String] = [
-        "&quot;": "\"",
-        "&amp;": "&",
-        "&apos;": "'",
-        "&lt;": "<",
-        "&gt;": ">",
-        "&nbsp;": " ",
-        "&#039;": "'",
-        "&ndash;": "–",
-        "&mdash;": "—",
-        "&ldquo;": """,
-        "&rdquo;": """,
-        "&lsquo;": "'",
-        "&rsquo;": "'",
-        "&hellip;": "…",
-        "&times;": "×",
-        "&divide;": "÷",
-        "&deg;": "°",
-        "&plusmn;": "±",
-    ]
-    
     /// Decode HTML entities in a string (e.g., &quot; → ")
     static func decode(_ string: String) -> String {
-        var decodedString = string
+        var decoded = string
         
-        // Replace named entities
-        for (entity, character) in htmlEntities {
-            decodedString = decodedString.replacingOccurrences(of: entity, with: character)
-        }
+        // Replace common HTML entities
+        decoded = decoded.replacingOccurrences(of: "&quot;", with: "\"")
+        decoded = decoded.replacingOccurrences(of: "&#039;", with: "'")
+        decoded = decoded.replacingOccurrences(of: "&apos;", with: "'")
+        decoded = decoded.replacingOccurrences(of: "&amp;", with: "&")
+        decoded = decoded.replacingOccurrences(of: "&lt;", with: "<")
+        decoded = decoded.replacingOccurrences(of: "&gt;", with: ">")
+        decoded = decoded.replacingOccurrences(of: "&nbsp;", with: " ")
+        decoded = decoded.replacingOccurrences(of: "&ndash;", with: "–")
+        decoded = decoded.replacingOccurrences(of: "&mdash;", with: "—")
+        decoded = decoded.replacingOccurrences(of: "&ldquo;", with: """)
+        decoded = decoded.replacingOccurrences(of: "&rdquo;", with: """)
+        decoded = decoded.replacingOccurrences(of: "&lsquo;", with: "'")
+        decoded = decoded.replacingOccurrences(of: "&rsquo;", with: "'")
+        decoded = decoded.replacingOccurrences(of: "&hellip;", with: "…")
+        decoded = decoded.replacingOccurrences(of: "&times;", with: "×")
+        decoded = decoded.replacingOccurrences(of: "&divide;", with: "÷")
+        decoded = decoded.replacingOccurrences(of: "&deg;", with: "°")
+        decoded = decoded.replacingOccurrences(of: "&plusmn;", with: "±")
         
-        // Handle numeric entities (&#123; or &#x123;)
-        // Decimal entities (&#65; = A)
-        decodedString = decodedString.replacingOccurrences(
-            of: "&#([0-9]+);",
-            with: { match in
-                if let codePoint = Int(match.replacingOccurrences(of: "&#|;", with: "", options: .regularExpression)),
-                   let scalar = UnicodeScalar(codePoint) {
-                    return String(Character(scalar))
-                }
-                return match.string
-            },
-            options: .regularExpression
-        )
-        
-        // Hexadecimal entities (&#x41; = A)
-        decodedString = decodedString.replacingOccurrences(
-            of: "&#x([0-9a-fA-F]+);",
-            with: { match in
-                let hex = match.replacingOccurrences(of: "&#x|;", with: "", options: .regularExpression)
-                if let codePoint = Int(hex, radix: 16),
-                   let scalar = UnicodeScalar(codePoint) {
-                    return String(Character(scalar))
-                }
-                return match.string
-            },
-            options: .regularExpression
-        )
-        
-        return decodedString
+        return decoded
     }
 }
 
