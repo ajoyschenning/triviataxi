@@ -25,6 +25,7 @@ struct RouteSelectionView: View {
     @State private var destinationId: String? = nil
     @State private var selectedCityName: String = ""
     @State private var selectedRouteLength: String = ""
+    @State private var fetchedQuestions: [Question] = []
 
     @State private var ownedDestinations: [DestinationData] = []
     @State private var isLoadingDestinations = false
@@ -85,7 +86,7 @@ struct RouteSelectionView: View {
                     origin: origin,
                     destination: destination,
                     destinationId: destinationId,
-                    questions: sampleQuestions,
+                    questions: fetchedQuestions,
                     cityName: selectedCityName,
                     routeLength: selectedRouteLength
                 )
@@ -155,7 +156,10 @@ extension RouteSelectionView {
                 token: token
             )
 
-            // 3. Trigger the navigation push ONLY when both are successful
+            // 3. Fetch questions from Open Trivia DB
+            let questions = await TriviaAPIService.shared.fetchQuestionsBatch()
+
+            // 4. Trigger the navigation push ONLY when all are successful
             await MainActor.run {
                 self.selectedOrigin = CLLocationCoordinate2D(
                     latitude: coords.originLat,
@@ -168,6 +172,7 @@ extension RouteSelectionView {
                 self.destinationId = destinationId
                 self.selectedCityName = destination.city
                 self.selectedRouteLength = difficulty.rawValue
+                self.fetchedQuestions = questions
                 self.showNavigation = true
             }
             print("✅ Journey Prepared! Destination: \(destinationId)")
