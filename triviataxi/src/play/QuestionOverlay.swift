@@ -25,6 +25,10 @@ struct QuestionOverlayView: View {
     @State private var showEndSummary = false
     @State private var lastEarningValue: Int = 0
     @State private var lastCorrectAnswer: String = ""
+    @State private var hintsUsed: Int = 0
+    @State private var sessionEarningsSpent: Int = 0
+    @State private var crossedOutAnswers: Set<String> = []
+    @State private var hintUsedThisQuestion: Bool = false
     // @State private var questionsAnswered = 0
 
     
@@ -73,7 +77,12 @@ struct QuestionOverlayView: View {
                             selectedAnswer: selectedAnswer,
                             difficultyColor: difficultyColor,
                             timerColor: timerColor,
-                            onAnswerSelected: selectAnswer
+                            onAnswerSelected: selectAnswer,
+                            hintsUsed: $hintsUsed,
+                            sessionEarningsSpent: $sessionEarningsSpent,
+                            crossedOutAnswers: $crossedOutAnswers,
+                            hintUsedThisQuestion: $hintUsedThisQuestion,
+                            gameManager: gameManager
                         )
                         
                     }
@@ -202,6 +211,8 @@ struct QuestionOverlayView: View {
             showQuestion = true
             showBuffer = false
             lastAnswerCorrect = nil
+            crossedOutAnswers = []
+            hintUsedThisQuestion = false
             shuffleAnswers()
             startQuestionTimer()
         } else {
@@ -221,6 +232,7 @@ struct AnswerButton: View {
     let text: String
     let isSelected: Bool
     let isCorrect: Bool
+    let isCrossedOut: Bool
     let action: () -> Void
     
     var body: some View {
@@ -236,10 +248,22 @@ struct AnswerButton: View {
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(buttonBorderColor, lineWidth: isSelected ? 2 : 0)
                 )
+                .overlay(
+                    isCrossedOut ?
+                    VStack {
+                        Rectangle()
+                            .frame(height: 2)
+                            .foregroundColor(.red)
+                    } : nil
+                )
         }
+        .disabled(isCrossedOut)
     }
     
     private var buttonBackgroundColor: Color {
+        if isCrossedOut {
+            return Color.gray.opacity(0.2)
+        }
         if isSelected {
             return isCorrect ? Color.green.opacity(0.2) : Color.red.opacity(0.2)
         }
@@ -247,6 +271,9 @@ struct AnswerButton: View {
     }
     
     private var buttonTextColor: Color {
+        if isCrossedOut {
+            return Color.gray
+        }
         if isSelected {
             return isCorrect ? Color.green : Color.red
         }
@@ -271,6 +298,11 @@ struct QuestionBoxView: View {
     let difficultyColor: Color
     let timerColor: Color
     let onAnswerSelected: (String) -> Void
+    @Binding var hintsUsed: Int
+    @Binding var sessionEarningsSpent: Int
+    @Binding var crossedOutAnswers: Set<String>
+    @Binding var hintUsedThisQuestion: Bool
+    let gameManager: GameManager
     
     var body: some View {
         VStack(spacing: 16) {
@@ -287,10 +319,25 @@ struct QuestionBoxView: View {
                 answers: allAnswers,
                 correctAnswer: question.correctAnswer,
                 selectedAnswer: selectedAnswer,
+                crossedOutAnswers: crossedOutAnswers,
                 onAnswerSelected: onAnswerSelected
             )
             
-            TimerCircleView(timeRemaining: timeRemaining, timerColor: timerColor)
+            HStack(spacing: 20) {
+                HintButton(
+                    hintsUsed: $hintsUsed,
+                    sessionEarningsSpent: $sessionEarningsSpent,
+                    question: question,
+                    crossedOutAnswers: $crossedOutAnswers,
+                    allAnswers: allAnswers,
+                    hintUsedThisQuestion: $hintUsedThisQuestion,
+                    gameManager: gameManager
+                )
+                
+                Spacer()
+                
+                TimerCircleView(timeRemaining: timeRemaining, timerColor: timerColor)
+            }
         }
         .padding(16)
         .background(Color.white)
@@ -341,6 +388,7 @@ struct AnswersGridView: View {
     let answers: [String]
     let correctAnswer: String
     let selectedAnswer: String?
+    let crossedOutAnswers: Set<String>
     let onAnswerSelected: (String) -> Void
     
     var body: some View {
@@ -350,11 +398,126 @@ struct AnswersGridView: View {
                     text: answer,
                     isSelected: selectedAnswer == answer,
                     isCorrect: answer == correctAnswer && selectedAnswer != nil,
+                    isCrossedOut: crossedOutAnswers.contains(answer),
                     action: {
                         onAnswerSelected(answer)
                     }
                 )
             }
+        }
+    }
+}
+
+
+
+struct HintButton: View {
+    @Binding var hintsUsed: Int
+    @Binding var sessionEarningsSpent: Int
+    let question: Question
+    @Binding var crossedOutAnswers: Set<String>
+    let allAnswers: [String]
+    @Binding var hintUsedThisQuestion: Bool
+    let gameManager: GameManager
+    
+    @State private var showInsufficientCoins = false
+    @State private var showNoMoreHints = false
+    @State private var showHintAlreadyUsed = false
+    
+    private let freeHints = 3
+    private let hintCost = 50
+    
+    private var availableHints: Int {
+        let sessionEarnings = gameManager.currentEarnings - sessionEarningsSpent
+        let paidHints = (sessionEarnings + sessionEarningsSpent) / hintCost
+        return freeHints + paidHints - hintsUsed
+    }
+    
+    private var canUseHint: Bool {
+        // Check if hint already used for this question
+        if hintUsedThisQuestion {
+            return false
+        }
+        // Check if there are available hints and answers available to cross out
+        let availableAnswers = allAnswers.filter { answer in
+            !crossedOutAnswers.contains(answer) && answer != question.correctAnswer
+        }
+        return availableHints > 0 && availableAnswers.count > 0
+    }
+    
+    private var costForNextHint: Int {
+        if hintsUsed < freeHints {
+            return 0
+        } else {
+            return hintCost
+        }
+    }
+    
+    private var sessionEarnings: Int {
+        gameManager.currentEarnings - sessionEarningsSpent
+    }
+    
+    var body: some View {
+        Button(action: useHint) {
+            Image(systemName: "lightbulb.fill")
+                .font(.system(size: 16, weight: .semibold))
+                .foregroundColor(canUseHint ? .yellow : .gray)
+        }
+        .frame(width: 50, height: 50)
+        .background(Circle().fill(Color.white))
+        .overlay(
+            Circle()
+                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+        )
+        .disabled(!canUseHint)
+        .alert("Insufficient Coins", isPresented: $showInsufficientCoins) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("This hint costs \(costForNextHint) coins. You've earned \(sessionEarnings) coins in this session.")
+        }
+        .alert("No More Hints Available", isPresented: $showNoMoreHints) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You have no more available hints.")
+        }
+        .alert("Hint Already Used", isPresented: $showHintAlreadyUsed) {
+            Button("OK", role: .cancel) { }
+        } message: {
+            Text("You can only use one hint per question.")
+        }
+    }
+    
+    private func useHint() {
+        // Check if hint already used for this question
+        if hintUsedThisQuestion {
+            showHintAlreadyUsed = true
+            return
+        }
+        
+        // Check if hint is free or costs coins
+        let cost = costForNextHint
+        
+        if cost > 0 && sessionEarnings < cost {
+            showInsufficientCoins = true
+            return
+        }
+        
+        // Get an incorrect answer to cross out
+        let incorrectAnswers = allAnswers.filter { answer in
+            !crossedOutAnswers.contains(answer) && answer != question.correctAnswer
+        }
+        
+        guard let answerToCrossOut = incorrectAnswers.randomElement() else {
+            showNoMoreHints = true
+            return
+        }
+        
+        // Apply hint
+        crossedOutAnswers.insert(answerToCrossOut)
+        hintsUsed += 1
+        hintUsedThisQuestion = true
+        
+        if cost > 0 {
+            sessionEarningsSpent += cost
         }
     }
 }
