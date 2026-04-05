@@ -9,9 +9,9 @@ struct UserProfile: Codable, Identifiable {
     var id: String { firebaseUid }
     
     let firebaseUid: String
-    let username: String
+    var username: String
     let email: String
-    let avatarUrl: String?
+    var avatarUrl: String?
     
     var coins: Int = 0
     var miles: Double = 0.0

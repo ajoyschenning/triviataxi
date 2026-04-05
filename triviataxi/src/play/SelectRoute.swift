@@ -114,7 +114,7 @@ extension RouteSelectionView {
                     .fetchUserProfile(token: token)
 
                 var destinations: [DestinationData] = []
-                for destinationId in userProfile.owned ?? [] {
+                for destinationId in userProfile.owned {
                     let destination = try await NetworkService.shared
                         .fetchDestination(id: destinationId, token: token)
                     destinations.append(destination)

@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var showRoutes = false
     @State private var showShop = false
     @State private var showLeaderboard = false
+    @State private var showProfile = false
     
     var body: some View {
         NavigationStack {
@@ -38,6 +39,12 @@ struct HomeView: View {
                                 deadline: .now() + 0.4
                             ) { showRoutes = true }
                         }
+                        
+                        FancyButton(title: "PROFILE") {
+                                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
+                                                        showProfile = true
+                                                    }
+                                                }
                         
                         FancyButton(title: "SHOP") {
                             DispatchQueue.main.asyncAfter(
@@ -81,7 +88,29 @@ struct HomeView: View {
             .navigationDestination(isPresented: $showLeaderboard) {
                 LeaderboardView(showLeaderboard: $showLeaderboard)
             }
-            
+            .navigationDestination(isPresented: $showProfile) {
+                if let profile = userManager.userProfile {
+                    ProfileView(user: profile, userManager: userManager)
+                } else {
+                    VStack(spacing: 20) {
+                        ProgressView("Hailing your data...")
+                            .tint(.black)
+                        
+                        Button("Retry Connection") {
+                            Task {
+                                await userManager.loadUserProfile()
+                            }
+                        }
+                        .font(.caption)
+                    }
+                    .task {
+                        // 🚀 If we arrive here and it's nil, try loading one more time
+                        if userManager.userProfile == nil {
+                            await userManager.loadUserProfile()
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -90,6 +119,7 @@ struct HomeView: View {
         showRoutes = false
         showShop = false
         showLeaderboard = false
+        showProfile = false
         
         try? Auth.auth().signOut()
         userIsLoggedIn = false

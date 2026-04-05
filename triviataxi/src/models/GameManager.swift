@@ -124,7 +124,7 @@ class GameManager: ObservableObject {
             print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId) \(self.currentEarnings)")
 
             userManager.addCoins(amount: self.currentEarnings)
-            
+            await userManager.refreshSessions()
         } catch {
             print("🚨 Failed to upload game results: \(error.localizedDescription)")
         }

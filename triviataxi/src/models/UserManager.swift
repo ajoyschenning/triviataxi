@@ -13,15 +13,34 @@ class UserManager: ObservableObject {
     
     @Published var coins: Int = 0
     @Published var ownedDestinations: [DestinationData] = []
+    @Published var sessions: [TriviaSession] = []
     @Published var isProfileLoaded: Bool = false
     
-    // 🚀 FIX: Added the missing property so the ShopViewModel can safely read it!
+    @Published var userProfile: UserProfile?
+    
+    func refreshSessions() async {
+            do {
+                guard let user = Auth.auth().currentUser else { return }
+                let token = try await user.getIDToken()
+                let uid = user.uid
+                
+                // Fetch only the sessions
+                let fetchedSessions = try await NetworkService.shared.fetchUserSessions(userId: uid)
+                
+                // Update the published property to trigger a UI refresh
+                self.sessions = fetchedSessions
+                print("🔄 Sessions refreshed: \(fetchedSessions.count) trips found.")
+            } catch {
+                print("🚨 Failed to refresh sessions: \(error.localizedDescription)")
+            }
+        }
     var currentUserId: String? {
         Auth.auth().currentUser?.uid
     }
     
     // 🚀 Call this exactly ONCE when the app launches or the user logs in
     func loadUserProfile() async {
+        
         guard !isProfileLoaded else { return } // Prevent duplicate fetches
         
         do {
@@ -33,10 +52,13 @@ class UserManager: ObservableObject {
             
             // 2. Fetch the detailed city data
             var fetchedDestinations: [DestinationData] = []
-            for destinationId in userProfile.owned ?? [] {
+            for destinationId in userProfile.owned {
                 let destination = try await NetworkService.shared.fetchDestination(id: destinationId, token: token)
                 fetchedDestinations.append(destination)
             }
+            
+            let fetchedSessions = try await NetworkService.shared.fetchUserSessions(userId: userProfile.firebaseUid)
+            
             
             // 3. Save it all locally into RAM
 
@@ -47,14 +69,25 @@ class UserManager: ObservableObject {
                         // ... existing code ...
                         
                         // 3. Save it all locally into RAM
-            self.coins = Int(userProfile.coins ?? 0)
+            self.coins = userProfile.coins
             self.ownedDestinations = fetchedDestinations
+            self.sessions = fetchedSessions
             self.isProfileLoaded = true
+            self.userProfile = userProfile
             
             print("✅ User Profile locked into local memory.")
             
+        } catch let decodingError as DecodingError {
+            switch decodingError {
+            case .keyNotFound(let key, let context):
+                print("🚨 MISSING KEY: \(key.stringValue) in \(context.debugDescription)")
+            case .typeMismatch(let type, let context):
+                print("🚨 TYPE MISMATCH: Expected \(type) in \(context.debugDescription)")
+            default:
+                print("🚨 DECODING ERROR: \(decodingError)")
+            }
         } catch {
-            print("🚨 Failed to load user profile: \(error.localizedDescription)")
+            print("🚨 OTHER ERROR: \(error.localizedDescription)")
         }
     }
     func addCoins(amount: Int){
