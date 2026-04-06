@@ -427,9 +427,24 @@ struct HintButton: View {
     private let hintCost = 50
     
     private var availableHints: Int {
-        let sessionEarnings = gameManager.currentEarnings - sessionEarningsSpent
-        let paidHints = (sessionEarnings + sessionEarningsSpent) / hintCost
-        return freeHints + paidHints - hintsUsed
+        let remainingEarnings = gameManager.currentEarnings - sessionEarningsSpent
+        let affordablePaidHints = remainingEarnings / hintCost
+        return max(0, freeHints + affordablePaidHints - hintsUsed)
+    }
+    
+    private var freeHintsRemaining: Int {
+        return max(0, freeHints - hintsUsed)
+    }
+    
+    private var badgeDisplay: String {
+        let remainingEarnings = gameManager.currentEarnings - sessionEarningsSpent
+        if freeHintsRemaining > 0 {
+            return String(freeHintsRemaining)
+        } else if remainingEarnings >= hintCost {
+            return "50¢"
+        } else {
+            return "0"
+        }
     }
     
     private var canUseHint: Bool {
@@ -437,11 +452,20 @@ struct HintButton: View {
         if hintUsedThisQuestion {
             return false
         }
-        // Check if there are available hints and answers available to cross out
+        // Check if there are available answers to cross out
         let availableAnswers = allAnswers.filter { answer in
             !crossedOutAnswers.contains(answer) && answer != question.correctAnswer
         }
-        return availableHints > 0 && availableAnswers.count > 0
+        if availableAnswers.isEmpty {
+            return false
+        }
+        // Can use hint if free hints remaining
+        if freeHintsRemaining > 0 {
+            return true
+        }
+        // Otherwise, can use hint if have enough coins to buy
+        let remainingEarnings = gameManager.currentEarnings - sessionEarningsSpent
+        return remainingEarnings >= hintCost
     }
     
     private var costForNextHint: Int {
@@ -457,18 +481,30 @@ struct HintButton: View {
     }
     
     var body: some View {
-        Button(action: useHint) {
-            Image(systemName: "lightbulb.fill")
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(canUseHint ? .yellow : .gray)
-        }
-        .frame(width: 50, height: 50)
-        .background(Circle().fill(Color.white))
-        .overlay(
+        ZStack {
+            Circle()
+                .fill(Color.white)
+            
             Circle()
                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-        )
-        .disabled(!canUseHint)
+            
+            Button(action: useHint) {
+                ZStack(alignment: .bottomTrailing) {
+                    Image(systemName: "lightbulb.fill")
+                        .font(.system(size: 23, weight: .semibold))
+                        .foregroundColor(canUseHint ? .yellow : .gray)
+                    
+                    Text(badgeDisplay)
+                        .font(.system(size: badgeDisplay == "50¢" ? 8 : 10, weight: .bold))
+                        .foregroundColor(.black)
+                        .frame(width: 18, height: 18)
+                        .background(Circle().fill(Color.yellow))
+                        .offset(x: 14, y: 14)
+                }
+            }
+            .disabled(!canUseHint)
+        }
+        .frame(width: 50, height: 50)
         .alert("Insufficient Coins", isPresented: $showInsufficientCoins) {
             Button("OK", role: .cancel) { }
         } message: {
@@ -518,6 +554,7 @@ struct HintButton: View {
         
         if cost > 0 {
             sessionEarningsSpent += cost
+            gameManager.spendEarningsOnHint(amount: cost)
         }
     }
 }

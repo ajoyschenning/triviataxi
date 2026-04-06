@@ -51,6 +51,7 @@ class GameManager: ObservableObject {
     @Published var currentIndex: Int = 0
     @Published var currentEarnings: Int = 0
     @Published var strikes: Int = 0
+    @Published var hintsEarningsSpent: Int = 0
     @Published var isGameOver: Bool = false
     @Published var milesTravelled: Double = 0.0
     @Published var timeElapsed: Int = 0 // in seconds
@@ -75,6 +76,7 @@ class GameManager: ObservableObject {
             self.currentIndex = 0
             self.currentEarnings = 0
             self.strikes = 0
+            self.hintsEarningsSpent = 0
             self.isGameOver = false
             self.milesTravelled = 0.0
             self.timeElapsed = 0
@@ -130,6 +132,10 @@ class GameManager: ObservableObject {
     
     func addEarnings(earningValue: Int) {
        currentEarnings += earningValue
+    }
+    
+    func spendEarningsOnHint(amount: Int) {
+        hintsEarningsSpent += amount
     }
     
     func incrementStrikes() {
