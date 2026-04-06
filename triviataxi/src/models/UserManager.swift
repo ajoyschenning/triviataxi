@@ -93,4 +93,9 @@ class UserManager: ObservableObject {
     func addCoins(amount: Int){
         self.coins+=amount
     }
+    func updateUser(coins: Int,miles: Double){
+        self.userProfile?.coins+=coins
+        self.userProfile?.miles+=miles
+        self.userProfile?.lifetimeGames+=1
+    }
 }

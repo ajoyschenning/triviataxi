@@ -90,7 +90,7 @@ struct HomeView: View {
             }
             .navigationDestination(isPresented: $showProfile) {
                 if let profile = userManager.userProfile {
-                    ProfileView(user: profile, userManager: userManager)
+                    ProfileView(userManager: userManager)
                 } else {
                     VStack(spacing: 20) {
                         ProgressView("Hailing your data...")

@@ -56,8 +56,8 @@ enum NetworkError: Error {
 
 class NetworkService {
     static let shared = NetworkService()
-    private let baseURL = "http://127.0.0.1:8000"
-    //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
+    private let baseURL = //"http://127.0.0.1:8000"
+    "https://trivia-taxi-api-423193744278.us-central1.run.app/"
     
     
     func fetchUserSessions(userId: String) async throws -> [TriviaSession] {

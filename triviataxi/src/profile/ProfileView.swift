@@ -53,16 +53,16 @@ struct SessionRow: View {
 
 
 struct ProfileView: View {
-    @State var user: UserProfile
     @State var userManager: UserManager // Passed in or fetched
     @State private var isEditing = false
     
     var body: some View {
+        var user = userManager.userProfile
         
         VStack(spacing: 25) {
             // Header: Avatar & Name
             VStack(spacing: 12) {
-                AsyncImage(url: URL(string: user.avatarUrl ?? "")) { image in
+                AsyncImage(url: URL(string: user?.avatarUrl ?? "")) { image in
                     image.resizable()
                 } placeholder: {
                     Image(systemName: "person.circle.fill")
@@ -72,19 +72,19 @@ struct ProfileView: View {
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.black, lineWidth: 2))
                 
-                Text(user.username)
+                Text(user?.username ?? "")
                     .font(.system(size: 24, weight: .bold))
                 
-                Text(user.email)
+                Text(user?.email ?? "")
                     .font(.subheadline)
                     .foregroundColor(.secondary)
             }
             
             // Stats Grid
             HStack(spacing: 20) {
-                StatBox(title: "MILES", value: String(format: "%.1f", user.miles))
-                StatBox(title: "COINS", value: "\(user.coins)")
-                StatBox(title: "GAMES", value: "\(user.lifetimeGames)")
+                StatBox(title: "MILES", value: String(format: "%.1f", user?.miles ?? 0.0))
+                StatBox(title: "COINS", value: "\(user?.coins ?? 0)")
+                StatBox(title: "GAMES", value: "\(user?.lifetimeGames ?? 0)")
             }
             .padding(.horizontal)
             
@@ -121,7 +121,7 @@ struct ProfileView: View {
         .padding(.top, 40)
         .background(Color.backgroundYellow.ignoresSafeArea())
         .sheet(isPresented: $isEditing) {
-            EditProfileView(user: $user, userManager: $userManager)
+            EditProfileView(userManager: $userManager)
         }
     }
 }
@@ -131,7 +131,6 @@ import PhotosUI // 🚀 Needed for the picker
 
 struct EditProfileView: View {
     @Environment(\.dismiss) var dismiss
-    @Binding var user: UserProfile
     @Binding var userManager: UserManager
     
     // 📸 Photo States
@@ -160,14 +159,12 @@ struct EditProfileView: View {
            // Get the URL to save to your FastAPI backend
            let url = try await photoRef.downloadURL()
            
-           try await NetworkService.shared.updateUserProfile(username: user.username, avatarUrl: url.absoluteString)
+           try await NetworkService.shared.updateUserProfile(username: currentUser.displayName ?? "", avatarUrl: url.absoluteString)
         
            
            await MainActor.run {
                            let newUrl = url.absoluteString
-                           self.user.avatarUrl = newUrl // Updates the Edit screen
                            self.userManager.userProfile?.avatarUrl = newUrl // Updates the Home screen
-               self.userManager.userProfile?.username = self.user.username
                            print("✅ Global and local state synced!")
                        }
 
@@ -183,6 +180,16 @@ struct EditProfileView: View {
     
 
     var body: some View {
+        let user = userManager.userProfile
+        let usernameBinding = Binding<String>(
+            get: { userManager.userProfile?.username ?? "" },
+            set: { newValue in
+                if userManager.userProfile == nil {
+                    // If needed, initialize a default profile here; otherwise just ignore
+                }
+                userManager.userProfile?.username = newValue
+            }
+        )
         NavigationStack {
             VStack(spacing: 20) {
                 // 🚀 The Image Preview / Button
@@ -219,7 +226,7 @@ struct EditProfileView: View {
 
                 Form {
                     Section("Username") {
-                        TextField("Username", text: $user.username)
+                        TextField("Username", text: usernameBinding)
                     }
                 }
             }
