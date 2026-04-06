@@ -58,6 +58,7 @@ struct RouteSelectionView: View {
                                 RouteCard(
                                     journeyID: destination.id,
                                     city: destination.city,
+                                    imageUrl: destination.imageUrl,
                                     onDifficultySelected: { difficulty in
                                         await prepareJourney(
                                             destinationId: destination.id,
@@ -189,6 +190,7 @@ struct RouteCard: View {
 
     let journeyID: String
     let city: String
+    let imageUrl: String?
     let onDifficultySelected: (RouteDifficulty) async -> Void
 
     var body: some View {
@@ -206,13 +208,40 @@ struct RouteCard: View {
                     y: 6
                 )
 
-            VStack(spacing: 16) {
+            VStack(spacing: 12) {
                 Text(city)
                     .font(.system(size: 25, weight: .semibold))
                     .foregroundColor(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
+                // Image (from URL if available)
+                if let imageUrl = imageUrl, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .empty:
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.3))
+                        case .success(let image):
+                            image
+                                .resizable()
+                                .scaledToFill()
+                        case .failure:
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.3))
+                        @unknown default:
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(Color.gray.opacity(0.3))
+                        }
+                    }
+                    .frame(height: 120)
+                    .frame(maxWidth: .infinity)
+                    .clipped()
+                    .cornerRadius(12)
+                } else {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 120)
+                }
 
                 HStack(spacing: 8) {
                     difficultyButton(title: "SHORT", difficulty: .short)
@@ -224,7 +253,6 @@ struct RouteCard: View {
             }
             .padding()
         }
-        .frame(height: 140)
     }
 
     private func difficultyButton(title: String, difficulty: RouteDifficulty)
