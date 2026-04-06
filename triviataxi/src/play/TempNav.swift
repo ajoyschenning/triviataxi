@@ -271,10 +271,10 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
         }
         
         func navigationViewController(_ navigationViewController: NavigationViewController, didUpdate progress: RouteProgress, with location: CLLocation, rawLocation: CLLocation) {
-            // Update miles travelled from the route progress
+            // Update miles traveled from the route progress
             let distanceInMeters = progress.distanceTraveled
             let distanceInMiles = distanceInMeters / 1609.34 // Convert meters to miles
-            gameManager?.updateMilesTravelled(distanceInMiles)
+            gameManager?.updateMilesTraveled(distanceInMiles)
         }
     }
 }

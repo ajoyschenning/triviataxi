@@ -2,98 +2,144 @@
 //  LeaderboardView.swift
 //  triviataxi
 //
-//  Created by Alex Joy Schenning on 2/2/26.
-//
 
 import SwiftUI
 import MapboxMaps
 internal import Combine
+import FirebaseAuth
+
 
 // MARK: Leaderboard
+enum LeaderboardTab {
 
-// TODO: Make leaderboard based on MILES not coins
+    case week
+    case allTime
+
+}
+
 struct LeaderboardView: View {
     @Binding var showLeaderboard: Bool
-    @State private var selectedTab: LeaderboardTab = .week
+    @State private var selectedTab: LeaderboardTab = .allTime // Default to allTime since we built that first
+    @State private var leaderboardEntries: [LeaderboardEntry] = []
+    @State private var currentUserID: String? = Auth.auth().currentUser?.uid
+    @State private var isLoading = false
 
     var body: some View {
         VStack(spacing: 0) {
-
             Header(title: "LEADERBOARD") {
                 showLeaderboard = false
             }
 
-            // Tabs
             LeaderboardTabs(selectedTab: $selectedTab)
 
-            // Scrollable content
+            if isLoading {
+                ProgressView("Loading Drivers...")
+                    .padding()
+            }
+
             ScrollView {
                 VStack(spacing: 16) {
-                    ForEach(data(for: selectedTab)) { entry in
-                        LeaderboardRow(entry: entry)
+                    
+                    ForEach(leaderboardEntries) { entry in
+                    LeaderboardRow(
+                        entry: entry,
+                       isCurrentUser: entry.firebaseUid == currentUserID
+                    )
+                }
                     }
-
                     Spacer(minLength: 40)
                 }
                 .padding(.horizontal, 21)
                 .padding(.top, 16)
             }
-        }
+        
         .background(Color.backgroundYellow)
+        .task(id: selectedTab) {
+            await loadLeaderboard()
+        }
+    }
+
+    // Inside LeaderboardView.swift
+    private func loadLeaderboard() async {
+        isLoading = true
+        do {
+            let token = try await Auth.auth().currentUser?.getIDToken() ?? ""
+            
+            // 🚀 Pass the selected tab's timeframe to the network call
+            self.leaderboardEntries = try await NetworkService.shared.fetchLeaderboard(
+                token: token,
+                timeframe: selectedTab.toNetworkType // Use that helper we made!
+            )
+        } catch {
+            print("🚨 Failed to load leaderboard: \(error)")
+        }
+        isLoading = false
     }
 }
-
-enum LeaderboardTab {
-    case week
-    case allTime
-}
-
-struct LeaderboardEntry: Identifiable {
-    let id = UUID()
-    let rank: Int
-    let name: String
-    let earnings: Int
+extension LeaderboardTab {
+    var toNetworkType: LeaderboardTimeframe {
+        switch self {
+        case .week: return .weekly
+        case .allTime: return .allTime
+        }
+    }
 }
 
 struct LeaderboardRow: View {
     let entry: LeaderboardEntry
-
+    let isCurrentUser: Bool // 🚀 New property
+    
     var body: some View {
         HStack(spacing: 16) {
-
+            // Rank
             Text("#\(entry.rank)")
                 .font(.system(size: 14, weight: .bold))
+                .foregroundColor(isCurrentUser ? .black : .secondary)
                 .frame(width: 36)
-
-            Text(entry.name)
-                .font(.system(size: 15, weight: .semibold))
-
+            
+            // Name + "YOU" Badge
+            HStack {
+                Text(entry.username)
+                    .font(.system(size: 15, weight: isCurrentUser ? .bold : .semibold))
+                
+                if isCurrentUser {
+                    Text("YOU")
+                        .font(.system(size: 10, weight: .black))
+                        .padding(.horizontal, 6)
+                        .padding(.vertical, 2)
+                        .background(Color.black)
+                        .foregroundColor(.white)
+                        .cornerRadius(4)
+                }
+            }
+            
             Spacer()
-
+            
+            // Miles
             HStack(spacing: 6) {
-                Image(systemName: "dollarsign.circle.fill")
-                Text("\(entry.earnings)")
+                Image(systemName: "road.lanes")
+                Text(String(format: "%.1f mi", entry.milesTraveled))
                     .font(.system(size: 14, weight: .bold))
             }
-            .foregroundColor(.black)
             .padding(.horizontal, 10)
             .padding(.vertical, 6)
-            .background(Color.accentYellow)
+            .background(isCurrentUser ? Color.black : Color.accentYellow)
+            .foregroundColor(isCurrentUser ? .white : .black)
             .cornerRadius(8)
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 16)
-                .fill(Color.white)
-                .shadow(
-                    color: Color.shadow,
-                    radius: 12,
-                    y: 4
+                .fill(isCurrentUser ? Color.white : Color.white)
+            // 🚀 Add a gold border if it's the current user
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(isCurrentUser ? Color.black : Color.clear, lineWidth: 2)
+                
                 )
         )
     }
 }
-
 
 struct LeaderboardTabs: View {
     @Binding var selectedTab: LeaderboardTab
@@ -131,20 +177,12 @@ extension LeaderboardView {
         switch tab {
         case .week:
             return [
-                LeaderboardEntry(rank: 1, name: "Alex J.S.", earnings: 1240),
-                LeaderboardEntry(rank: 2, name: "Sophia P.", earnings: 980),
-                LeaderboardEntry(rank: 3, name: "Cami K.", earnings: 860),
-                LeaderboardEntry(rank: 4, name: "Sam T.", earnings: 740),
-                LeaderboardEntry(rank: 5, name: "Taylor P.", earnings: 610)
+                
             ]
 
         case .allTime:
             return [
-                LeaderboardEntry(rank: 1, name: "Sophia P.", earnings: 18420),
-                LeaderboardEntry(rank: 2, name: "Alex J.S.", earnings: 16210),
-                LeaderboardEntry(rank: 3, name: "Mia R.", earnings: 14980),
-                LeaderboardEntry(rank: 4, name: "Cami K.", earnings: 13240),
-                LeaderboardEntry(rank: 5, name: "Sam T.", earnings: 12110)
+                
             ]
         }
     }

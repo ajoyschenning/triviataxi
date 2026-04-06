@@ -52,7 +52,7 @@ class GameManager: ObservableObject {
     @Published var currentEarnings: Int = 0
     @Published var strikes: Int = 0
     @Published var isGameOver: Bool = false
-    @Published var milesTravelled: Double = 0.0
+    @Published var milesTraveled: Double = 0.0
     @Published var timeElapsed: Int = 0 // in seconds
     
     private var timeTimer: Timer? = nil
@@ -70,18 +70,19 @@ class GameManager: ObservableObject {
     
     /// Call this once when Mapbox starts the route
     func startSession(routeId: String) {
-            
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
             self.routeId = routeId
             self.currentIndex = 0
             self.currentEarnings = 0
             self.strikes = 0
             self.isGameOver = false
-            self.milesTravelled = 0.0
+            self.milesTraveled = 0.0
             self.timeElapsed = 0
-            
             // Start the timer
-            startTimeTimer()
+            self.startTimeTimer()
         }
+    }
     
 
     
@@ -118,11 +119,12 @@ class GameManager: ObservableObject {
                 routeId: self.routeId,
                 totalEarnings: self.currentEarnings,
                 strikes: self.strikes,
-                questionsAnswered: self.currentIndex+1)
+                questionsAnswered: self.currentIndex+1,
+                milesTraveled: self.milesTraveled)
             print("✅ Final Game Data uploaded successfully! SessionID: \(res.sessionId) \(self.currentEarnings)")
 
             userManager.addCoins(amount: self.currentEarnings)
-            
+            await userManager.refreshSessions()
         } catch {
             print("🚨 Failed to upload game results: \(error.localizedDescription)")
         }
@@ -136,8 +138,8 @@ class GameManager: ObservableObject {
         strikes += 1
     }
     
-    func updateMilesTravelled(_ miles: Double) {
-        milesTravelled = miles
+    func updateMilesTraveled(_ miles: Double) {
+        milesTraveled = miles
     }
     
     private func startTimeTimer() {

@@ -46,11 +46,11 @@ struct QuestionOverlayView: View {
     
     var body: some View {
         if showEndSummary {
-            let miles = gameManager.milesTravelled
+            let miles = gameManager.milesTraveled
             let seconds = gameManager.timeElapsed
             EndSummary(cityName: cityName,
                     routeLength: routeLength, 
-                    milesTravelled: miles, 
+                    milesTraveled: miles, 
                     timeElapsed: seconds,
                     questionsAnswered: currentQuestionIndex + 1,
                     // questionsAnswered: questionsAnswered,

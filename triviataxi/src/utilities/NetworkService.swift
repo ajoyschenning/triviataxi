@@ -59,15 +59,86 @@ class NetworkService {
     private let baseURL = "http://127.0.0.1:8000"
     //"https://trivia-taxi-api-423193744278.us-central1.run.app/"
     
-
-
     
+    func fetchUserSessions(userId: String) async throws -> [TriviaSession] {
+
+        
+        guard let url = URL(string: "\(baseURL)/users/\(userId)/sessions") else {
+            throw NetworkError.invalidURL
+        }
+        var request = URLRequest(url: url)
+
+        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+            print("🚨 User is not logged in or token is missing.")
+            throw NetworkError.unauthorized
+        }
+                
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            throw URLError(.badServerResponse)
+        }
+        
+        let decoder = JSONDecoder()
+        return try decoder.decode([TriviaSession].self, from: data)
+    }
+     
+    
+    func fetchLeaderboard(token: String, timeframe: LeaderboardTimeframe) async throws -> [LeaderboardEntry] {
+        // 🚀 Use URLComponents to safely add query parameters
+        guard var components = URLComponents(string: "\(baseURL)/leaderboards/leaderboard") else {
+            throw NetworkError.invalidURL
+        }
+        
+        // Add ?timeframe=... to the URL
+        components.queryItems = [
+            URLQueryItem(name: "timeframe", value: timeframe.rawValue)
+        ]
+        
+        guard let url = components.url else {
+            throw NetworkError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        
+        let (data, response) = try await URLSession.shared.data(for: request)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.noData
+        }
+
+        if httpResponse.statusCode == 401 {
+            throw NetworkError.unauthorized
+        }
+
+        guard (200...299).contains(httpResponse.statusCode) else {
+            throw NetworkError.serverError(httpResponse.statusCode)
+        }
+
+        do {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .iso8601
+            
+            let leaderboard = try decoder.decode([LeaderboardEntry].self, from: data)
+            print("✅ DEBUG: \(timeframe.rawValue) leaderboard fetched with \(leaderboard.count) entries")
+            return leaderboard
+        } catch {
+            print("🚨 Leaderboard Decoding Error: \(error)")
+            throw NetworkError.decodingError
+        }
+    }
     func submitGameResults(
         userId: String,
         routeId: String,
         totalEarnings: Int,
         strikes: Int,
-        questionsAnswered: Int) async throws -> GameCompletionRequest{
+        questionsAnswered: Int,
+        milesTraveled: Double) async throws -> GameCompletionRequest{
             
             guard let url = URL(string: "\(baseURL)/sessions") else {
                 throw NetworkError.invalidURL
@@ -82,14 +153,14 @@ class NetworkService {
                         throw NetworkError.unauthorized
                     }
                     
-                    // 🚀 THE FIX: 2. Staple the pass to the HTTP Header
                     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 
             let body: [String: Any] = ["user_id": userId,
                                        "route_id": routeId,
                                        "total_earnings": totalEarnings,
                                        "strikes": strikes,
-                                       "questions_answered": questionsAnswered]
+                                       "questions_answered": questionsAnswered,
+                                       "miles_traveled": milesTraveled]
             request.httpBody = try? JSONSerialization.data(withJSONObject: body)
 
             let (data, response) = try await URLSession.shared.data(for: request)
@@ -153,6 +224,39 @@ class NetworkService {
         } catch {
             print("🚨 UserProfile Decoding Error: \(error)")
             throw NetworkError.decodingError
+        }
+    }
+    
+    // update user profile
+    func updateUserProfile(username: String, avatarUrl: String) async throws
+    {
+        guard let url = URL(string: "\(baseURL)/users/me") else {
+            throw NetworkError.invalidURL
+        }
+        
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        guard let token = try await Auth.auth().currentUser?.getIDToken() else {
+                    print("🚨 User is not logged in or token is missing.")
+                    throw NetworkError.unauthorized
+                }
+                
+                request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+
+
+        let body : [String: String] = ["username": username, "avatar_url": avatarUrl, "user_id": Auth.auth().currentUser!.uid]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let (_, response) = try await URLSession.shared.data(for: request)
+        guard let httpResponse = response as? HTTPURLResponse,
+            (200...299).contains(httpResponse.statusCode)
+        else {
+            throw NetworkError.serverError(
+                (response as? HTTPURLResponse)?.statusCode ?? -1
+            )
         }
     }
 
