@@ -101,13 +101,17 @@ struct NavigationViewControllerRepresentable: UIViewControllerRepresentable {
                 navigationViewController.navigationView.bringSubviewToFront(coinCounter)
                 
                 // 🚀 2. Listen for Earnings Updates
-                self.gameManager.$currentEarnings
-                    .receive(on: RunLoop.main)
-                    .sink { [weak coinCounter] newEarnings in
-                        // Instantly update the coin text when the variable changes
-                        coinCounter?.text = "\(Int(newEarnings))"
-                    }
-                    .store(in: &context.coordinator.cancellables)
+                Publishers.CombineLatest(
+                    self.gameManager.$currentEarnings,
+                    self.gameManager.$hintsEarningsSpent
+                )
+                .receive(on: RunLoop.main)
+                .sink { [weak coinCounter] earnings, spent in
+                    // Show remaining earnings after hints purchased
+                    let remaining = earnings - spent
+                    coinCounter?.text = "\(Int(remaining))"
+                }
+                .store(in: &context.coordinator.cancellables)
                 
                 // --- Strikes Box UI ---
                 let strikesBox = UILabel()
