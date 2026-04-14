@@ -10,6 +10,14 @@ struct DestinationData: Codable, Identifiable {
     let id: String
     let city: String
     let country: String
+    let imageUrl: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case city
+        case country
+        case imageUrl = "image_url"
+    }
 }
 
 // Maps to the FastAPI response for route coordinates

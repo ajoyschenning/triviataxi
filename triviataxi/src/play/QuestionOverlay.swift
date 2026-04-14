@@ -240,6 +240,10 @@ struct AnswerButton: View {
             Text(text)
                 .font(.system(size: 13, weight: .semibold))
                 .foregroundColor(buttonTextColor)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .layoutPriority(1)
                 .frame(maxWidth: .infinity)
                 .padding(12)
                 .background(buttonBackgroundColor)
@@ -381,6 +385,9 @@ struct QuestionTextView: View {
             .font(.system(size: 16, weight: .semibold))
             .foregroundColor(.black)
             .multilineTextAlignment(.center)
+            .lineLimit(nil)
+            .fixedSize(horizontal: false, vertical: true)
+            .layoutPriority(1)
     }
 }
 
