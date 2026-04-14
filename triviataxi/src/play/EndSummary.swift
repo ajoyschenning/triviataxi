@@ -66,12 +66,13 @@ struct EndSummary: View {
                 
                 // Buttons section
                 VStack(spacing: 12) {
-                    FancyButton(
-                        title: "Ride Again?",
-                        action: {
-//                            navigationManager.navigateTo(.selectRoute)
-                        }
-                    )
+                    // FancyButton(
+                    //     title: "Ride Again?",
+                    //     action: {
+                    //     //    navigationManager.navigateTo(.selectRoute)
+                    //     }
+                    // )
+                    
                     
                 }
                 .padding(.horizontal, 20)

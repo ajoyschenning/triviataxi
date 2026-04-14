@@ -4,6 +4,7 @@
 //
 
 import Foundation
+internal import UIKit
 
 // MARK: - Open Trivia DB API Models
 
