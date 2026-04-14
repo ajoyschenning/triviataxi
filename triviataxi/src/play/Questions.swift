@@ -35,34 +35,20 @@ struct OpenTriviaQuestion: Codable {
     }
 }
 
-// MARK: - HTML Entity Decoder
+// MARK: - String HTML Decoding Extension
 
-class HTMLEntityDecoder {
-    /// Decode HTML entities in a string (e.g., &quot; → ")
-    static func decode(_ string: String) -> String {
-        var decoded = string
+extension String {
+    var htmlDecoded: String {
+        guard let data = self.data(using: .utf8) else { return self }
         
-        // Replace common HTML entities
-        decoded = decoded.replacingOccurrences(of: "&quot;", with: "\"")
-        decoded = decoded.replacingOccurrences(of: "&#039;", with: "'")
-        decoded = decoded.replacingOccurrences(of: "&apos;", with: "'")
-        decoded = decoded.replacingOccurrences(of: "&amp;", with: "&")
-        decoded = decoded.replacingOccurrences(of: "&lt;", with: "<")
-        decoded = decoded.replacingOccurrences(of: "&gt;", with: ">")
-        decoded = decoded.replacingOccurrences(of: "&nbsp;", with: " ")
-        decoded = decoded.replacingOccurrences(of: "&ndash;", with: "–")
-        decoded = decoded.replacingOccurrences(of: "&mdash;", with: "—")
-        decoded = decoded.replacingOccurrences(of: "&ldquo;", with: "\"")
-        decoded = decoded.replacingOccurrences(of: "&rdquo;", with: "\"")
-        decoded = decoded.replacingOccurrences(of: "&lsquo;", with: "'")
-        decoded = decoded.replacingOccurrences(of: "&rsquo;", with: "'")
-        decoded = decoded.replacingOccurrences(of: "&hellip;", with: "…")
-        decoded = decoded.replacingOccurrences(of: "&times;", with: "×")
-        decoded = decoded.replacingOccurrences(of: "&divide;", with: "÷")
-        decoded = decoded.replacingOccurrences(of: "&deg;", with: "°")
-        decoded = decoded.replacingOccurrences(of: "&plusmn;", with: "±")
+        let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+            .documentType: NSAttributedString.DocumentType.html,
+            .characterEncoding: String.Encoding.utf8.rawValue
+        ]
         
-        return decoded
+        let decoded = (try? NSAttributedString(data: data, options: options, documentAttributes: nil).string) ?? self
+        
+        return decoded.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
@@ -127,10 +113,10 @@ class TriviaAPIService {
     
     /// Map Open Trivia Question to our Question model
     private func mapToQuestion(_ triviaQuestion: OpenTriviaQuestion, id: Int) -> Question {
-        let decodedQuestion = HTMLEntityDecoder.decode(triviaQuestion.question)
-        let decodedCorrectAnswer = HTMLEntityDecoder.decode(triviaQuestion.correctAnswer)
+        let decodedQuestion = triviaQuestion.question.htmlDecoded
+        let decodedCorrectAnswer = triviaQuestion.correctAnswer.htmlDecoded
         let decodedIncorrectAnswers = triviaQuestion.incorrectAnswers.map {
-            HTMLEntityDecoder.decode($0)
+            $0.htmlDecoded
         }
         
         // Map difficulty: "easy" -> "Easy", "medium" -> "Medium", "hard" -> "Hard"
